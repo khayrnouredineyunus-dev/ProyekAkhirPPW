@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // ── Kredensial admin disimpan di sini (ganti sesuai kebutuhan) ──
     // Untuk keamanan produksi, simpan di database atau env file
     $ADMIN_USER = 'admin';
-    $ADMIN_PASS = 'minifut2026'; // Ganti dengan password Anda
+    $ADMIN_PASS = 'minifut'; // Ganti dengan password Anda
 
     if (empty($username) || empty($password)) {
         $error = 'Username dan password tidak boleh kosong.';
