@@ -1,3 +1,12 @@
+<?php
+// ── AUTENTIKASI: Hanya pelanggan yang sudah login yang bisa akses halaman ini ──
+require_once __DIR__ . '/config.php';
+startSecureSession();
+if (!isLoggedIn()) {
+    header('Location: auth/login.php');
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -974,7 +983,6 @@ footer{padding:64px 0 28px;border-top:1px solid var(--border);position:relative;
   .fanwall-track { gap: 10px; }
   .fanwall-track-rev { margin-top: 10px; }
 }
-/* ── END FAN WALL ── */
 </style>
 </head>
 <body>
@@ -1014,11 +1022,22 @@ footer{padding:64px 0 28px;border-top:1px solid var(--border);position:relative;
     <li><a href="#harga">Harga</a></li>
     <li><a href="booking.php">Booking</a></li>
   </ul>
-  <!-- REVISI: Menggunakan Green Liquid Glass Button Markup -->
+  <!-- AUTH: Tampilkan nama user + logout jika sudah login, atau Book Sekarang jika belum -->
+  <?php if (isPelanggan()): ?>
+  <div style="display:flex;align-items:center;gap:14px;">
+    <span style="font-family:'Rajdhani',sans-serif;font-size:.72rem;font-weight:600;letter-spacing:1.5px;color:var(--gray2);white-space:nowrap;max-width:140px;overflow:hidden;text-overflow:ellipsis;">
+      <?= htmlspecialchars($_SESSION['user_name'], ENT_QUOTES, 'UTF-8') ?>
+    </span>
+    <a href="auth/logout.php" class="nav-cta" style="background:rgba(255,59,92,.06);border-color:rgba(255,59,92,.2);color:#ff7096;">
+      <span style="position:relative;z-index:2;">Logout</span>
+    </a>
+  </div>
+  <?php else: ?>
   <a href="booking.php" class="nav-cta">
     <span class="nav-cta-backdrop"></span>
     <span style="position: relative; z-index: 2;">Book Sekarang</span>
   </a>
+  <?php endif; ?>
 </nav>
 
 <!-- PINNED SHOWCASE CONTAINER UTAMA (MENCAKUP HERO DAN SECTION 2-4) -->
