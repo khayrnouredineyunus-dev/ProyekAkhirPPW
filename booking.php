@@ -353,6 +353,8 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:18px 64px;display:f
 }
 .fc:hover::after { opacity: 1; }
 </style>
+
+/* INI CONTOH REFRENSI STRUKTUR HTML UNTUK HALAMAN BOOKING, SILAHKAN SESUAIKAN DENGAN LOGIKA FRONTEND YANG AKAN DIBUAT */
 </head>
 <body>
 <div id="noise"></div>
