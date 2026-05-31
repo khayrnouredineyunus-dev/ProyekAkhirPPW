@@ -6,6 +6,19 @@ if (!isLoggedIn()) {
     header('Location: auth/login.php');
     exit;
 }
+
+// Ambil data foto profil terbaru dari database berdasarkan ID pelanggan di session
+$user_foto = null;
+if (isset($_SESSION['user_id'])) {
+    try {
+        $db = getDB();
+        $stmt_user = $db->prepare("SELECT FOTO_PROFIL FROM Pelanggan WHERE ID_PELANGGAN = ?");
+        $stmt_user->execute([$_SESSION['user_id']]);
+        $user_foto = $stmt_user->fetchColumn();
+    } catch (PDOException $e) {
+        // Gagal mengambil data, fallback otomatis ke inisial huruf nanti
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -191,6 +204,11 @@ nav.shrunk .nav-links a { font-size: 0.7rem; }
   background: var(--green);
   box-shadow: 0 0 20px rgba(0, 255, 136, 0.4);
   transform: scale(1.05);
+}
+.nav-cta-logout:hover {
+  color: var(--white) !important;
+  background: var(--red) !important;
+  box-shadow: 0 0 20px rgba(255, 59, 92, 0.5) !important;
 }
 .nav-cta:hover::before {
   box-shadow: none;
@@ -1022,15 +1040,24 @@ footer{padding:64px 0 28px;border-top:1px solid var(--border);position:relative;
     <li><a href="#harga">Harga</a></li>
     <li><a href="booking.php">Booking</a></li>
   </ul>
-  <!-- AUTH: Tampilkan nama user + logout jika sudah login, atau Book Sekarang jika belum -->
+  <!-- AUTH: Tampilkan profil user + logout jika sudah login, atau Book Sekarang jika belum -->
   <?php if (isPelanggan()): ?>
-  <div style="display:flex;align-items:center;gap:14px;">
-    <span style="font-family:'Rajdhani',sans-serif;font-size:.72rem;font-weight:600;letter-spacing:1.5px;color:var(--gray2);white-space:nowrap;max-width:140px;overflow:hidden;text-overflow:ellipsis;">
-      <?= htmlspecialchars($_SESSION['user_name'], ENT_QUOTES, 'UTF-8') ?>
-    </span>
-    <a href="auth/logout.php" class="nav-cta" style="background:rgba(255,59,92,.06);border-color:rgba(255,59,92,.2);color:#ff7096;">
+  <div style="display:flex;align-items:center;gap:12px;">
+    
+    <?php if (!empty($user_foto)): ?>
+      <img src="admin/uploads/<?= htmlspecialchars($user_foto, ENT_QUOTES, 'UTF-8') ?>" 
+          style="width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 2px solid var(--green); box-shadow: 0 0 10px var(--glow); flex-shrink: 0;" 
+          alt="Foto Profil">
+    <?php else: ?>
+      <div style="width: 38px; height: 38px; border-radius: 50%; background: rgba(0, 255, 136, 0.1); border: 2px solid var(--green); display: flex; align-items: center; justify-content: center; font-family: 'Orbitron', monospace; font-size: 0.85rem; font-weight: 700; color: var(--green); box-shadow: 0 0 10px var(--glow); flex-shrink: 0;">
+        <?= strtoupper(substr($_SESSION['user_name'] ?? 'U', 0, 1)) ?>
+      </div>
+    <?php endif; ?>
+
+    <a href="auth/logout.php" class="nav-cta nav-cta-logout" style="background:rgba(255,59,92,.06); border-color:rgba(255,59,92,0.25); color:#ff7096; padding: 6px 14px; border-radius: 30px; font-size: 0.68rem;">
       <span style="position:relative;z-index:2;">Logout</span>
     </a>
+
   </div>
   <?php else: ?>
   <a href="booking.php" class="nav-cta">

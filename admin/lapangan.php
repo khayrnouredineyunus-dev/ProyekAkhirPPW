@@ -265,7 +265,7 @@ if (isset($_GET['edit_id'])) {
         <div class="form-group" style="text-align:center;">
           <img src="../<?= UPLOAD_URL . e($editData['FOTO']) ?>"
                style="width:100%;max-height:160px;object-fit:cover;border-radius:8px;border:1px solid var(--border2);" alt="Foto saat ini">
-          <div style="font-size:.72rem;color:var(--gray);margin-top:6px;">Foto saat ini — upload baru untuk mengganti</div>
+          <div style="font-size:.72rem;color:var(--gray);margin-top:6px;">Foto saat ini upload untuk mengubah foto</div>
         </div>
         <?php endif; ?>
 
