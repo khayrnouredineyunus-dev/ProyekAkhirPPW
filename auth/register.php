@@ -129,6 +129,13 @@ input::placeholder { color:var(--gray); }
 .btn-submit::after{content:'';position:absolute;inset:0;background:rgba(255,255,255,.18);transform:translateX(-100%);transition:.3s;}
 .btn-submit:hover::after{transform:translateX(0);}
 .btn-submit:hover{box-shadow:0 8px 28px rgba(0,255,136,.45);transform:translateY(-2px);}
+.btn-submit.loading { color: transparent !important; pointer-events: none; }
+.btn-submit.loading::before {
+  content: ''; position: absolute; top: 50%; left: 50%; width: 20px; height: 20px;
+  margin-top: -10px; margin-left: -10px; border: 2px solid rgba(0, 0, 0, 0.1);
+  border-top-color: var(--black); border-radius: 50%; animation: btn-spin 0.6s linear infinite; z-index: 10;
+}
+@keyframes btn-spin { to { transform: rotate(360deg); } }
 
 .links { text-align:center;font-size:.82rem;color:var(--gray2);margin-top:20px;font-family:'Barlow',sans-serif; }
 .links a {
@@ -246,6 +253,14 @@ input::placeholder { color:var(--gray); }
   onR();window.addEventListener('resize',onR);
   (function anim(){requestAnimationFrame(anim);uni.time.value+=0.05;r.render(sc,cam);})();
 })();
+
+// Form submission loading state
+if (document.querySelector('form')) {
+  document.querySelector('form').addEventListener('submit', function() {
+    const btn = this.querySelector('.btn-submit');
+    if (btn) btn.classList.add('loading');
+  });
+}
 </script>
 </body>
 </html>

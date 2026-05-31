@@ -1,0 +1,17 @@
+The USER performed the following action:
+Show the contents of file d:\XAMPP\htdocs\ProyekAkhirPPW\profile.php from lines 142 to 177
+File Path: `file:///d:/XAMPP/htdocs/ProyekAkhirPPW/profile.php`
+Total Lines: 1054
+Total Bytes: 50287
+Showing lines 142 to 177
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+142: 
+143: // ── AMBIL DATA TERBARU DARI DATABASE ─────────────────
+144: $stmt = $pdo->prepare("SELECT * FROM Pelanggan WHERE ID_PELANGGAN=?");
+145: $stmt->execute([$userId]);
+146: $user = $stmt->fetch();
+147: 
+148: // ── AMBIL RIWAYAT BOOKING ─────────────────────────────
+149: $histStmt = $pdo->prepare(
+150:     "SELECT b.ID_BOOKING, b.TANGGAL_BOOKING, b.STATUS_BOOKING,
+<truncated 1402 bytes>

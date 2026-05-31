@@ -1045,13 +1045,21 @@ footer{padding:64px 0 28px;border-top:1px solid var(--border);position:relative;
   <div style="display:flex;align-items:center;gap:12px;">
     
     <?php if (!empty($user_foto)): ?>
-      <img src="admin/uploads/<?= htmlspecialchars($user_foto, ENT_QUOTES, 'UTF-8') ?>" 
-          style="width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 2px solid var(--green); box-shadow: 0 0 10px var(--glow); flex-shrink: 0;" 
-          alt="Foto Profil">
+      <a href="profile.php" title="Profil Saya" style="flex-shrink:0;">
+        <img src="admin/uploads/<?= htmlspecialchars($user_foto, ENT_QUOTES, 'UTF-8') ?>" 
+            style="width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 2px solid var(--green); box-shadow: 0 0 10px var(--glow); cursor: pointer; transition: box-shadow .3s, transform .3s; flex-shrink: 0;" 
+            alt="Foto Profil"
+            onmouseover="this.style.boxShadow='0 0 18px var(--green)';this.style.transform='scale(1.08)'"
+            onmouseout="this.style.boxShadow='0 0 10px var(--glow)';this.style.transform='scale(1)'">
+      </a>
     <?php else: ?>
-      <div style="width: 38px; height: 38px; border-radius: 50%; background: rgba(0, 255, 136, 0.1); border: 2px solid var(--green); display: flex; align-items: center; justify-content: center; font-family: 'Orbitron', monospace; font-size: 0.85rem; font-weight: 700; color: var(--green); box-shadow: 0 0 10px var(--glow); flex-shrink: 0;">
-        <?= strtoupper(substr($_SESSION['user_name'] ?? 'U', 0, 1)) ?>
-      </div>
+      <a href="profile.php" title="Profil Saya" style="flex-shrink:0;text-decoration:none;">
+        <div style="width: 38px; height: 38px; border-radius: 50%; background: rgba(0, 255, 136, 0.1); border: 2px solid var(--green); display: flex; align-items: center; justify-content: center; font-family: 'Orbitron', monospace; font-size: 0.85rem; font-weight: 700; color: var(--green); box-shadow: 0 0 10px var(--glow); cursor: pointer; transition: box-shadow .3s, transform .3s; flex-shrink: 0;"
+            onmouseover="this.style.boxShadow='0 0 18px var(--green)';this.style.transform='scale(1.08)'"
+            onmouseout="this.style.boxShadow='0 0 10px var(--glow)';this.style.transform='scale(1)'">
+          <?= strtoupper(substr($_SESSION['user_name'] ?? 'U', 0, 1)) ?>
+        </div>
+      </a>
     <?php endif; ?>
 
     <a href="auth/logout.php" class="nav-cta nav-cta-logout" style="background:rgba(255,59,92,.06); border-color:rgba(255,59,92,0.25); color:#ff7096; padding: 6px 14px; border-radius: 30px; font-size: 0.68rem;">

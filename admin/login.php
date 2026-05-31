@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif ($username === $ADMIN_USER && $password === $ADMIN_PASS) {
         session_regenerate_id(true);
         $_SESSION['user_id']   = 0;
-        $_SESSION['user_name'] = 'Administrator';
+        $_SESSION['user_name'] = $username;
         $_SESSION['user_role'] = 'admin';
         header('Location: dashboard.php');
         exit;

@@ -99,8 +99,8 @@ function uploadFoto(array $file, string $prefix = 'foto'): string|false {
 }
 
 // ── Sanitize ────────────────────────────────────────────────
-function e(string $str): string {
-    return htmlspecialchars($str, ENT_QUOTES, 'UTF-8');
+function e(?string $str): string {
+    return htmlspecialchars($str ?? '', ENT_QUOTES, 'UTF-8');
 }
 
 function formatRupiah(int $amount): string {

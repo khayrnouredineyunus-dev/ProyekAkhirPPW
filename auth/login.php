@@ -153,6 +153,13 @@ input::placeholder { color:var(--gray); }
 .btn-submit:hover::after { transform:translateX(0); }
 .btn-submit:hover { box-shadow:0 8px 28px rgba(0,255,136,.45);transform:translateY(-2px); }
 .btn-submit:active { transform:translateY(0); }
+.btn-submit.loading { color: transparent !important; pointer-events: none; }
+.btn-submit.loading::before {
+  content: ''; position: absolute; top: 50%; left: 50%; width: 20px; height: 20px;
+  margin-top: -10px; margin-left: -10px; border: 2px solid rgba(0, 0, 0, 0.1);
+  border-top-color: var(--black); border-radius: 50%; animation: btn-spin 0.6s linear infinite; z-index: 10;
+}
+@keyframes btn-spin { to { transform: rotate(360deg); } }
 
 .divider { display:flex;align-items:center;gap:12px;margin:22px 0; }
 .divider hr { flex:1;border:none;border-top:1px solid var(--border); }
@@ -216,7 +223,7 @@ input::placeholder { color:var(--gray); }
 
     <div class="divider"><hr><span>Belum punya akun?</span><hr></div>
     <div class="links">
-      <a href="register.php">Daftar Sekarang</a>
+      <a href="register.php">Daftar Sekarang!</a>
     </div>
 
     <a href="../admin/login.php" class="admin-link">⚙ Masuk sebagai Admin</a>
@@ -253,6 +260,11 @@ input::placeholder { color:var(--gray); }
   onR();window.addEventListener('resize',onR);
   (function anim(){requestAnimationFrame(anim);uni.time.value+=0.05;r.render(sc,cam);})();
 })();
+
+document.querySelector('form').addEventListener('submit', function() {
+  const btn = this.querySelector('.btn-submit');
+  if (btn) btn.classList.add('loading');
+});
 </script>
 </body>
 </html>
