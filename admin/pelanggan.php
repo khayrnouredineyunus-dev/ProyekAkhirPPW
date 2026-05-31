@@ -150,11 +150,11 @@ if (isset($_GET['edit_id'])) {
     <div class="table-actions">
       <form method="GET">
         <div class="search-wrap">
-          <span class="search-icon">🔍</span>
+          <span class="search-icon"><i class="bi bi-search"></i></span>
           <input type="text" name="search" placeholder="Cari nama, email, telepon..." value="<?= e($search) ?>">
         </div>
       </form>
-      <button class="btn btn-green" onclick="openModal('modal-tambah')">+ Tambah Pelanggan</button>
+      <button class="btn btn-green" onclick="openModal('modal-tambah')"><i class="bi bi-plus-lg"></i> Tambah Pelanggan</button>
     </div>
   </div>
 
@@ -164,7 +164,7 @@ if (isset($_GET['edit_id'])) {
     </thead>
     <tbody>
       <?php if (empty($pelangganList)): ?>
-      <tr><td colspan="6"><div class="empty-state"><div class="empty-icon">👤</div><div class="empty-text">Tidak ada pelanggan</div></div></td></tr>
+      <tr><td colspan="6"><div class="empty-state"><div class="empty-icon"><i class="bi bi-person"></i></div><div class="empty-text">Tidak ada pelanggan</div></div></td></tr>
       <?php else: ?>
       <?php foreach($pelangganList as $p): ?>
       <tr>
@@ -187,11 +187,11 @@ if (isset($_GET['edit_id'])) {
         </td>
         <td>
           <a href="?edit_id=<?= $p['ID_PELANGGAN'] ?>&search=<?= urlencode($search) ?>&page=<?= $page ?>"
-             class="btn btn-amber btn-sm">✏ Edit</a>
+             class="btn btn-amber btn-sm"><i class="bi bi-pencil-square"></i> Edit</a>
           <form method="POST" style="display:inline;" onsubmit="return confirm('Hapus pelanggan ini?')">
             <input type="hidden" name="action" value="hapus">
             <input type="hidden" name="id"     value="<?= $p['ID_PELANGGAN'] ?>">
-            <button type="submit" class="btn btn-red btn-sm">✕ Hapus</button>
+            <button type="submit" class="btn btn-red btn-sm"><i class="bi bi-trash3"></i> Hapus</button>
           </form>
         </td>
       </tr>
@@ -217,21 +217,21 @@ if (isset($_GET['edit_id'])) {
   <div class="modal">
     <div class="modal-head">
       <div class="modal-title">Tambah Pelanggan</div>
-      <button class="modal-close" onclick="closeModal('modal-tambah')">✕</button>
+      <button class="modal-close" onclick="closeModal('modal-tambah')"><i class="bi bi-x-lg"></i></button>
     </div>
     <div class="modal-body">
       <form method="POST" enctype="multipart/form-data">
         <input type="hidden" name="action" value="tambah">
         <div style="text-align:center;margin-bottom:20px;">
           <div id="avatar-preview-wrap" style="width:72px;height:72px;border-radius:50%;background:rgba(0,255,136,.1);border:2px solid rgba(0,255,136,.25);margin:0 auto;display:flex;align-items:center;justify-content:center;font-size:1.8rem;overflow:hidden;">
-            👤
+            <i class="bi bi-person-fill"></i>
           </div>
         </div>
         <div class="form-group">
           <label class="form-label">Foto Profil</label>
           <div class="upload-area">
             <input type="file" name="foto" accept="image/*" onchange="previewAvatar(this,'avatar-preview-wrap')">
-            <div class="upload-text">📷 Upload foto profil (opsional)</div>
+            <div class="upload-text"><i class="bi bi-camera"></i> Upload foto profil (opsional)</div>
           </div>
         </div>
         <div class="form-group">
@@ -262,7 +262,7 @@ if (isset($_GET['edit_id'])) {
   <div class="modal">
     <div class="modal-head">
       <div class="modal-title">Edit Pelanggan #<?= e($editData['ID_PELANGGAN']) ?></div>
-      <a href="pelanggan.php?search=<?= urlencode($search) ?>&page=<?= $page ?>" class="modal-close" style="text-decoration:none;">✕</a>
+      <a href="pelanggan.php?search=<?= urlencode($search) ?>&page=<?= $page ?>" class="modal-close" style="text-decoration:none;"><i class="bi bi-x-lg"></i></a>
     </div>
     <div class="modal-body">
       <form method="POST" enctype="multipart/form-data">
@@ -284,7 +284,7 @@ if (isset($_GET['edit_id'])) {
           <label class="form-label">Ganti Foto Profil</label>
           <div class="upload-area">
             <input type="file" name="foto" accept="image/*" onchange="previewAvatarImg(this,'avatar-edit')">
-            <div class="upload-text">📷 Upload foto baru (kosongkan jika tidak ingin ganti)</div>
+            <div class="upload-text"><i class="bi bi-camera"></i> Upload foto baru (kosongkan jika tidak ingin ganti)</div>
           </div>
         </div>
         <div class="form-group">

@@ -53,15 +53,15 @@ $recentBookings = $pdo->query(
 <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:28px;">
   <?php
   $shortcuts = [
-    ['lapangan.php',   '⬟', 'Lapangan',    'Kelola & foto lapangan'],
-    ['booking.php',    '📋', 'Booking',     'Semua reservasi'],
-    ['pembayaran.php', '💳', 'Pembayaran',  'Konfirmasi bayar'],
-    ['pelanggan.php',  '👤', 'Pelanggan',   'Data & foto profil'],
-    ['jadwal.php',     '📅', 'Jadwal',      'Manajemen slot'],
+    ['lapangan.php',   '<i class="bi bi-hexagon"></i>', 'Lapangan',    'Kelola & foto lapangan'],
+    ['booking.php',    '<i class="bi bi-journal-bookmark-fill"></i>', 'Booking',     'Semua reservasi'],
+    ['pembayaran.php', '<i class="bi bi-credit-card-fill"></i>', 'Pembayaran',  'Konfirmasi bayar'],
+    ['pelanggan.php',  '<i class="bi bi-people-fill"></i>', 'Pelanggan',   'Data & foto profil'],
+    ['jadwal.php',     '<i class="bi bi-calendar3"></i>', 'Jadwal',      'Manajemen slot'],
   ];
   foreach ($shortcuts as [$url, $icon, $title, $desc]): ?>
   <a href="<?= $url ?>" style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:18px;text-decoration:none;transition:all .2s;display:block;" onmouseover="this.style.borderColor='rgba(0,255,136,.25)'" onmouseout="this.style.borderColor='var(--border)'">
-    <div style="font-size:1.4rem;margin-bottom:8px;"><?= $icon ?></div>
+    <div style="font-size:1.4rem;margin-bottom:8px;color:var(--green);"><?= $icon ?></div>
     <div style="font-family:'Orbitron',monospace;font-size:.8rem;font-weight:700;color:var(--white);margin-bottom:4px;"><?= $title ?></div>
     <div style="font-size:.75rem;color:var(--gray);"><?= $desc ?></div>
   </a>
@@ -84,7 +84,7 @@ $recentBookings = $pdo->query(
     <tbody>
       <?php if (empty($recentBookings)): ?>
       <tr><td colspan="6" class="empty-state">
-        <div class="empty-icon">📋</div>
+        <div class="empty-icon"><i class="bi bi-journal-bookmark"></i></div>
         <div class="empty-text">Belum ada booking</div>
       </td></tr>
       <?php else: ?>

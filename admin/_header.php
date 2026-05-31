@@ -28,6 +28,7 @@ function navItem(string $href, string $icon, string $label, string $current): st
 <title>MiniFut Admin — <?= htmlspecialchars($pageTitle ?? 'Dashboard') ?></title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;500;600;700&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 <style>
 :root{
   --black:#060608;--dark:#0c0d10;--card:#111318;--card2:#161820;
@@ -292,19 +293,19 @@ tbody tr:hover td{background:rgba(255,255,255,.02);}
 <aside class="sidebar" id="sidebar">
   <div class="sidebar-logo">
     <a href="dashboard.php" class="logo">MINI<em>FUT</em></a>
-    <span class="badge">⚙ Admin Panel</span>
+    <span class="badge"><i class="bi bi-gear-fill"></i> Admin Panel</span>
   </div>
 
   <nav class="sidebar-nav">
     <div class="nav-section">Utama</div>
-    <?= navItem('dashboard.php',   '▦', 'Dashboard',    $currentPage) ?>
+    <?= navItem('dashboard.php',   '<i class="bi bi-grid"></i>', 'Dashboard',    $currentPage) ?>
 
     <div class="nav-section">Manajemen</div>
-    <?= navItem('lapangan.php',    '⬟', 'Lapangan',     $currentPage) ?>
-    <?= navItem('jadwal.php',      '📅', 'Jadwal',       $currentPage) ?>
-    <?= navItem('booking.php',     '📋', 'Booking',      $currentPage) ?>
-    <?= navItem('pembayaran.php',  '💳', 'Pembayaran',   $currentPage) ?>
-    <?= navItem('pelanggan.php',   '👤', 'Pelanggan',    $currentPage) ?>
+    <?= navItem('lapangan.php',    '<i class="bi bi-hexagon"></i>', 'Lapangan',     $currentPage) ?>
+    <?= navItem('jadwal.php',      '<i class="bi bi-calendar3"></i>', 'Jadwal',       $currentPage) ?>
+    <?= navItem('booking.php',     '<i class="bi bi-journal-bookmark-fill"></i>', 'Booking',      $currentPage) ?>
+    <?= navItem('pembayaran.php',  '<i class="bi bi-credit-card-fill"></i>', 'Pembayaran',   $currentPage) ?>
+    <?= navItem('pelanggan.php',   '<i class="bi bi-people-fill"></i>', 'Pelanggan',    $currentPage) ?>
   </nav>
 
   <div class="sidebar-footer">
@@ -315,7 +316,7 @@ tbody tr:hover td{background:rgba(255,255,255,.02);}
         <div class="user-role">Administrator</div>
       </div>
     </div>
-    <a href="logout.php" class="btn-logout">⏻ Logout</a>
+    <a href="logout.php" class="btn-logout"><i class="bi bi-box-arrow-right"></i> Logout</a>
   </div>
 </aside>
 
@@ -323,7 +324,7 @@ tbody tr:hover td{background:rgba(255,255,255,.02);}
 <main class="main">
   <header class="topbar">
     <div style="display:flex;align-items:center;gap:16px;">
-      <button class="hamburger" id="hamburger" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button>
+      <button class="hamburger" id="hamburger" onclick="document.getElementById('sidebar').classList.toggle('open')"><i class="bi bi-list"></i></button>
       <div>
         <div class="page-title"><?= e($pageTitle ?? 'Dashboard') ?></div>
         <div class="breadcrumb">
@@ -332,7 +333,7 @@ tbody tr:hover td{background:rgba(255,255,255,.02);}
       </div>
     </div>
     <div class="topbar-right">
-      <a href="../index.php" class="view-site-btn" target="_blank">↗ Lihat Website</a>
+      <a href="../index.php" class="view-site-btn" target="_blank"><i class="bi bi-box-arrow-up-right"></i> Lihat Website</a>
     </div>
   </header>
 

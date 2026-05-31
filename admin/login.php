@@ -16,8 +16,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // ── Kredensial admin disimpan di sini (ganti sesuai kebutuhan) ──
     // Untuk keamanan produksi, simpan di database atau env file
-    $ADMIN_USER = 'admin';
-    $ADMIN_PASS = 'minifut'; // Ganti dengan password Anda
+    $ADMIN_USER = 'Khayr';
+    $ADMIN_PASS = 'minifut107'; 
 
     if (empty($username) || empty($password)) {
         $error = 'Username dan password tidak boleh kosong.';
@@ -47,28 +47,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 :root {
   --black:#060608; --card:#111318;
   --border2:rgba(255,255,255,0.1);
-  --green:#00ff88; --gray:#6b7080; --gray2:#9aa0b0; --white:#eceef2;
+  --green:#00ff88; --yellow:#ffd700; --gray:#6b7080; --gray2:#9aa0b0; --white:#eceef2;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--black);color:var(--white);overflow:hidden;}
-body::before{content:'';position:fixed;inset:0;z-index:0;
-  background-image:linear-gradient(rgba(0,255,136,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,136,.02) 1px,transparent 1px);
-  background-size:56px 56px;animation:gridDrift 30s linear infinite;}
-@keyframes gridDrift{0%{transform:translateY(0)}100%{transform:translateY(56px)}}
-#noise{position:fixed;inset:0;opacity:.018;pointer-events:none;z-index:1;
-  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");}
+#shader-bg{position:fixed;inset:0;z-index:0;opacity:.45;}
+#shader-bg canvas{display:block;width:100%;height:100%;}
 .wrap{position:relative;z-index:2;display:flex;align-items:center;justify-content:center;min-height:100vh;padding:24px;}
-.card{width:100%;max-width:400px;background:var(--card);border:1px solid var(--border2);border-radius:20px;padding:44px 40px 40px;position:relative;box-shadow:0 32px 80px rgba(0,0,0,.65);animation:slideUp .5s cubic-bezier(.22,1,.36,1) both;}
+.card{width:100%;max-width:400px;background:var(--card);border:1px solid rgba(255,215,0,0.35);border-radius:20px;padding:44px 40px 40px;position:relative;box-shadow:0 32px 80px rgba(0,0,0,.65);animation:slideUp .5s cubic-bezier(.22,1,.36,1) both;}
 @keyframes slideUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
-.card::before{content:'';position:absolute;top:0;left:12%;right:12%;height:1px;background:linear-gradient(90deg,transparent,var(--green),transparent);}
+.card::before{content:'';position:absolute;top:0;left:12%;right:12%;height:1px;background:linear-gradient(90deg,transparent,var(--yellow),transparent);}
 
 /* Admin badge */
 .admin-badge {
   display:inline-flex;align-items:center;gap:6px;
   font-family:'Rajdhani',sans-serif;font-size:.6rem;font-weight:700;
   letter-spacing:3px;text-transform:uppercase;
-  color:var(--green);border:1px solid rgba(0,255,136,.25);
-  background:rgba(0,255,136,.05);padding:4px 12px;border-radius:100px;
+  color:var(--yellow);border:1px solid rgba(255,215,0,0.35);
+  background:rgba(255,215,0,0.05);padding:4px 12px;border-radius:100px;
   margin-bottom:20px;
 }
 .logo-wrap{text-align:center;margin-bottom:28px;}
@@ -92,7 +88,7 @@ input::placeholder{color:var(--gray);}
 </style>
 </head>
 <body>
-<div id="noise"></div>
+<div id="shader-bg"></div>
 <div class="wrap">
   <div class="card">
     <div class="logo-wrap">
@@ -127,5 +123,37 @@ input::placeholder{color:var(--gray);}
     <a href="../auth/login.php" class="back-link">← Kembali ke login pelanggan</a>
   </div>
 </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function(){
+  var c=document.getElementById('shader-bg');if(!c)return;
+  var vs='void main(){gl_Position=vec4(position,1.0);}';
+  var fs=[
+    'precision highp float;',
+    'uniform vec2 resolution;uniform float time;',
+    'void main(void){',
+    '  vec2 uv=(gl_FragCoord.xy*2.0-resolution.xy)/min(resolution.x,resolution.y);',
+    '  float t=time*0.05;float lw=0.002;',
+    '  vec3 col=vec3(0.0);',
+    '  for(int j=0;j<3;j++){for(int i=0;i<5;i++){',
+    '    col[j]+=lw*float(i*i)/abs(fract(t-0.01*float(j)+float(i)*0.01)*5.0-length(uv)+mod(uv.x+uv.y,0.2));',
+    '  }}',
+    '  float b=(col.r+col.g+col.b)/3.0;',
+    '  gl_FragColor=vec4(b*0.02,b*0.95,b*0.45,1.0);',
+    '}'
+  ].join('\n');
+  var cam=new THREE.Camera();cam.position.z=1;
+  var sc=new THREE.Scene();
+  var geo=new THREE.PlaneGeometry(2,2);
+  var uni={time:{value:1.0},resolution:{value:new THREE.Vector2()}};
+  var mat=new THREE.ShaderMaterial({uniforms:uni,vertexShader:vs,fragmentShader:fs});
+  sc.add(new THREE.Mesh(geo,mat));
+  var r=new THREE.WebGLRenderer({antialias:true});
+  r.setPixelRatio(window.devicePixelRatio);c.appendChild(r.domElement);
+  function onR(){r.setSize(window.innerWidth,window.innerHeight);uni.resolution.value.set(r.domElement.width,r.domElement.height);}
+  onR();window.addEventListener('resize',onR);
+  (function anim(){requestAnimationFrame(anim);uni.time.value+=0.05;r.render(sc,cam);})();
+})();
+</script>
 </body>
 </html>

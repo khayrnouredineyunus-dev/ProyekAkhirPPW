@@ -103,11 +103,11 @@ if (isset($_GET['edit_id'])) {
     <div class="table-actions">
       <form method="GET">
         <div class="search-wrap">
-          <span class="search-icon">🔍</span>
+          <span class="search-icon"><i class="bi bi-search"></i></span>
           <input type="text" name="search" placeholder="Cari lapangan, tanggal, status..." value="<?= e($search) ?>">
         </div>
       </form>
-      <button class="btn btn-green" onclick="openModal('modal-tambah')">+ Tambah Jadwal</button>
+      <button class="btn btn-green" onclick="openModal('modal-tambah')"><i class="bi bi-plus-lg"></i> Tambah Jadwal</button>
     </div>
   </div>
 
@@ -117,7 +117,7 @@ if (isset($_GET['edit_id'])) {
     </thead>
     <tbody>
       <?php if (empty($jadwals)): ?>
-      <tr><td colspan="7"><div class="empty-state"><div class="empty-icon">📅</div><div class="empty-text">Tidak ada jadwal</div></div></td></tr>
+      <tr><td colspan="7"><div class="empty-state"><div class="empty-icon"><i class="bi bi-calendar-x"></i></div><div class="empty-text">Tidak ada jadwal</div></div></td></tr>
       <?php else: ?>
       <?php foreach($jadwals as $j): ?>
       <tr>
@@ -132,11 +132,11 @@ if (isset($_GET['edit_id'])) {
         </td>
         <td>
           <a href="?edit_id=<?= $j['ID_JADWAL'] ?>&search=<?= urlencode($search) ?>&page=<?= $page ?>"
-             class="btn btn-amber btn-sm">✏ Edit</a>
+             class="btn btn-amber btn-sm"><i class="bi bi-pencil-square"></i> Edit</a>
           <form method="POST" style="display:inline;" onsubmit="return confirm('Hapus jadwal ini?')">
             <input type="hidden" name="action" value="hapus">
             <input type="hidden" name="id"     value="<?= $j['ID_JADWAL'] ?>">
-            <button type="submit" class="btn btn-red btn-sm">✕</button>
+            <button type="submit" class="btn btn-red btn-sm"><i class="bi bi-trash3"></i></button>
           </form>
         </td>
       </tr>
@@ -162,7 +162,7 @@ if (isset($_GET['edit_id'])) {
   <div class="modal">
     <div class="modal-head">
       <div class="modal-title">Tambah Jadwal</div>
-      <button class="modal-close" onclick="closeModal('modal-tambah')">✕</button>
+      <button class="modal-close" onclick="closeModal('modal-tambah')"><i class="bi bi-x-lg"></i></button>
     </div>
     <div class="modal-body">
       <form method="POST">
@@ -209,7 +209,7 @@ if (isset($_GET['edit_id'])) {
   <div class="modal">
     <div class="modal-head">
       <div class="modal-title">Edit Jadwal #<?= e($editData['ID_JADWAL']) ?></div>
-      <a href="jadwal.php" class="modal-close" style="text-decoration:none;">✕</a>
+      <a href="jadwal.php" class="modal-close" style="text-decoration:none;"><i class="bi bi-x-lg"></i></a>
     </div>
     <div class="modal-body">
       <form method="POST">

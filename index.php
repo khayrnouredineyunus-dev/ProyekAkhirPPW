@@ -1397,17 +1397,17 @@ footer{padding:64px 0 28px;border-top:1px solid var(--border);position:relative;
 <!-- REVISI: GREEN-THEMED AWARDS MARQUEE DENGAN KONTEN INFORMATIF TENTANG ARENA -->
 <section class="awards-sec">
   <div class="awards-track">
-    <div class="award-item"><div><div class="award-name">RUMPUT FIFA GRADE A</div><div class="award-year">Teknologi Sintetis Premium Teruji</div></div></div>
+    <div class="award-item"><div><div class="award-name">RUMPUT FIFA GRADE PRO</div><div class="award-year">Teknologi Sintetis Premium Teruji</div></div></div>
     <div class="award-item"><div><div class="award-name">1200 LUX LED SYSTEM</div><div class="award-year">Sistem Lampu Sorot Tanpa Bayangan</div></div></div>
     <div class="award-item"><div><div class="award-name">EXCLUSIVELY DESIGNED TRIBUN</div><div class="award-year">Area Penonton Nyaman & Luas</div></div></div>
     <div class="award-item"><div><div class="award-name">BOOKING INSTAN ONLINE</div><div class="award-year">Reservasi Cepat & Aman 24/7</div></div></div>
-    <div class="award-item"><div><div class="award-name">SHOWER HANGAT & DINGIN</div><div class="award-year">Fasilitas Higienis & Terawat</div></div></div>
+    <div class="award-item"><div><div class="award-name">TOILET BERSIH & HIGIENIS</div><div class="award-year">Fasilitas Higienis & Terawat</div></div></div>
     <div class="award-item"><div><div class="award-name">RESTO & CAFE STRATEGIS</div><div class="award-year">Area Santai & Makan Minum Tim</div></div></div>
     <div class="award-item"><div><div class="award-name">RUMPUT FIFA GRADE A</div><div class="award-year">Teknologi Sintetis Premium Teruji</div></div></div>
     <div class="award-item"><div><div class="award-name">1200 LUX LED SYSTEM</div><div class="award-year">Sistem Lampu Sorot Tanpa Bayangan</div></div></div>
     <div class="award-item"><div><div class="award-name">EXCLUSIVELY DESIGNED TRIBUN</div><div class="award-year">Area Penonton Nyaman & Luas</div></div></div>
     <div class="award-item"><div><div class="award-name">BOOKING INSTAN ONLINE</div><div class="award-year">Reservasi Cepat & Aman 24/7</div></div></div>
-    <div class="award-item"><div><div class="award-name">SHOWER HANGAT & DINGIN</div><div class="award-year">Fasilitas Higienis & Terawat</div></div></div>
+    <div class="award-item"><div><div class="award-name">TOILET BERSIH & HIGIENIS</div><div class="award-year">Fasilitas Higienis & Terawat</div></div></div>
     <div class="award-item"><div><div class="award-name">RESTO & CAFE STRATEGIS</div><div class="award-year">Area Santai & Makan Minum Tim</div></div></div>
   </div>
   <div class="awards-track awards-track-rev">
@@ -1416,13 +1416,13 @@ footer{padding:64px 0 28px;border-top:1px solid var(--border);position:relative;
     <div class="award-item"><div><div class="award-name">FASILITAS BOLA KOMPETISI</div><div class="award-year">Peralatan Standar Internasional</div></div></div>
     <div class="award-item"><div><div class="award-name">YOGYAKARTA PREMIER VENUE</div><div class="award-year">Lokasi Strategis Mudah Dijangkau</div></div></div>
     <div class="award-item"><div><div class="award-name">BASECAMP KOMUNITAS BOLA</div><div class="award-year">Wadah Silahturahmi & Sportivitas</div></div></div>
-    <div class="award-item"><div><div class="award-name">WASIT SEPAK BOLA LISENSI</div><div class="award-year">Dukungan Pengadil Lapangan Profesional</div></div></div>
+    <div class="award-item"><div><div class="award-name">SHOWER HANGAT & DINGIN</div><div class="award-year">Menyediakan Fasilitas yang Lengkap</div></div></div>
     <div class="award-item"><div><div class="award-name">PARKIR MOTOR & MOBIL AMAN</div><div class="award-year">Kapasitas Luas Terpantau CCTV</div></div></div>
     <div class="award-item"><div><div class="award-name">RUANG GANTI BER-AC</div><div class="award-year">Kesejukan Maksimal Sebelum Laga</div></div></div>
     <div class="award-item"><div><div class="award-name">FASILITAS BOLA KOMPETISI</div><div class="award-year">Peralatan Standar Internasional</div></div></div>
     <div class="award-item"><div><div class="award-name">YOGYAKARTA PREMIER VENUE</div><div class="award-year">Lokasi Strategis Mudah Dijangkau</div></div></div>
     <div class="award-item"><div><div class="award-name">BASECAMP KOMUNITAS BOLA</div><div class="award-year">Wadah Silahturahmi & Sportivitas</div></div></div>
-    <div class="award-item"><div><div class="award-name">WASIT SEPAK BOLA LISENSI</div><div class="award-year">Dukungan Pengadil Lapangan Profesional</div></div></div>
+    <div class="award-item"><div><div class="award-name">SHOWER HANGAT & DINGIN</div><div class="award-year">Menyediakan Fasilitas yang Lengkap</div></div></div>
   </div>
 </section>
 
@@ -1434,7 +1434,6 @@ footer{padding:64px 0 28px;border-top:1px solid var(--border);position:relative;
       <div class="sec-label" style="display:flex;justify-content:center">⬡ Siap Bermain?</div>
       <h2 class="cta-title">Book Lapangan<br><span>Sekarang</span></h2>
       <p class="cta-sub">Jangan tunda lagi. Atur jadwal pertandinganmu dan nikmati pengalaman<br>mini soccer terbaik di Yogyakarta.</p>
-      <!-- REVISI: MENGGUNAKAN TOMBOL SEAKAN-AKAN SANGAT PREMIUM DENGAN SOFTEN EDGE YERDAPAT HOVER EFFECT -->
       <a href="booking.php" class="btn-soft" style="display:inline-block">Mulai Booking →</a>
     </div>
   </div>
