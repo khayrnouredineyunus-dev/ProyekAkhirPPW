@@ -132,7 +132,7 @@ nav.shrunk .nav-links { gap: 20px; }
   text-decoration: none;
   transition: color 0.25s;
 }
-.nav-links a:hover { color: var(--white); }
+.nav-links a:hover { color: var(--green); }
 nav.shrunk .nav-links a { font-size: 0.7rem; }
 
 /* REVISI: Mengubah nav-cta menjadi Premium Green Liquid Glass Button */
