@@ -139,11 +139,11 @@ if (isset($_GET['edit_id'])) {
       <!-- Search -->
       <form method="GET" action="">
         <div class="search-wrap">
-          <span class="search-icon">🔍</span>
+          <span class="search-icon"><i class="bi bi-search"></i></span>
           <input type="text" name="search" placeholder="Cari lapangan..." value="<?= e($search) ?>">
         </div>
       </form>
-      <button class="btn btn-green" onclick="openModal('modal-tambah')">+ Tambah Lapangan</button>
+      <button class="btn btn-green" onclick="openModal('modal-tambah')"><i class="bi bi-plus-lg"></i> Tambah Lapangan</button>
     </div>
   </div>
 
@@ -157,7 +157,7 @@ if (isset($_GET['edit_id'])) {
     <tbody>
       <?php if (empty($lapangans)): ?>
       <tr><td colspan="7">
-        <div class="empty-state"><div class="empty-icon">⬟</div><div class="empty-text">Tidak ada data lapangan</div></div>
+        <div class="empty-state"><div class="empty-icon"><i class="bi bi-hexagon"></i></div><div class="empty-text">Tidak ada data lapangan</div></div>
       </td></tr>
       <?php else: ?>
       <?php foreach($lapangans as $l): ?>
@@ -166,7 +166,7 @@ if (isset($_GET['edit_id'])) {
           <?php if (!empty($l['FOTO'])): ?>
             <img src="../<?= UPLOAD_URL . e($l['FOTO']) ?>" class="field-photo" alt="foto">
           <?php else: ?>
-            <div class="field-photo" style="display:flex;align-items:center;justify-content:center;font-size:1.2rem;">⬟</div>
+            <div class="field-photo" style="display:flex;align-items:center;justify-content:center;font-size:1.2rem;"><i class="bi bi-image"></i></div>
           <?php endif; ?>
         </td>
         <td class="td-green"><?= e($l['ID_LAPANGAN']) ?></td>
@@ -179,11 +179,11 @@ if (isset($_GET['edit_id'])) {
         </td>
         <td>
           <a href="?edit_id=<?= $l['ID_LAPANGAN'] ?>&search=<?= urlencode($search) ?>&page=<?= $page ?>"
-             class="btn btn-amber btn-sm">✏ Edit</a>
+             class="btn btn-amber btn-sm"><i class="bi bi-pencil-square"></i> Edit</a>
           <form method="POST" style="display:inline;" onsubmit="return confirm('Hapus lapangan ini?')">
             <input type="hidden" name="action" value="hapus">
             <input type="hidden" name="id"     value="<?= $l['ID_LAPANGAN'] ?>">
-            <button type="submit" class="btn btn-red btn-sm">✕ Hapus</button>
+            <button type="submit" class="btn btn-red btn-sm"><i class="bi bi-trash3"></i> Hapus</button>
           </form>
         </td>
       </tr>
@@ -210,7 +210,7 @@ if (isset($_GET['edit_id'])) {
   <div class="modal">
     <div class="modal-head">
       <div class="modal-title">Tambah Lapangan</div>
-      <button class="modal-close" onclick="closeModal('modal-tambah')">✕</button>
+      <button class="modal-close" onclick="closeModal('modal-tambah')"><i class="bi bi-x-lg"></i></button>
     </div>
     <div class="modal-body">
       <form method="POST" enctype="multipart/form-data">
@@ -239,7 +239,7 @@ if (isset($_GET['edit_id'])) {
           <div class="upload-area">
             <input type="file" name="foto" accept="image/*" onchange="previewImg(this,'prev-tambah')">
             <img id="prev-tambah" src="" alt="" style="display:none;width:100%;max-height:150px;object-fit:cover;border-radius:6px;margin-bottom:8px;">
-            <div class="upload-text">📷 Klik untuk upload foto (JPG/PNG/WebP, max 5MB)</div>
+            <div class="upload-text"><i class="bi bi-camera"></i> Klik untuk upload foto (JPG/PNG/WebP, max 5MB)</div>
           </div>
         </div>
         <button type="submit" class="btn btn-green" style="width:100%;padding:12px;font-size:.8rem;">Simpan Lapangan</button>
@@ -254,7 +254,7 @@ if (isset($_GET['edit_id'])) {
   <div class="modal">
     <div class="modal-head">
       <div class="modal-title">Edit Lapangan #<?= e($editData['ID_LAPANGAN']) ?></div>
-      <a href="lapangan.php?search=<?= urlencode($search) ?>&page=<?= $page ?>" class="modal-close" style="text-decoration:none;">✕</a>
+      <a href="lapangan.php?search=<?= urlencode($search) ?>&page=<?= $page ?>" class="modal-close" style="text-decoration:none;"><i class="bi bi-x-lg"></i></a>
     </div>
     <div class="modal-body">
       <form method="POST" enctype="multipart/form-data">
@@ -293,7 +293,7 @@ if (isset($_GET['edit_id'])) {
           <div class="upload-area">
             <input type="file" name="foto" accept="image/*" onchange="previewImg(this,'prev-edit')">
             <img id="prev-edit" src="" alt="" style="display:none;width:100%;max-height:150px;object-fit:cover;border-radius:6px;margin-bottom:8px;">
-            <div class="upload-text">📷 Klik untuk upload foto baru (kosongkan jika tidak ingin ganti)</div>
+            <div class="upload-text"><i class="bi bi-camera"></i> Klik untuk upload foto baru (kosongkan jika tidak ingin ganti)</div>
           </div>
         </div>
         <div style="display:flex;gap:10px;">

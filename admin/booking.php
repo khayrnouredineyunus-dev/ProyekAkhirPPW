@@ -104,11 +104,11 @@ $bookings = $stmt->fetchAll();
           <?php endforeach; ?>
         </select>
         <div class="search-wrap">
-          <span class="search-icon">🔍</span>
+          <span class="search-icon"><i class="bi bi-search"></i></span>
           <input type="text" name="search" placeholder="Cari kode, nama, lapangan..." value="<?= e($search) ?>">
         </div>
         <?php if ($search||$statusF): ?>
-        <a href="booking.php" class="btn btn-outline btn-sm">✕ Reset</a>
+        <a href="booking.php" class="btn btn-outline btn-sm"><i class="bi bi-arrow-counterclockwise"></i> Reset</a>
         <?php endif; ?>
       </form>
     </div>
@@ -125,7 +125,7 @@ $bookings = $stmt->fetchAll();
     </thead>
     <tbody>
       <?php if (empty($bookings)): ?>
-      <tr><td colspan="8"><div class="empty-state"><div class="empty-icon">📋</div><div class="empty-text">Tidak ada data booking</div></div></td></tr>
+      <tr><td colspan="8"><div class="empty-state"><div class="empty-icon"><i class="bi bi-journal-bookmark"></i></div><div class="empty-text">Tidak ada data booking</div></div></td></tr>
       <?php else: ?>
       <?php foreach($bookings as $b): ?>
       <?php
@@ -150,11 +150,11 @@ $bookings = $stmt->fetchAll();
         <td><span class="badge <?= $stClass ?>"><?= e($b['STATUS_BOOKING']) ?></span></td>
         <td>
           <button class="btn btn-blue btn-sm"
-            onclick="openEditModal('<?= e($b['ID_BOOKING']) ?>','<?= e($b['STATUS_BOOKING']) ?>')">✏ Status</button>
+            onclick="openEditModal('<?= e($b['ID_BOOKING']) ?>','<?= e($b['STATUS_BOOKING']) ?>')"><i class="bi bi-pencil-square"></i> Status</button>
           <form method="POST" style="display:inline;" onsubmit="return confirm('Hapus booking ini beserta jadwal dan pembayarannya?')">
             <input type="hidden" name="action" value="hapus">
             <input type="hidden" name="id"     value="<?= e($b['ID_BOOKING']) ?>">
-            <button type="submit" class="btn btn-red btn-sm">✕</button>
+            <button type="submit" class="btn btn-red btn-sm"><i class="bi bi-trash3"></i></button>
           </form>
         </td>
       </tr>
@@ -184,7 +184,7 @@ $bookings = $stmt->fetchAll();
   <div class="modal" style="max-width:380px;">
     <div class="modal-head">
       <div class="modal-title">Ubah Status Booking</div>
-      <button class="modal-close" onclick="closeModal('modal-edit')">✕</button>
+      <button class="modal-close" onclick="closeModal('modal-edit')"><i class="bi bi-x-lg"></i></button>
     </div>
     <div class="modal-body">
       <form method="POST">

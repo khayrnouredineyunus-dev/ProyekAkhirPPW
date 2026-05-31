@@ -48,6 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <title>MiniFut — Login</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;500;600;700&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 <style>
 :root {
   --black:#060608; --dark:#0c0d10; --card:#111318;
@@ -58,21 +59,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 *{margin:0;padding:0;box-sizing:border-box;}
 html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--black);color:var(--white);overflow:hidden;}
 
-/* Background grid + radial glow */
-body::before {
-  content:'';position:fixed;inset:0;z-index:0;
-  background-image:linear-gradient(rgba(0,255,136,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,136,.025) 1px,transparent 1px);
-  background-size:56px 56px;animation:gridDrift 30s linear infinite;
-}
-body::after {
-  content:'';position:fixed;inset:0;z-index:0;
-  background:radial-gradient(ellipse 60% 60% at 50% 50%,rgba(0,255,136,.06) 0%,transparent 70%);
-}
-@keyframes gridDrift{0%{transform:translateY(0)}100%{transform:translateY(56px)}}
-
-/* Noise overlay */
-#noise{position:fixed;inset:0;opacity:.018;pointer-events:none;z-index:1;
-  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");}
+/* Shader background */
+#shader-bg{position:fixed;inset:0;z-index:0;opacity:.45;}
+#shader-bg canvas{display:block;width:100%;height:100%;}
 
 .wrap {
   position:relative;z-index:2;
@@ -170,8 +159,12 @@ input::placeholder { color:var(--gray); }
 .divider span { font-size:.7rem;color:var(--gray);white-space:nowrap; }
 
 /* Links */
-.links { text-align:center;font-size:.82rem;color:var(--gray2); }
-.links a { color:var(--green);text-decoration:none;transition:opacity .2s; }
+.links { text-align:center;font-size:.82rem;color:var(--gray2);font-family:'Barlow',sans-serif; }
+.links a {
+  color:var(--green);text-decoration:none;transition:opacity .2s;
+  font-family:'Rajdhani',sans-serif;font-size:.8rem;font-weight:700;
+  letter-spacing:2px;text-transform:uppercase;
+}
 .links a:hover { opacity:.8; }
 
 /* Admin link */
@@ -187,7 +180,7 @@ input::placeholder { color:var(--gray); }
 </style>
 </head>
 <body>
-<div id="noise"></div>
+<div id="shader-bg"></div>
 <div class="wrap">
   <div class="card">
     <div class="logo-wrap">
@@ -223,11 +216,43 @@ input::placeholder { color:var(--gray); }
 
     <div class="divider"><hr><span>Belum punya akun?</span><hr></div>
     <div class="links">
-      <a href="register.php">Daftar Sekarang Juga</a>
+      <a href="register.php">Daftar Sekarang</a>
     </div>
 
     <a href="../admin/login.php" class="admin-link">⚙ Masuk sebagai Admin</a>
   </div>
 </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function(){
+  var c=document.getElementById('shader-bg');if(!c)return;
+  var vs='void main(){gl_Position=vec4(position,1.0);}';
+  var fs=[
+    'precision highp float;',
+    'uniform vec2 resolution;uniform float time;',
+    'void main(void){',
+    '  vec2 uv=(gl_FragCoord.xy*2.0-resolution.xy)/min(resolution.x,resolution.y);',
+    '  float t=time*0.05;float lw=0.002;',
+    '  vec3 col=vec3(0.0);',
+    '  for(int j=0;j<3;j++){for(int i=0;i<5;i++){',
+    '    col[j]+=lw*float(i*i)/abs(fract(t-0.01*float(j)+float(i)*0.01)*5.0-length(uv)+mod(uv.x+uv.y,0.2));',
+    '  }}',
+    '  float b=(col.r+col.g+col.b)/3.0;',
+    '  gl_FragColor=vec4(b*0.02,b*0.95,b*0.45,1.0);',
+    '}'
+  ].join('\n');
+  var cam=new THREE.Camera();cam.position.z=1;
+  var sc=new THREE.Scene();
+  var geo=new THREE.PlaneGeometry(2,2);
+  var uni={time:{value:1.0},resolution:{value:new THREE.Vector2()}};
+  var mat=new THREE.ShaderMaterial({uniforms:uni,vertexShader:vs,fragmentShader:fs});
+  sc.add(new THREE.Mesh(geo,mat));
+  var r=new THREE.WebGLRenderer({antialias:true});
+  r.setPixelRatio(window.devicePixelRatio);c.appendChild(r.domElement);
+  function onR(){r.setSize(window.innerWidth,window.innerHeight);uni.resolution.value.set(r.domElement.width,r.domElement.height);}
+  onR();window.addEventListener('resize',onR);
+  (function anim(){requestAnimationFrame(anim);uni.time.value+=0.05;r.render(sc,cam);})();
+})();
+</script>
 </body>
 </html>

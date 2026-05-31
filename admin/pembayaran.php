@@ -143,11 +143,11 @@ $lunasCount   = $pdo->query("SELECT COUNT(*) FROM Pembayaran WHERE STATUS_PEMBAY
           <?php endforeach; ?>
         </select>
         <div class="search-wrap">
-          <span class="search-icon">🔍</span>
+          <span class="search-icon"><i class="bi bi-search"></i></span>
           <input type="text" name="search" placeholder="Cari kode, nama, metode..." value="<?= e($search) ?>">
         </div>
         <?php if ($search || $statusF): ?>
-        <a href="pembayaran.php" class="btn btn-outline btn-sm">✕ Reset</a>
+        <a href="pembayaran.php" class="btn btn-outline btn-sm"><i class="bi bi-arrow-counterclockwise"></i> Reset</a>
         <?php endif; ?>
       </form>
     </div>
@@ -166,7 +166,7 @@ $lunasCount   = $pdo->query("SELECT COUNT(*) FROM Pembayaran WHERE STATUS_PEMBAY
     <tbody>
       <?php if (empty($payments)): ?>
       <tr><td colspan="9">
-        <div class="empty-state"><div class="empty-icon">💳</div><div class="empty-text">Tidak ada data pembayaran</div></div>
+        <div class="empty-state"><div class="empty-icon"><i class="bi bi-credit-card"></i></div><div class="empty-text">Tidak ada data pembayaran</div></div>
       </td></tr>
       <?php else: ?>
       <?php foreach($payments as $pm): ?>
@@ -208,18 +208,18 @@ $lunasCount   = $pdo->query("SELECT COUNT(*) FROM Pembayaran WHERE STATUS_PEMBAY
           <?php if ($pm['STATUS_PEMBAYARAN'] === 'PENDING'): ?>
           <button class="btn btn-green btn-sm"
             onclick="openKonfirmasi(<?= $pm['ID_PEMBAYARAN'] ?>,'<?= e($pm['ID_BOOKING']) ?>','<?= e($pm['METODE_PEMBAYARAN']) ?>')">
-            ✓ Konfirmasi
+            <i class="bi bi-check-lg"></i> Konfirmasi
           </button>
           <?php else: ?>
           <button class="btn btn-blue btn-sm"
             onclick="openKonfirmasi(<?= $pm['ID_PEMBAYARAN'] ?>,'<?= e($pm['ID_BOOKING']) ?>','<?= e($pm['METODE_PEMBAYARAN']) ?>')">
-            ✏ Edit
+            <i class="bi bi-pencil-square"></i> Edit
           </button>
           <?php endif; ?>
           <form method="POST" style="display:inline;" onsubmit="return confirm('Hapus data pembayaran ini?')">
             <input type="hidden" name="action" value="hapus">
             <input type="hidden" name="id"     value="<?= $pm['ID_PEMBAYARAN'] ?>">
-            <button type="submit" class="btn btn-red btn-sm">✕</button>
+            <button type="submit" class="btn btn-red btn-sm"><i class="bi bi-trash3"></i></button>
           </form>
         </td>
       </tr>
@@ -249,7 +249,7 @@ $lunasCount   = $pdo->query("SELECT COUNT(*) FROM Pembayaran WHERE STATUS_PEMBAY
   <div class="modal" style="max-width:420px;">
     <div class="modal-head">
       <div class="modal-title" id="modal-konfirmasi-title">Konfirmasi Pembayaran</div>
-      <button class="modal-close" onclick="closeModal('modal-konfirmasi')">✕</button>
+      <button class="modal-close" onclick="closeModal('modal-konfirmasi')"><i class="bi bi-x-lg"></i></button>
     </div>
     <div class="modal-body">
       <form method="POST">
@@ -276,16 +276,16 @@ $lunasCount   = $pdo->query("SELECT COUNT(*) FROM Pembayaran WHERE STATUS_PEMBAY
         <div class="form-group">
           <label class="form-label">Status Pembayaran</label>
           <select name="status" id="konfirmasi-status" class="form-select">
-            <option value="LUNAS">✓ LUNAS — Konfirmasi pembayaran penuh</option>
-            <option value="PENDING">⏳ PENDING — Masih menunggu</option>
-            <option value="GAGAL">✕ GAGAL — Pembayaran tidak valid</option>
-            <option value="REFUND">↩ REFUND — Dikembalikan</option>
+            <option value="LUNAS">LUNAS — Konfirmasi pembayaran penuh</option>
+            <option value="PENDING">PENDING — Masih menunggu</option>
+            <option value="GAGAL">GAGAL — Pembayaran tidak valid</option>
+            <option value="REFUND">REFUND — Dikembalikan</option>
           </select>
         </div>
 
         <!-- Info box -->
         <div style="background:rgba(0,255,136,.05);border:1px solid rgba(0,255,136,.15);border-radius:8px;padding:12px 14px;margin-bottom:18px;font-size:.78rem;color:var(--gray2);">
-          ℹ Mengkonfirmasi sebagai <strong style="color:var(--green);">LUNAS</strong> akan otomatis memperbarui status booking menjadi LUNAS.
+          <i class="bi bi-info-circle"></i> Mengkonfirmasi sebagai <strong style="color:var(--green);">LUNAS</strong> akan otomatis memperbarui status booking menjadi LUNAS.
         </div>
 
         <button type="submit" class="btn btn-green" style="width:100%;padding:12px;font-size:.8rem;">
