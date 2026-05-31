@@ -64,7 +64,7 @@ Edit `config.php` sesuai konfigurasi MySQL Anda:
 define('DB_HOST', 'localhost');
 define('DB_NAME', 'minifut_db');
 define('DB_USER', 'root');
-define('DB_PASS', '');         // ← Isi password MySQL jika ada
+define('DB_PASS', '');         
 ```
 
 ### 5. Buat Folder Upload
@@ -91,8 +91,8 @@ Pastikan XAMPP/PHP memiliki izin tulis ke folder tersebut.
 ### Admin
 | Field | Value |
 |---|---|
-| Username | `admin` |
-| Password | `Admin@Minifut2025` |
+| Username | `Khayr` |
+| Password | `minifut107` |
 
 > ⚠️ **Ganti password admin** di file `admin/login.php` baris `$ADMIN_PASS`.
 
