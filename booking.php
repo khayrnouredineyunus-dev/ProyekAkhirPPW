@@ -96,7 +96,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['action'])) {
                     $errors['slots'] = 'Maksimal 16 slot jam per booking.';
                 }
             }
---
+
             $nama = trim($data['name'] ?? '');
             if (!$nama) {
                 $errors['name'] = 'Nama lengkap wajib diisi.';
@@ -452,8 +452,6 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:18px 64px;display:f
 .agree-error{color:var(--red);font-family:'Barlow',sans-serif;font-size:.75rem;margin-top:4px;display:none;}
 .agree-error.show{display:block;}
 </style>
-
-/* INI CONTOH REFRENSI STRUKTUR HTML UNTUK HALAMAN BOOKING, SILAHKAN SESUAIKAN DENGAN LOGIKA FRONTEND YANG AKAN DIBUAT */
 </head>
 <body>
 <div id="noise"></div>
