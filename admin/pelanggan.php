@@ -60,7 +60,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $fotoClause = '';
             $params = [$nama, $email, $notelp];
 
-            // Ganti foto jika ada
             if (!empty($_FILES['foto']['name'])) {
                 $up = uploadFoto($_FILES['foto'], 'profil');
                 if ($up) {
@@ -73,7 +72,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             }
 
-            // Ganti password jika diisi
             $pwClause = '';
             if (!empty($pw) && mb_strlen($pw) >= 6) {
                 $pwClause = ', U_PASSWORD=?';
@@ -256,7 +254,6 @@ if (isset($_GET['edit_id'])) {
   </div>
 </div>
 
-<!-- ── MODAL EDIT ────────────────────────────────────────── -->
 <?php if ($editData): ?>
 <div class="modal-overlay open" id="modal-edit">
   <div class="modal">
@@ -272,7 +269,7 @@ if (isset($_GET['edit_id'])) {
         <div style="text-align:center;margin-bottom:20px;">
           <?php if (!empty($editData['FOTO_PROFIL'])): ?>
           <img src="../<?= UPLOAD_URL . e($editData['FOTO_PROFIL']) ?>"
-               style="width:72px;height:72px;border-radius:50%;object-fit:cover;border:2px solid rgba(0,255,136,.25);" id="avatar-edit">
+              style="width:72px;height:72px;border-radius:50%;object-fit:cover;border:2px solid rgba(0,255,136,.25);" id="avatar-edit">
           <?php else: ?>
           <div id="avatar-edit" style="width:72px;height:72px;border-radius:50%;background:rgba(0,255,136,.1);border:2px solid rgba(0,255,136,.25);margin:0 auto;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',monospace;font-size:1.4rem;color:var(--green);">
             <?= strtoupper(substr($editData['U_NAMA'],0,1)) ?>

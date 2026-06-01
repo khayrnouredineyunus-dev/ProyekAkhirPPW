@@ -1062,7 +1062,7 @@ footer{padding:64px 0 28px;border-top:1px solid var(--border);position:relative;
       </a>
     <?php endif; ?>
 
-    <a href="auth/logout.php" class="nav-cta nav-cta-logout" style="background:rgba(255,59,92,.06); border-color:rgba(255,59,92,0.25); color:#ff7096; padding: 6px 14px; border-radius: 30px; font-size: 0.68rem;">
+    <a href="auth/logout.php" onclick="return confirm('Apakah Anda yakin ingin keluar dari MiniFut Arena?')" class="nav-cta nav-cta-logout" style="background:rgba(255,59,92,.06); border-color:rgba(255,59,92,0.25); color:#ff7096; padding: 6px 14px; border-radius: 30px; font-size: 0.68rem;">
       <span style="position:relative;z-index:2;">Logout</span>
     </a>
 

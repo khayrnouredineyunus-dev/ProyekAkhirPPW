@@ -14,18 +14,45 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $id     = trim($_POST['id']     ?? '');
         $status = $_POST['status']      ?? '';
         $validStatus = ['LUNAS','DP','BATAL','PENDING'];
-        if ($id && in_array($status, $validStatus)) {
-            $pdo->prepare("UPDATE Booking SET STATUS_BOOKING=? WHERE ID_BOOKING=?")->execute([$status,$id]);
-            $alert = 'success|Status booking berhasil diperbarui.';
+
+        if (!$id) {
+            $alert = 'error|ID Booking tidak boleh kosong.';
+        } elseif (!preg_match('/^MF-[A-Z0-9]{6}$/', $id)) {
+            $alert = 'error|Format ID Booking tidak valid.';
+        } elseif (!in_array($status, $validStatus)) {
+            $alert = 'error|Status tidak valid. Pilih: ' . implode(', ', $validStatus);
+        } else {
+            // Cek booking exists
+            $check = $pdo->prepare("SELECT ID_BOOKING, STATUS_BOOKING FROM Booking WHERE ID_BOOKING = ?");
+            $check->execute([$id]);
+            $existing = $check->fetch();
+            if (!$existing) {
+                $alert = 'error|Booking dengan ID ' . e($id) . ' tidak ditemukan.';
+            } elseif ($existing['STATUS_BOOKING'] === $status) {
+                $alert = 'error|Status sudah ' . e($status) . ', tidak ada perubahan.';
+            } else {
+                $pdo->prepare("UPDATE Booking SET STATUS_BOOKING=? WHERE ID_BOOKING=?")->execute([$status,$id]);
+                $alert = 'success|Status booking ' . e($id) . ' berhasil diubah dari ' . e($existing['STATUS_BOOKING']) . ' → ' . e($status) . '.';
+            }
         }
     }
 
     // ── HAPUS ──
     if ($action === 'hapus') {
         $id = trim($_POST['id'] ?? '');
-        if ($id) {
+        if (!$id) {
+            $alert = 'error|ID Booking tidak boleh kosong.';
+        } elseif (!preg_match('/^MF-[A-Z0-9]{6}$/', $id)) {
+            $alert = 'error|Format ID Booking tidak valid.';
+        } else {
             $pdo->beginTransaction();
             try {
+                // Cek booking ada
+                $checkStmt = $pdo->prepare("SELECT ID_BOOKING FROM Booking WHERE ID_BOOKING = ?");
+                $checkStmt->execute([$id]);
+                if (!$checkStmt->fetch()) {
+                    throw new Exception('Booking dengan ID ' . $id . ' tidak ditemukan.');
+                }
                 $pdo->prepare("DELETE FROM Pembayaran WHERE ID_BOOKING=?")->execute([$id]);
                 // Ambil ID_JADWAL
                 $j = $pdo->prepare("SELECT ID_JADWAL FROM Booking WHERE ID_BOOKING=?");
@@ -34,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $pdo->prepare("DELETE FROM Booking WHERE ID_BOOKING=?")->execute([$id]);
                 if ($jadwalId) $pdo->prepare("DELETE FROM Jadwal WHERE ID_JADWAL=?")->execute([$jadwalId]);
                 $pdo->commit();
-                $alert = 'success|Booking berhasil dihapus.';
+                $alert = 'success|Booking ' . e($id) . ' berhasil dihapus beserta data terkait.';
             } catch (Exception $e) {
                 $pdo->rollBack();
                 $alert = 'error|Gagal menghapus booking: ' . $e->getMessage();
@@ -43,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// ── Search & Pagination ──────────────────────────────────
+
 $search  = trim($_GET['search']    ?? '');
 $statusF = trim($_GET['status']    ?? '');
 $perPage = 10;

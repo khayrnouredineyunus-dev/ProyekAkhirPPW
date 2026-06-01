@@ -67,7 +67,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $activeTab = 'info';
     }
 
-    // 2. UPDATE FOTO PROFIL — dengan pembersihan file lama
     if ($action === 'update_photo') {
         if (!empty($_FILES['foto']['name']) && $_FILES['foto']['error'] === UPLOAD_ERR_OK) {
             $up = uploadFoto($_FILES['foto'], 'profil');
@@ -75,7 +74,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $stmt = $pdo->prepare("SELECT FOTO_PROFIL FROM Pelanggan WHERE ID_PELANGGAN=?");
                 $stmt->execute([$userId]);
                 $oldFoto = $stmt->fetchColumn();
-                // Pembersihan berkas sampah: hapus foto lama agar storage tidak membengkak
                 if ($oldFoto && file_exists(UPLOAD_DIR . $oldFoto)) {
                     @unlink(UPLOAD_DIR . $oldFoto);
                 }
@@ -763,7 +761,6 @@ nav {
       </div>
     </div>
 
-    <!-- ── TAB: Photo ─────────────────────────────────── -->
     <div class="section-card <?= $activeTab === 'avatar' ? 'visible' : '' ?>" id="tab-avatar">
       <div class="section-header">
         <div class="section-icon-wrap">
@@ -771,7 +768,7 @@ nav {
         </div>
         <div>
           <div class="section-title">Profile Photo</div>
-          <div class="section-sub">Format JPG, PNG, atau WebP — maks 5 MB. Foto lama otomatis dihapus dari server.</div>
+          <div class="section-sub">Format JPG, PNG, atau WebP maks 5 MB. Foto lama otomatis dihapus dari server.</div>
         </div>
       </div>
       <div class="section-body">
@@ -789,7 +786,7 @@ nav {
               <input type="hidden" name="action" value="update_photo">
               <div class="upload-zone" id="uploadZone">
                 <input type="file" name="foto" id="fotoInput" accept="image/jpeg,image/png,image/webp"
-                       onchange="handlePhotoChange(this)">
+                      onchange="handlePhotoChange(this)">
                 <i class="bi bi-cloud-arrow-up-fill"></i>
                 <div>
                   <div class="upload-zone-text"><strong>Klik untuk memilih file</strong> atau seret & lepas</div>

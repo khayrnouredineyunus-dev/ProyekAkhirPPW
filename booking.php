@@ -1,20 +1,9 @@
 <?php
-$host = 'localhost';
-$db   = 'minifut_db'; 
-$user = 'root';       
-$pass = '';          
-
-// Harga fallback (tetap dipertahankan untuk keamanan validasi awal)
-$FIELD_PRICES = [
-    '1' => 1000000,
-    '2' => 1200000,
-    '3' => 1000000
-];
+require_once __DIR__ . '/config.php';
 
 try {
-    $pdo = new PDO("mysql:host=$host;dbname=$db;charset=utf8", $user, $pass);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
+    $pdo = getDB();
+} catch (Exception $e) {
     die("Sistem sedang dalam pemeliharaan. Silakan coba beberapa saat lagi.");
 }
 
@@ -25,15 +14,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['action'])) {
     
     // 1. Ambil jadwal yang sudah dibooking
     if ($_GET['action'] === 'get_booked_slots') {
-        $fieldId = $data['field_id'] ?? '';
-        $date = $data['date'] ?? '';
-        
-        if (!$fieldId || !$date) {
+        $fieldId = filter_var($data['field_id'] ?? '', FILTER_VALIDATE_INT);
+        $date    = $data['date'] ?? '';
+
+        // Validasi format tanggal YYYY-MM-DD
+        if (!$fieldId || !preg_match('/^\d{4}-\d{2}-\d{2}$/', $date)) {
             echo json_encode(['booked' => []]);
             exit;
         }
 
-        // QUERY DIUBAH: Mengambil data dari tabel Jadwal berdasarkan status
         $stmt = $pdo->prepare("SELECT JAM_MULAI FROM Jadwal WHERE ID_LAPANGAN = ? AND TANGGAL = ? AND STATUS_JADWAL = 'TIDAK'");
         $stmt->execute([$fieldId, $date]);
         $bookings = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -52,15 +41,111 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['action'])) {
     // 2. Proses Insert Booking ke 5 Tabel
     if ($_GET['action'] === 'submit_booking') {
         try {
-            $fieldId = $data['field_id'] ?? '';
-            $date = $data['date'] ?? '';
-            $reqSlots = $data['slots'] ?? [];
-            
-            if (!$fieldId || !isset($FIELD_PRICES[$fieldId]) || !$date || empty($reqSlots)) {
-                throw new Exception("Data booking tidak tidak valid atau kurang lengkap.");
+            // ==========================================
+            // VALIDASI INPUT LENGKAP
+            // ==========================================
+            $errors = [];
+
+            // -- Validasi Field ID --
+            $fieldId = filter_var($data['field_id'] ?? '', FILTER_VALIDATE_INT);
+            if (!$fieldId) {
+                $errors['field'] = 'Pilih lapangan terlebih dahulu.';
+            } else {
+                // Cek lapangan ada di database dan ambil harga dari DB
+                $stmtLap = $pdo->prepare("SELECT ID_LAPANGAN, HARGA_PER_JAM FROM Lapangan WHERE ID_LAPANGAN = ?");
+                $stmtLap->execute([$fieldId]);
+                $lapanganData = $stmtLap->fetch(PDO::FETCH_ASSOC);
+                if (!$lapanganData) {
+                    $errors['field'] = 'Lapangan tidak ditemukan di database.';
+                }
             }
 
-            // --- CEK RACE CONDITION DI TABEL JADWAL ---
+            // -- Validasi Tanggal --
+            $date = trim($data['date'] ?? '');
+            if (!$date) {
+                $errors['date'] = 'Tanggal bermain wajib diisi.';
+            } elseif (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $date)) {
+                $errors['date'] = 'Format tanggal tidak valid (harus YYYY-MM-DD).';
+            } else {
+                $dateObj = DateTime::createFromFormat('Y-m-d', $date);
+                if (!$dateObj || $dateObj->format('Y-m-d') !== $date) {
+                    $errors['date'] = 'Tanggal tidak valid.';
+                } else {
+                    $today = new DateTime();
+                    $today->setTime(0, 0, 0);
+                    if ($dateObj < $today) {
+                        $errors['date'] = 'Tanggal bermain tidak boleh di masa lalu.';
+                    }
+                }
+            }
+
+            $reqSlots = $data['slots'] ?? [];
+            if (!is_array($reqSlots) || empty($reqSlots)) {
+                $errors['slots'] = 'Pilih minimal 1 slot jam bermain.';
+            } else {
+                foreach ($reqSlots as $s) {
+                    $slotInt = filter_var($s, FILTER_VALIDATE_INT);
+                    if ($slotInt === false || $slotInt < 8 || $slotInt > 23) {
+                        $errors['slots'] = 'Slot jam tidak valid (harus antara 08:00 - 23:00).';
+                        break;
+                    }
+                }
+                // Pastikan semua slot unik
+                $reqSlots = array_map('intval', array_unique($reqSlots));
+                if (count($reqSlots) > 16) {
+                    $errors['slots'] = 'Maksimal 16 slot jam per booking.';
+                }
+            }
+--
+            $nama = trim($data['name'] ?? '');
+            if (!$nama) {
+                $errors['name'] = 'Nama lengkap wajib diisi.';
+            } elseif (mb_strlen($nama) < 2) {
+                $errors['name'] = 'Nama minimal 2 karakter.';
+            } elseif (mb_strlen($nama) > 100) {
+                $errors['name'] = 'Nama maksimal 100 karakter.';
+            } elseif (!preg_match('/^[a-zA-Z\s\'\.\-]+$/u', $nama)) {
+                $errors['name'] = 'Nama hanya boleh berisi huruf, spasi, titik, dan tanda hubung.';
+            }
+
+            $email = trim($data['email'] ?? '');
+            if (!$email) {
+                $errors['email'] = 'Alamat email wajib diisi.';
+            } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                $errors['email'] = 'Format email tidak valid (contoh: nama@email.com).';
+            } elseif (mb_strlen($email) > 150) {
+                $errors['email'] = 'Email maksimal 150 karakter.';
+            }
+
+            $notelp = trim($data['phone'] ?? '');
+            if (!$notelp) {
+                $errors['phone'] = 'Nomor telepon wajib diisi.';
+            } else {
+                // Bersihkan karakter non-digit kecuali + di awal
+                $cleanPhone = preg_replace('/[^0-9+]/', '', $notelp);
+                if (!preg_match('/^(\+62|62|08)\d{8,13}$/', $cleanPhone)) {
+                    $errors['phone'] = 'Format nomor telepon tidak valid (contoh: 08xx-xxxx-xxxx atau +62xxx).';
+                }
+            }
+
+            $payTypeRaw = trim($data['pay_type'] ?? '');
+            if (!in_array($payTypeRaw, ['dp', 'lunas'])) {
+                $errors['pay_type'] = 'Pilih tipe pembayaran: Lunas atau DP 50%.';
+            }
+
+            if (!empty($errors)) {
+                $firstError = reset($errors);
+                echo json_encode([
+                    'success' => false,
+                    'error'   => $firstError,
+                    'errors'  => $errors
+                ]);
+                exit;
+            }
+
+            // ==========================================
+            // CEK RACE CONDITION DI TABEL JADWAL
+            // ==========================================
             $stmt = $pdo->prepare("SELECT JAM_MULAI FROM Jadwal WHERE ID_LAPANGAN = ? AND TANGGAL = ? AND STATUS_JADWAL = 'TIDAK'");
             $stmt->execute([$fieldId, $date]);
             $existingBookings = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -79,8 +164,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['action'])) {
                 }
             }
 
-            // Kalkulasi Harga
-            $pricePerHour = $FIELD_PRICES[$fieldId];
+            // Kalkulasi Harga dari DATABASE (bukan hardcoded)
+            $pricePerHour = (int)$lapanganData['HARGA_PER_JAM'];
             $actualTotalPrice = $pricePerHour * count($reqSlots);
             
             $code = 'MF-' . strtoupper(substr(md5(uniqid('', true)), 0, 6)); 
@@ -90,20 +175,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['action'])) {
             // ==========================================
             $pdo->beginTransaction();
 
-            // 1. TABEL PELANGGAN
-            $email = htmlspecialchars($data['email'] ?? '');
-            $nama = htmlspecialchars($data['name'] ?? '');
-            $notelp = htmlspecialchars($data['phone'] ?? '');
-
-            // Cek apakah pelanggan sudah pernah booking
+            // 1. TABEL PELANGGAN (data mentah ke DB, tanpa htmlspecialchars)
             $stmt = $pdo->prepare("SELECT ID_PELANGGAN FROM Pelanggan WHERE U_EMAIL = ?");
             $stmt->execute([$email]);
             $pelanggan = $stmt->fetch(PDO::FETCH_ASSOC);
 
             if ($pelanggan) {
                 $id_pelanggan = $pelanggan['ID_PELANGGAN'];
+                // Update nama & telepon jika berubah
+                $pdo->prepare("UPDATE Pelanggan SET U_NAMA = ?, U_NOTELP = ? WHERE ID_PELANGGAN = ?")
+                    ->execute([$nama, $notelp, $id_pelanggan]);
             } else {
-                // Buat password dummy karena fitur belum butuh login password
                 $dummyPassword = password_hash('password123', PASSWORD_DEFAULT);
                 $stmt = $pdo->prepare("INSERT INTO Pelanggan (U_NAMA, U_EMAIL, U_PASSWORD, U_NOTELP) VALUES (?, ?, ?, ?)");
                 $stmt->execute([$nama, $email, $dummyPassword, $notelp]);
@@ -111,8 +193,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['action'])) {
             }
 
             // 2. TABEL JADWAL
+            sort($reqSlots);
             $slotsStr = implode(',', $reqSlots);
-            // Kalkulasi jam selesai (cth: jam 10 -> selesai 11)
             $endSlotsArr = array_map(function($val) { return $val + 1; }, $reqSlots);
             $endSlotsStr = implode(',', $endSlotsArr);
 
@@ -120,31 +202,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['action'])) {
             $stmt->execute([$fieldId, $date, $slotsStr, $endSlotsStr]);
             $id_jadwal = $pdo->lastInsertId();
 
-            // 3. TABEL BOOKING
-            $payType = in_array($data['pay_type'], ['dp', 'lunas']) ? strtoupper($data['pay_type']) : 'LUNAS';
+            // 3. TABEL BOOKING (termasuk TEAM_NAME dan NOTES)
+            $payType = strtoupper($payTypeRaw);
+            $teamName = trim($data['team'] ?? '');
+            $notes    = trim($data['notes'] ?? '');
+            // Batasi panjang
+            $teamName = mb_substr($teamName, 0, 100);
+            $notes    = mb_substr($notes, 0, 1000);
 
-            $stmt = $pdo->prepare("INSERT INTO Booking (ID_BOOKING, ID_PELANGGAN, TANGGAL_BOOKING, STATUS_BOOKING, ID_JADWAL) VALUES (?, ?, NOW(), ?, ?)");
-            $stmt->execute([$code, $id_pelanggan, $payType, $id_jadwal]);
+            $stmt = $pdo->prepare("INSERT INTO Booking (ID_BOOKING, ID_PELANGGAN, TANGGAL_BOOKING, STATUS_BOOKING, ID_JADWAL, TEAM_NAME, NOTES) VALUES (?, ?, NOW(), ?, ?, ?, ?)");
+            $stmt->execute([$code, $id_pelanggan, $payType, $id_jadwal, $teamName ?: null, $notes ?: null]);
 
             // 4. TABEL PEMBAYARAN
-            // Kita set awal metode sebagai TRANSFER dan status PENDING menunggu konfirmasi admin
             $stmt = $pdo->prepare("INSERT INTO Pembayaran (ID_BOOKING, TANGGAL_BAYAR, METODE_PEMBAYARAN, STATUS_PEMBAYARAN) VALUES (?, NOW(), 'TRANSFER', 'PENDING')");
             $stmt->execute([$code]);
-
-            // Catatan: Kolom 'team_name' dan 'notes' dari frontend diabaikan karena tidak ada di ERD.
-            // Jika butuh disimpan, ERD harus direvisi dengan menambahkan kolom tersebut di tabel Booking.
 
             $pdo->commit();
             // ==========================================
             
             echo json_encode([
-                'success' => true, 
-                'code' => $code,
+                'success'      => true, 
+                'code'         => $code,
                 'actual_price' => $actualTotalPrice 
             ]);
 
         } catch(Exception $e) {
-            // Jika ada error/gagal di tengah proses, batalkan semua insert ke 5 tabel
             if ($pdo->inTransaction()) {
                 $pdo->rollBack();
             }
@@ -352,6 +434,23 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:18px 64px;display:f
   z-index: 5;
 }
 .fc:hover::after { opacity: 1; }
+
+/* ── Form Validation Errors ────────────────────── */
+.form-error{
+  font-family:'Barlow',sans-serif;font-size:.75rem;color:var(--red);
+  margin-top:4px;display:none;align-items:center;gap:5px;
+  animation:fadeInError .25s ease;
+}
+.form-error.show{display:flex;}
+.form-error::before{content:'⚠';font-size:.7rem;}
+@keyframes fadeInError{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
+.form-input.input-error,.form-input.input-error:focus{
+  border-color:var(--red)!important;
+  box-shadow:0 0 0 1px rgba(255,59,92,.15);
+}
+.form-input.input-valid{border-color:rgba(0,255,136,.4);}
+.agree-error{color:var(--red);font-family:'Barlow',sans-serif;font-size:.75rem;margin-top:4px;display:none;}
+.agree-error.show{display:block;}
 </style>
 
 /* INI CONTOH REFRENSI STRUKTUR HTML UNTUK HALAMAN BOOKING, SILAHKAN SESUAIKAN DENGAN LOGIKA FRONTEND YANG AKAN DIBUAT */
@@ -549,20 +648,23 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:18px 64px;display:f
         <div class="form-grid">
           <div class="form-group">
             <label class="form-label">Nama Lengkap *</label>
-            <input type="text" class="form-input" id="f-nama" placeholder="Masukkan nama lengkap">
+            <input type="text" class="form-input" id="f-nama" placeholder="Masukkan nama lengkap" maxlength="100" required>
+            <div class="form-error" id="err-nama"></div>
           </div>
           <div class="form-group">
             <label class="form-label">No. Telepon *</label>
-            <input type="tel" class="form-input" id="f-telp" placeholder="+62 8xx-xxxx-xxxx">
+            <input type="tel" class="form-input" id="f-telp" placeholder="08xx-xxxx-xxxx" maxlength="16" required>
+            <div class="form-error" id="err-telp"></div>
           </div>
           <div class="form-group full">
             <label class="form-label">Email *</label>
-            <input type="email" class="form-input" id="f-email" placeholder="email@kamu.com">
+            <input type="email" class="form-input" id="f-email" placeholder="email@kamu.com" maxlength="150" required>
+            <div class="form-error" id="err-email"></div>
             <p class="form-note">Konfirmasi booking akan dikirim ke email ini.</p>
           </div>
           <div class="form-group full">
             <label class="form-label">Nama Tim / Komunitas</label>
-            <input type="text" class="form-input" id="f-tim" placeholder="Opsional — nama tim kamu">
+            <input type="text" class="form-input" id="f-tim" placeholder="Opsional — nama tim kamu" maxlength="100">
           </div>
           
           <div class="form-group full" style="margin-top:8px;">
@@ -582,13 +684,14 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:18px 64px;display:f
 
           <div class="form-group full" style="margin-top:8px;">
             <label class="form-label">Catatan Tambahan</label>
-            <textarea class="form-input" id="f-catatan" rows="3" placeholder="Permintaan khusus, keperluan tambahan, dll..." style="resize:vertical;"></textarea>
+            <textarea class="form-input" id="f-catatan" rows="3" placeholder="Permintaan khusus, keperluan tambahan, dll..." style="resize:vertical;" maxlength="1000"></textarea>
           </div>
           <div class="form-group full">
             <label class="form-label" style="display:flex;align-items:center;gap:10px;cursor:none;">
               <input type="checkbox" id="f-agree" style="accent-color:var(--green);width:14px;height:14px;">
               <span style="font-weight:400;letter-spacing:1px;font-size:.72rem;color:var(--gray2);line-height:1.4;">Saya menyetujui syarat & ketentuan MiniFut dan bersedia menjaga fasilitas, kebersihan, serta menaati aturan jam bermain.</span>
             </label>
+            <div class="agree-error" id="err-agree"></div>
           </div>
         </div>
       </form>
@@ -914,18 +1017,91 @@ function setupFormListeners(){
     const el=document.getElementById(id);
     if(el)el.addEventListener('change',checkForm);
     if(el)el.addEventListener('input',checkForm);
+    // Tambah event blur untuk validasi saat user pindah field
+    if(el)el.addEventListener('blur',()=>checkForm(true));
   });
   checkForm();
 }
 
-function checkForm(){
-  const n=document.getElementById('f-nama').value.trim(), t=document.getElementById('f-telp').value.trim(), e=document.getElementById('f-email').value.trim(), a=document.getElementById('f-agree').checked;
-  const valid=n&&t&&e&&a&&/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
-  document.getElementById('btn4').disabled=!valid;
+// Helper untuk set/clear error pada field
+function setFieldError(inputId, errorId, msg){
+  const input=document.getElementById(inputId);
+  const err=document.getElementById(errorId);
+  if(!err)return;
+  if(msg){
+    err.textContent=msg;err.classList.add('show');
+    if(input){input.classList.add('input-error');input.classList.remove('input-valid');}
+  } else {
+    err.textContent='';err.classList.remove('show');
+    if(input){input.classList.remove('input-error');}
+  }
+}
+function setFieldValid(inputId, errorId){
+  const input=document.getElementById(inputId);
+  const err=document.getElementById(errorId);
+  if(err){err.textContent='';err.classList.remove('show');}
+  if(input){input.classList.remove('input-error');input.classList.add('input-valid');}
+}
+
+function checkForm(showErrors=false){
+  const nama=document.getElementById('f-nama').value.trim();
+  const telp=document.getElementById('f-telp').value.trim();
+  const email=document.getElementById('f-email').value.trim();
+  const agree=document.getElementById('f-agree').checked;
+  let allValid=true;
+
+  if(!nama){
+    if(showErrors) setFieldError('f-nama','err-nama','Nama lengkap wajib diisi.');
+    allValid=false;
+  } else if(nama.length<2){
+    if(showErrors) setFieldError('f-nama','err-nama','Nama minimal 2 karakter.');
+    allValid=false;
+  } else if(!/^[a-zA-Z\s'\.\-]+$/.test(nama)){
+    if(showErrors) setFieldError('f-nama','err-nama','Nama hanya boleh berisi huruf, spasi, titik, dan tanda hubung.');
+    allValid=false;
+  } else {
+    setFieldValid('f-nama','err-nama');
+  }
+
+  const cleanPhone=telp.replace(/[^0-9+]/g,'');
+  if(!telp){
+    if(showErrors) setFieldError('f-telp','err-telp','Nomor telepon wajib diisi.');
+    allValid=false;
+  } else if(!/^(\+62|62|08)\d{8,13}$/.test(cleanPhone)){
+    if(showErrors) setFieldError('f-telp','err-telp','Format tidak valid. Contoh: 08123456789');
+    allValid=false;
+  } else {
+    setFieldValid('f-telp','err-telp');
+  }
+
+  if(!email){
+    if(showErrors) setFieldError('f-email','err-email','Alamat email wajib diisi.');
+    allValid=false;
+  } else if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+    if(showErrors) setFieldError('f-email','err-email','Format email tidak valid. Contoh: nama@email.com');
+    allValid=false;
+  } else {
+    setFieldValid('f-email','err-email');
+  }
+
+  // Validasi Agreement
+  const errAgree=document.getElementById('err-agree');
+  if(!agree){
+    if(showErrors && errAgree){errAgree.textContent='Anda harus menyetujui syarat & ketentuan.';errAgree.classList.add('show');}
+    allValid=false;
+  } else {
+    if(errAgree){errAgree.textContent='';errAgree.classList.remove('show');}
+  }
+
+  document.getElementById('btn4').disabled=!allValid;
+  return allValid;
 }
 
 // === SUBMIT BOOKING MENGGUNAKAN FETCH KE DATABASE === //
 async function submitBooking(){
+  // Re-validasi form sebelum submit
+  if(!checkForm(true)) return;
+
   const btn = document.getElementById('btn4');
   const originalText = btn.innerHTML;
   btn.innerHTML = "Memproses...";
@@ -933,20 +1109,20 @@ async function submitBooking(){
 
   const fd=FIELDS[state.field];
   const sorted=[...state.slots].sort((a,b)=>a-b);
-  const total=fd.price*sorted.length; // Harga dari frontend (sebagai fallback)
+  const total=fd.price*sorted.length;
   const payType = document.querySelector('input[name="pay_type"]:checked').value;
   
   const payload = {
       field_id: state.field,
       date: state.date,
       slots: sorted,
-      name: document.getElementById('f-nama').value,
-      phone: document.getElementById('f-telp').value,
-      email: document.getElementById('f-email').value,
-      team: document.getElementById('f-tim').value,
+      name: document.getElementById('f-nama').value.trim(),
+      phone: document.getElementById('f-telp').value.trim(),
+      email: document.getElementById('f-email').value.trim(),
+      team: document.getElementById('f-tim').value.trim(),
       pay_type: payType,
       total_price: total,
-      notes: document.getElementById('f-catatan').value
+      notes: document.getElementById('f-catatan').value.trim()
   };
 
   try {
@@ -958,7 +1134,6 @@ async function submitBooking(){
     let data = await res.json();
     
     if(data.success) {
-      // Menggunakan harga aktual dari server jika ada, mencegah manipulasi dari frontend
       const serverTotal = data.actual_price ? data.actual_price : total;
 
       const dt=new Date(state.date+'T00:00:00');
@@ -993,49 +1168,60 @@ async function submitBooking(){
       }
         
       document.getElementById('success-overlay').classList.add('show');
+
+      // Confetti hanya saat sukses
+      confetti({
+        particleCount: 150,        
+        spread: 100,              
+        origin: { y: 0.5 },        
+        colors: ['#00ff88', '#ffffff'], 
+        zIndex: 6000,              
+        disableForReducedMotion: true
+      });
+
+      // Timer hanya saat sukses
+      let timeLeft = 300; 
+      const timerDisplay = document.getElementById('payment-timer');
+      const timerMsg = document.getElementById('payment-timer-msg');
+      
+      timerDisplay.textContent = "05:00";
+      timerDisplay.style.color = "var(--red)";
+      timerDisplay.style.textShadow = "0 0 10px rgba(255,59,92,.4)";
+      timerMsg.innerHTML = "Jika dalam 5 menit belum melakukan pembayaran, booking otomatis dibatalkan.";
+      
+      const timerInterval = setInterval(() => {
+        timeLeft--;
+        let m = Math.floor(timeLeft / 60);
+        let s = Math.floor(timeLeft % 60);
+        timerDisplay.textContent = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+        
+        if (timeLeft <= 0) {
+          clearInterval(timerInterval);
+          timerDisplay.textContent = "00:00";
+          timerDisplay.style.color = "var(--gray)";
+          timerDisplay.style.textShadow = "none";
+          timerMsg.innerHTML = "Waktu pembayaran telah habis. <br><span style='color:var(--red);font-weight:700;'>Booking otomatis dibatalkan.</span>";
+        }
+      }, 1000);
+
     } else {
+      // Tampilkan error per-field dari server jika ada
+      if(data.errors){
+        const fieldMap={name:'f-nama',email:'f-email',phone:'f-telp'};
+        const errMap={name:'err-nama',email:'err-email',phone:'err-telp'};
+        Object.keys(data.errors).forEach(k=>{
+          if(fieldMap[k]&&errMap[k]) setFieldError(fieldMap[k],errMap[k],data.errors[k]);
+        });
+      }
       alert("Gagal melakukan booking: " + data.error);
       btn.innerHTML = originalText;
       btn.disabled = false;
     }
   } catch(e) {
-      alert("Terjadi kesalahan koneksi server.");
+      alert("Terjadi kesalahan koneksi server. Silakan coba lagi.");
       btn.innerHTML = originalText;
       btn.disabled = false;
   }
-  confetti({
-    particleCount: 150,        
-    spread: 100,              
-    origin: { y: 0.5 },        
-    colors: ['#00ff88', '#ffffff'], 
-    zIndex: 6000,              
-    disableForReducedMotion: true
-  });
-  // --- KODE TIMER LOGIC DITAMBAHKAN DI SINI ---
-  let timeLeft = 300; 
-  const timerDisplay = document.getElementById('payment-timer');
-  const timerMsg = document.getElementById('payment-timer-msg');
-  
-  // Reset UI Timer setiap 
-  timerDisplay.textContent = "05:00";
-  timerDisplay.style.color = "var(--red)";
-  timerDisplay.style.textShadow = "0 0 10px rgba(255,59,92,.4)";
-  timerMsg.innerHTML = "Jika dalam 5 menit belum melakukan pembayaran, booking otomatis dibatalkan.";
-  
-  const timerInterval = setInterval(() => {
-    timeLeft--;
-    let m = Math.floor(timeLeft / 60);
-    let s = Math.floor(timeLeft % 60);
-    timerDisplay.textContent = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
-    
-    if (timeLeft <= 0) {
-      clearInterval(timerInterval);
-      timerDisplay.textContent = "00:00";
-      timerDisplay.style.color = "var(--gray)";
-      timerDisplay.style.textShadow = "none";
-      timerMsg.innerHTML = "Waktu pembayaran telah habis. <br><span style='color:var(--red);font-weight:700;'>Booking otomatis dibatalkan.</span>";
-    }
-  }, 1000);
 }
 
 document.addEventListener('DOMContentLoaded', () => {

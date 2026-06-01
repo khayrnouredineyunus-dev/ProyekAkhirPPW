@@ -48,7 +48,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// ── Search & Pagination ──────────────────────────────────
 $search  = trim($_GET['search']    ?? '');
 $statusF = trim($_GET['status']    ?? '');
 $perPage = 10;

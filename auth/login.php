@@ -15,7 +15,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email    = trim($_POST['email'] ?? '');
     $password = $_POST['password'] ?? '';
 
-    // ── Validasi input ──
     if (empty($email) || empty($password)) {
         $error = 'Email dan password tidak boleh kosong.';
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -223,7 +222,7 @@ input::placeholder { color:var(--gray); }
 
     <div class="divider"><hr><span>Belum punya akun?</span><hr></div>
     <div class="links">
-      <a href="register.php">Daftar Sekarang!</a>
+      <a href="register.php">Daftar Sekarang</a>
     </div>
 
     <a href="../admin/login.php" class="admin-link">⚙ Masuk sebagai Admin</a>

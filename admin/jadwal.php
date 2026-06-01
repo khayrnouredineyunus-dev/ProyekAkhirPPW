@@ -5,7 +5,7 @@ require_once __DIR__ . '/_header.php';
 $pdo   = getDB();
 $alert = '';
 
-// ── CRUD ────────────────────────────────────────────────
+// Create
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = $_POST['action'] ?? '';
 
@@ -17,8 +17,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $status      = $_POST['status']  ?? 'YA';
 
         if ($lapanganId && $tanggal && $jamMulai && $jamSelesai) {
-            // Validasi: jam mulai harus sebelum jam selesai
-            if ((int)$jamMulai >= (int)$jamSelesai) {
+            // Validasi: Batasan Jam Operasional 08:00 - 24:00
+            if ((int)$jamMulai < 8 || (int)$jamSelesai > 24) {
+                $alert = 'error|Jam operasional hanya diperbolehkan antara pukul 08:00 hingga 24:00.';
+            } // Validasi: jam mulai harus sebelum jam selesai
+            elseif ((int)$jamMulai >= (int)$jamSelesai) {
                 $alert = 'error|Jam mulai harus lebih awal dari jam selesai.';
             } else {
                 $pdo->prepare("INSERT INTO Jadwal (ID_LAPANGAN,TANGGAL,JAM_MULAI,JAM_SELESAI,STATUS_JADWAL) VALUES(?,?,?,?,?)")
@@ -37,9 +40,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $jamSelesai = trim($_POST['jam_selesai']  ?? '');
         $status     = $_POST['status']    ?? 'YA';
         if ($id && $tanggal && $jamMulai && $jamSelesai) {
-            $pdo->prepare("UPDATE Jadwal SET TANGGAL=?,JAM_MULAI=?,JAM_SELESAI=?,STATUS_JADWAL=? WHERE ID_JADWAL=?")
-                ->execute([$tanggal,$jamMulai,$jamSelesai,$status,$id]);
-            $alert = 'success|Jadwal berhasil diperbarui.';
+            // Validasi: Batasan Jam Operasional 08:00 - 24:00
+            if ((int)$jamMulai < 8 || (int)$jamSelesai > 24) {
+                $alert = 'error|Jam operasional hanya diperbolehkan antara pukul 08:00 hingga 24:00.';
+            } elseif ((int)$jamMulai >= (int)$jamSelesai) {
+                $alert = 'error|Jam mulai harus lebih awal dari jam selesai.';
+            } else {
+                $pdo->prepare("UPDATE Jadwal SET TANGGAL=?,JAM_MULAI=?,JAM_SELESAI=?,STATUS_JADWAL=? WHERE ID_JADWAL=?")
+                    ->execute([$tanggal,$jamMulai,$jamSelesai,$status,$id]);
+                $alert = 'success|Jadwal berhasil diperbarui.';
+            }
         }
     }
 
@@ -157,7 +167,6 @@ if (isset($_GET['edit_id'])) {
   <?php endif; ?>
 </div>
 
-<!-- Modal Tambah -->
 <div class="modal-overlay" id="modal-tambah">
   <div class="modal">
     <div class="modal-head">
@@ -183,7 +192,7 @@ if (isset($_GET['edit_id'])) {
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
           <div class="form-group">
             <label class="form-label">Jam Mulai</label>
-            <input type="number" name="jam_mulai" class="form-input" placeholder="8" min="6" max="23" required>
+            <input type="number" name="jam_mulai" class="form-input" placeholder="8" min="8" max="23" required>
           </div>
           <div class="form-group">
             <label class="form-label">Jam Selesai</label>
@@ -203,7 +212,6 @@ if (isset($_GET['edit_id'])) {
   </div>
 </div>
 
-<!-- Modal Edit -->
 <?php if ($editData): ?>
 <div class="modal-overlay open" id="modal-edit">
   <div class="modal">
@@ -222,7 +230,7 @@ if (isset($_GET['edit_id'])) {
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
           <div class="form-group">
             <label class="form-label">Jam Mulai</label>
-            <input type="number" name="jam_mulai" class="form-input" value="<?= e($editData['JAM_MULAI']) ?>" min="6" max="23" required>
+            <input type="number" name="jam_mulai" class="form-input" value="<?= e($editData['JAM_MULAI']) ?>" min="8" max="23" required>
           </div>
           <div class="form-group">
             <label class="form-label">Jam Selesai</label>
