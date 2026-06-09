@@ -172,8 +172,7 @@ $userYt    = $user['SOSMED_YOUTUBE']     ?? '';
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MiniFut — Profil Saya</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Anton&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 <style>
 /* ── RESET & GLOBAL ──────────────────────────────────────── */
@@ -184,7 +183,7 @@ $userYt    = $user['SOSMED_YOUTUBE']     ?? '';
   --gray: #6b7080; --gray2: #9aa0b0; --white: #eceef2;
   --red: #ff3b5c; --amber: #ffb600; --blue: #3b82f6;
   --font-head: 'Orbitron', monospace;
-  --font-ui:   'Rajdhani', sans-serif;
+  --font-ui:   'Plus Jakarta Sans', sans-serif;
 }
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: smooth; }
@@ -194,7 +193,6 @@ body {
   font-family: var(--font-ui);
   min-height: 100vh;
   overflow-x: hidden;
-  cursor: none;
 }
 input, button, select, textarea {
   font-family: var(--font-ui);
@@ -203,11 +201,6 @@ input, button, select, textarea {
 /* Scrollbar */
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-thumb { background: rgba(0,255,136,.15); border-radius: 2px; }
-
-/* ── CURSOR ─────────────────────────────────────────────── */
-#cur  { position:fixed; width:10px; height:10px; background:var(--green); border-radius:50%; pointer-events:none; z-index:99999; transform:translate(-50%,-50%); transition: width .15s, height .15s; }
-#cur-r{ position:fixed; width:36px; height:36px; border:1px solid var(--green); border-radius:50%; pointer-events:none; z-index:99998; transform:translate(-50%,-50%); opacity:.38; transition:all .14s ease; }
-@media (hover:none) and (pointer:coarse) { #cur,#cur-r { display:none!important; } body,a,button { cursor:auto!important; } }
 
 /* ── BACKGROUND GRID ────────────────────────────────────── */
 #bg-grid {
@@ -260,7 +253,7 @@ nav {
   background: rgba(0,255,136,.06);
   border: 1px solid rgba(0,255,136,.25);
   padding: 11px 26px; border-radius: 30px;
-  cursor: none; text-decoration: none;
+  text-decoration: none;
   position: relative; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
   transition: color .3s, background .3s, box-shadow .3s;
   overflow: visible;
@@ -607,11 +600,15 @@ nav {
 .empty-icon  { font-size: 2.8rem; margin-bottom: 14px; opacity: .28; color: var(--green); }
 .empty-title { font-family: var(--font-head); font-size: .82rem; font-weight: 700; color: var(--gray2); margin-bottom: 6px; }
 .empty-sub   { font-family: var(--font-ui); font-size: .84rem; font-weight: 500; color: var(--gray); margin-bottom: 20px; }
+body, a, button, .snav-item, .booking-row, .avatar-wrap, .upload-zone {
+  cursor: auto !important;
+}
+a, button, .nav-cta, .snav-item, .booking-row, .avatar-wrap, .upload-zone {
+  cursor: pointer !important;
+}
 </style>
 </head>
 <body>
-<div id="cur"></div>
-<div id="cur-r"></div>
 <div id="bg-grid"></div>
 <canvas id="fl-canvas"></canvas>
 <div id="noise"></div>
@@ -1005,31 +1002,6 @@ nav {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 <script>
-/* ================================================================
-   CURSOR
-================================================================ */
-const cur = document.getElementById('cur');
-const curR = document.getElementById('cur-r');
-
-if (window.matchMedia('(pointer:fine)').matches) {
-  gsap.set(cur,  { xPercent: -50, yPercent: -50 });
-  gsap.set(curR, { xPercent: -50, yPercent: -50 });
-
-  const xTo  = gsap.quickTo(cur,  'x', { duration: 0.1, ease: 'power3' });
-  const yTo  = gsap.quickTo(cur,  'y', { duration: 0.1, ease: 'power3' });
-  const xToR = gsap.quickTo(curR, 'x', { duration: 0.3, ease: 'power3' });
-  const yToR = gsap.quickTo(curR, 'y', { duration: 0.3, ease: 'power3' });
-
-  document.addEventListener('mousemove', e => {
-    xTo(e.clientX); yTo(e.clientY);
-    xToR(e.clientX); yToR(e.clientY);
-  });
-
-  document.querySelectorAll('a, button, .snav-item, .booking-row, .avatar-wrap, .upload-zone').forEach(el => {
-    el.addEventListener('mouseenter', () => { gsap.to(cur, { width:15, height:15, duration:.2 }); gsap.to(curR, { width:50, height:50, opacity:.6, duration:.2 }); });
-    el.addEventListener('mouseleave', () => { gsap.to(cur, { width:10, height:10, duration:.2 }); gsap.to(curR, { width:36, height:36, opacity:.38, duration:.2 }); });
-  });
-}
 
 /* ================================================================
    NAV CTA — GSAP MAGNETIC (sama persis seperti index.php)
@@ -1169,31 +1141,6 @@ if (alertBox) {
     setTimeout(() => alertBox.remove(), 500);
   }, 4500);
 }
-
-/* ================================================================
-   SOUND ENGINE (same as index.php)
-================================================================ */
-let audioCtx = null;
-function playBeep(freq, type, duration, vol) {
-  try {
-    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    if (audioCtx.state === 'suspended') audioCtx.resume();
-    const osc  = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
-    osc.type = type;
-    osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-    gain.gain.setValueAtTime(vol, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
-    osc.connect(gain); gain.connect(audioCtx.destination);
-    osc.start(); osc.stop(audioCtx.currentTime + duration);
-  } catch(e) {}
-}
-document.querySelectorAll('a, button, .snav-item, .booking-row').forEach(el => {
-  el.addEventListener('mouseenter', () => playBeep(800, 'sine', 0.05, 0.02));
-});
-document.addEventListener('click', e => {
-  if (e.target.closest('a, button, .snav-item')) playBeep(1200, 'square', 0.08, 0.025);
-});
 
 /* ================================================================
    FLOATING LINES (WebGL via Three.js)

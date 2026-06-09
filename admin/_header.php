@@ -27,7 +27,7 @@ function navItem(string $href, string $icon, string $label, string $current): st
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MiniFut Admin — <?= htmlspecialchars($pageTitle ?? 'Dashboard') ?></title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;500;600;700&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Anton&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 <style>
 :root{
@@ -40,7 +40,7 @@ function navItem(string $href, string $icon, string $label, string $current): st
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
-body{background:var(--black);color:var(--white);font-family:'Barlow',sans-serif;min-height:100vh;display:flex;}
+body{background:var(--black);color:var(--white);font-family:'Plus Jakarta Sans',sans-serif;min-height:100vh;display:flex;}
 
 /* ── SIDEBAR ─────────────────────────────────────────── */
 .sidebar{
@@ -57,21 +57,21 @@ body{background:var(--black);color:var(--white);font-family:'Barlow',sans-serif;
 }
 .sidebar-logo .logo em{color:var(--white);font-style:normal;}
 .sidebar-logo .badge{
-  font-family:'Rajdhani',sans-serif;font-size:.58rem;font-weight:700;
+  font-family:'Plus Jakarta Sans',sans-serif;font-size:.58rem;font-weight:700;
   letter-spacing:3px;text-transform:uppercase;color:var(--gray2);
   margin-top:4px;display:block;
 }
 
 .sidebar-nav{flex:1;padding:16px 12px;overflow-y:auto;}
 .nav-section{
-  font-family:'Rajdhani',sans-serif;font-size:.58rem;font-weight:700;
+  font-family:'Plus Jakarta Sans',sans-serif;font-size:.58rem;font-weight:700;
   letter-spacing:3px;text-transform:uppercase;color:var(--gray);
   padding:12px 12px 6px;
 }
 .nav-item{
   display:flex;align-items:center;gap:12px;padding:10px 12px;
   border-radius:8px;text-decoration:none;color:var(--gray2);
-  font-family:'Barlow',sans-serif;font-size:.84rem;
+  font-family:'Plus Jakarta Sans',sans-serif;font-size:.84rem;
   transition:all .2s;margin-bottom:2px;
 }
 .nav-item:hover{background:rgba(255,255,255,.04);color:var(--white);}
@@ -90,11 +90,11 @@ body{background:var(--black);color:var(--white);font-family:'Barlow',sans-serif;
   font-family:'Orbitron',monospace;font-size:.7rem;font-weight:700;color:var(--green);
   flex-shrink:0;
 }
-.user-name{font-family:'Rajdhani',sans-serif;font-size:.78rem;font-weight:600;color:var(--white);}
+.user-name{font-family:'Plus Jakarta Sans',sans-serif;font-size:.78rem;font-weight:600;color:var(--white);}
 .user-role{font-size:.65rem;color:var(--gray);}
 .btn-logout{
   display:block;width:100%;margin-top:8px;
-  font-family:'Rajdhani',sans-serif;font-size:.68rem;font-weight:700;
+  font-family:'Plus Jakarta Sans',sans-serif;font-size:.68rem;font-weight:700;
   letter-spacing:2px;text-transform:uppercase;text-align:center;
   color:var(--gray2);background:transparent;
   border:1px solid var(--border2);border-radius:6px;padding:8px;
@@ -115,7 +115,7 @@ body{background:var(--black);color:var(--white);font-family:'Barlow',sans-serif;
 .breadcrumb a{color:var(--green);text-decoration:none;}
 .topbar-right{display:flex;align-items:center;gap:16px;}
 .view-site-btn{
-  font-family:'Rajdhani',sans-serif;font-size:.65rem;font-weight:700;
+  font-family:'Plus Jakarta Sans',sans-serif;font-size:.65rem;font-weight:700;
   letter-spacing:2px;text-transform:uppercase;
   color:var(--green);border:1px solid rgba(0,255,136,.25);
   background:rgba(0,255,136,.05);padding:7px 14px;border-radius:100px;
@@ -135,7 +135,7 @@ body{background:var(--black);color:var(--white);font-family:'Barlow',sans-serif;
   content:'';position:absolute;top:0;left:0;right:0;height:2px;
   background:linear-gradient(90deg,transparent,var(--green),transparent);
 }
-.stat-label{font-family:'Rajdhani',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--gray2);margin-bottom:12px;}
+.stat-label{font-family:'Plus Jakarta Sans',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--gray2);margin-bottom:12px;}
 .stat-value{font-family:'Orbitron',monospace;font-size:1.8rem;font-weight:700;color:var(--green);}
 .stat-sub{font-size:.78rem;color:var(--gray);margin-top:4px;}
 
@@ -153,7 +153,7 @@ body{background:var(--black);color:var(--white);font-family:'Barlow',sans-serif;
 .search-wrap input{
   background:rgba(255,255,255,.04);border:1px solid var(--border2);
   border-radius:8px;padding:8px 12px 8px 36px;
-  font-family:'Barlow',sans-serif;font-size:.82rem;color:var(--white);
+  font-family:'Plus Jakarta Sans',sans-serif;font-size:.82rem;color:var(--white);
   outline:none;width:220px;transition:border-color .25s;
 }
 .search-wrap input:focus{border-color:rgba(0,255,136,.35);}
@@ -162,7 +162,7 @@ body{background:var(--black);color:var(--white);font-family:'Barlow',sans-serif;
 
 /* Buttons */
 .btn{
-  font-family:'Rajdhani',sans-serif;font-size:.7rem;font-weight:700;
+  font-family:'Plus Jakarta Sans',sans-serif;font-size:.7rem;font-weight:700;
   letter-spacing:1.5px;text-transform:uppercase;border-radius:6px;
   padding:8px 16px;cursor:pointer;text-decoration:none;
   display:inline-flex;align-items:center;gap:6px;transition:all .2s;border:none;
@@ -181,7 +181,7 @@ body{background:var(--black);color:var(--white);font-family:'Barlow',sans-serif;
 
 table{width:100%;border-collapse:collapse;}
 thead tr{border-bottom:1px solid var(--border2);}
-th{padding:12px 16px;font-family:'Rajdhani',sans-serif;font-size:.62rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gray2);text-align:left;}
+th{padding:12px 16px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.62rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gray2);text-align:left;}
 td{padding:12px 16px;font-size:.84rem;color:var(--gray2);border-bottom:1px solid var(--border);vertical-align:middle;}
 tbody tr:last-child td{border-bottom:none;}
 tbody tr:hover td{background:rgba(255,255,255,.02);}
@@ -189,7 +189,7 @@ tbody tr:hover td{background:rgba(255,255,255,.02);}
 .td-white{color:var(--white);}
 
 /* Badges */
-.badge{display:inline-block;padding:3px 10px;border-radius:100px;font-family:'Rajdhani',sans-serif;font-size:.6rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;}
+.badge{display:inline-block;padding:3px 10px;border-radius:100px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.6rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;}
 .badge-green{background:rgba(0,255,136,.1);color:var(--green);border:1px solid rgba(0,255,136,.2);}
 .badge-red{background:rgba(255,59,92,.1);color:#ff7096;border:1px solid rgba(255,59,92,.2);}
 .badge-amber{background:rgba(255,182,0,.1);color:var(--amber);border:1px solid rgba(255,182,0,.2);}
@@ -199,7 +199,7 @@ tbody tr:hover td{background:rgba(255,255,255,.02);}
 /* Pagination */
 .pagination{display:flex;align-items:center;gap:6px;padding:16px 24px;border-top:1px solid var(--border);}
 .page-btn{
-  font-family:'Rajdhani',sans-serif;font-size:.7rem;font-weight:600;
+  font-family:'Plus Jakarta Sans',sans-serif;font-size:.7rem;font-weight:600;
   padding:6px 12px;border-radius:6px;text-decoration:none;
   color:var(--gray2);border:1px solid var(--border);transition:all .2s;
 }
@@ -234,11 +234,11 @@ tbody tr:hover td{background:rgba(255,255,255,.02);}
 
 /* Form */
 .form-group{margin-bottom:18px;}
-.form-label{display:block;font-family:'Rajdhani',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gray2);margin-bottom:7px;}
+.form-label{display:block;font-family:'Plus Jakarta Sans',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gray2);margin-bottom:7px;}
 .form-input,.form-select,.form-textarea{
   width:100%;background:rgba(255,255,255,.03);border:1px solid var(--border2);
   border-radius:8px;padding:10px 12px;
-  font-family:'Barlow',sans-serif;font-size:.88rem;color:var(--white);
+  font-family:'Plus Jakarta Sans',sans-serif;font-size:.88rem;color:var(--white);
   outline:none;transition:border-color .25s;
 }
 .form-select option{background:var(--dark);}

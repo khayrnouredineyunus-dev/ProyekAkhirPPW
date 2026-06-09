@@ -242,7 +242,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['action'])) {
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MiniFut — Book Arena</title>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Barlow:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Anton&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
   --black:#060608;--dark:#0c0d10;--card:#111318;--card2:#161820;
@@ -253,21 +253,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['action'])) {
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
-body{background:var(--black);color:var(--white);font-family:'Barlow',sans-serif;cursor:none;overflow-x:hidden;min-height:100vh;}
-@media (hover: none) and (pointer: coarse) {
-  #cur, #cur-r { display: none !important; }
-  body, a, button, .fc, .cal-day.available, .time-slot.avail, label, .step-item, .nav-back { cursor: auto !important; }
-}
-#cur{position:fixed;width:10px;height:10px;background:var(--green);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);}
-#cur-r{position:fixed;width:34px;height:34px;border:1px solid var(--green);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);opacity:.4;transition:all .13s ease;}
+body{background:var(--black);color:var(--white);font-family:'Plus Jakarta Sans', sans-serif;overflow-x:hidden;min-height:100vh;}
 #noise{position:fixed;inset:0;opacity:.015;pointer-events:none;z-index:8000;
   background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");}
 nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:18px 64px;display:flex;align-items:center;justify-content:space-between;background:rgba(6,6,8,.9);backdrop-filter:blur(24px);border-bottom:1px solid rgba(0,255,136,.08);}
 .logo{font-family:'Orbitron',monospace;font-size:1.5rem;font-weight:900;color:var(--green);letter-spacing:5px;text-decoration:none;}
 .logo em{color:var(--white);font-style:normal;}
-.nav-back{font-family:'Rajdhani',sans-serif;font-size:.75rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--gray2);text-decoration:none;display:flex;align-items:center;gap:8px;transition:color .25s;cursor:none;}
+.nav-back{font-family:'Plus Jakarta Sans',sans-serif;font-size:.75rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--gray2);text-decoration:none;display:flex;align-items:center;gap:8px;transition:color .25s;}
 .nav-back:hover{color:var(--green);}
-.nav-step-indicator{font-family:'Rajdhani',sans-serif;font-size:.7rem;letter-spacing:2px;color:var(--gray);text-transform:uppercase;}
+.nav-step-indicator{font-family:'Plus Jakarta Sans',sans-serif;font-size:.7rem;letter-spacing:2px;color:var(--gray);text-transform:uppercase;}
 .bg-grid{position:fixed;inset:0;pointer-events:none;z-index:0;
   background-image:linear-gradient(rgba(0,255,136,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,136,.025) 1px,transparent 1px);
   background-size:52px 52px;}
@@ -286,16 +280,16 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:18px 64px;display:f
 .step-num{width:32px;height:32px;border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-family:'Orbitron',monospace;font-size:.72rem;font-weight:700;color:var(--gray);transition:all .35s;flex-shrink:0;}
 .step-num.done{background:var(--green);border-color:var(--green);color:var(--black);}
 .step-num.active{border-color:var(--green);color:var(--green);box-shadow:0 0 14px rgba(0,255,136,.3);}
-.step-label{font-family:'Rajdhani',sans-serif;font-size:.68rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--gray);margin-left:10px;transition:color .35s;white-space:nowrap;}
+.step-label{font-family:'Plus Jakarta Sans',sans-serif;font-size:.68rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--gray);margin-left:10px;transition:color .35s;white-space:nowrap;}
 .step-label.active{color:var(--white);}
 .step-connector{flex:1;height:1px;background:var(--border);margin:0 14px;transition:background .35s;}
 .step-connector.done{background:var(--green);}
-.sec-label{font-family:'Rajdhani',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:5px;text-transform:uppercase;color:var(--green);margin-bottom:8px;}
+.sec-label{font-family:'Plus Jakarta Sans',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:5px;text-transform:uppercase;color:var(--green);margin-bottom:8px;}
 .sec-title{font-family:'Orbitron',monospace;font-size:1.6rem;font-weight:700;color:var(--white);margin-bottom:28px;}
 #step1{display:block;}
 #step2,#step3,#step4{display:none;}
 .field-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:3px;margin-bottom:10px;}
-.fc{background:var(--card);border:1px solid var(--border);cursor:none;transition:all .3s;position:relative;overflow:hidden;}
+.fc{background:var(--card);border:1px solid var(--border);transition:all .3s;position:relative;overflow:hidden;}
 .fc:hover{border-color:rgba(0,255,136,.3);}
 .fc.selected{border-color:var(--green);background:rgba(0,255,136,.04);}
 .fc.selected::before{content:'';position:absolute;inset:0;border:2px solid var(--green);pointer-events:none;z-index:3;}
@@ -308,29 +302,29 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:18px 64px;display:f
 .fc-body{padding:16px;}
 .fc-name{font-family:'Orbitron',monospace;font-size:.95rem;font-weight:700;color:var(--white);margin-bottom:10px;}
 .fc-attrs{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px;}
-.fc-attr{font-family:'Rajdhani',sans-serif;font-size:.6rem;letter-spacing:1px;color:var(--gray2);background:rgba(255,255,255,.04);border:1px solid var(--border);padding:2px 7px;}
+.fc-attr{font-family:'Plus Jakarta Sans',sans-serif;font-size:.6rem;letter-spacing:1px;color:var(--gray2);background:rgba(255,255,255,.04);border:1px solid var(--border);padding:2px 7px;}
 .fc-price{font-family:'Orbitron',monospace;font-size:1rem;font-weight:700;color:var(--green);}
-.fc-price-unit{font-family:'Rajdhani',sans-serif;font-size:.68rem;color:var(--gray);margin-left:3px;}
+.fc-price-unit{font-family:'Plus Jakarta Sans',sans-serif;font-size:.68rem;color:var(--gray);margin-left:3px;}
 .field-detail{background:var(--card2);border:1px solid rgba(0,255,136,.2);padding:24px;margin-top:3px;display:none;}
 .field-detail.open{display:block;}
 .fd-layout{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
 @media(max-width:768px){ .fd-layout{grid-template-columns:1fr;} }
 .fd-imgs{display:grid;grid-template-columns:1fr 1fr;gap:3px;}
-.fd-imgs img{width:100%;height:100px;object-fit:cover;filter:brightness(.7) saturate(.7);transition:filter .3s;cursor:none;}
+.fd-imgs img{width:100%;height:100px;object-fit:cover;filter:brightness(.7) saturate(.7);transition:filter .3s;}
 .fd-imgs img:hover{filter:brightness(.9) saturate(1);}
 .fd-info-list{display:flex;flex-direction:column;gap:10px;}
 .fd-info-row{display:flex;justify-content:space-between;padding-bottom:10px;border-bottom:1px solid var(--border);}
 .fd-info-row:last-child{border-bottom:none;}
-.fd-key{font-family:'Rajdhani',sans-serif;font-size:.72rem;letter-spacing:1px;color:var(--gray);}
-.fd-val{font-family:'Rajdhani',sans-serif;font-size:.78rem;font-weight:600;color:var(--white);}
+.fd-key{font-family:'Plus Jakarta Sans',sans-serif;font-size:.72rem;letter-spacing:1px;color:var(--gray);}
+.fd-val{font-family:'Plus Jakarta Sans',sans-serif;font-size:.78rem;font-weight:600;color:var(--white);}
 .calendar-wrap{margin-bottom:28px;}
 .cal-nav{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;}
 .cal-month{font-family:'Orbitron',monospace;font-size:1rem;font-weight:700;color:var(--white);}
-.cal-btn{width:34px;height:34px;border:1px solid var(--border2);background:none;color:var(--gray2);cursor:none;display:flex;align-items:center;justify-content:center;transition:all .25s;font-size:.9rem;}
+.cal-btn{width:34px;height:34px;border:1px solid var(--border2);background:none;color:var(--gray2);display:flex;align-items:center;justify-content:center;transition:all .25s;font-size:.9rem;}
 .cal-btn:hover{border-color:var(--green);color:var(--green);}
 .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;}
-.cal-day-name{font-family:'Rajdhani',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:2px;text-align:center;padding:8px 0;color:var(--gray);text-transform:uppercase;}
-.cal-day{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-family:'Rajdhani',sans-serif;font-size:.88rem;font-weight:600;color:var(--gray2);cursor:none;border:1px solid transparent;transition:all .25s;position:relative;}
+.cal-day-name{font-family:'Plus Jakarta Sans',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:2px;text-align:center;padding:8px 0;color:var(--gray);text-transform:uppercase;}
+.cal-day{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-family:'Plus Jakarta Sans',sans-serif;font-size:.88rem;font-weight:600;color:var(--gray2);border:1px solid transparent;transition:all .25s;position:relative;}
 .cal-day.empty{background:transparent;cursor:default;}
 .cal-day.past{color:var(--gray);opacity:.35;pointer-events:none;}
 .cal-day.today::after{content:'';position:absolute;bottom:4px;left:50%;transform:translateX(-50%);width:4px;height:4px;border-radius:50%;background:var(--gray);}
@@ -338,32 +332,32 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:18px 64px;display:f
 .cal-day.selected{background:var(--green);color:var(--black);font-weight:700;border-color:var(--green);}
 .cal-day.selected::after{display:none;}
 .time-legend{display:flex;gap:20px;margin-bottom:20px;}
-.tleg-item{display:flex;align-items:center;gap:7px;font-family:'Rajdhani',sans-serif;font-size:.7rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--gray2);}
+.tleg-item{display:flex;align-items:center;gap:7px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.7rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--gray2);}
 .tleg-dot{width:12px;height:12px;border:1px solid;}
 .tleg-dot.avail{border-color:rgba(0,255,136,.5);background:rgba(0,255,136,.07);}
 .tleg-dot.booked{border-color:var(--border2);background:rgba(255,255,255,.06);}
 .tleg-dot.sel{background:var(--green);border-color:var(--green);}
 .time-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:3px;}
-.time-slot{padding:14px 10px;background:var(--card);border:1px solid var(--border);cursor:none;text-align:center;transition:all .25s;position:relative;overflow:hidden;}
+.time-slot{padding:14px 10px;background:var(--card);border:1px solid var(--border);text-align:center;transition:all .25s;position:relative;overflow:hidden;}
 .time-slot.avail:hover{border-color:rgba(0,255,136,.4);background:var(--glow-sm);}
 .time-slot.sel{background:rgba(0,255,136,.08);border-color:var(--green);}
 .time-slot.booked{opacity:.4;pointer-events:none;}
-.time-slot.booked::after{content:'BOOKED';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Rajdhani',sans-serif;font-size:.6rem;font-weight:700;letter-spacing:2px;color:var(--gray);background:rgba(6,6,8,.6);}
+.time-slot.booked::after{content:'BOOKED';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Plus Jakarta Sans',sans-serif;font-size:.6rem;font-weight:700;letter-spacing:2px;color:var(--gray);background:rgba(6,6,8,.6);}
 .ts-time{font-family:'Orbitron',monospace;font-size:.82rem;font-weight:700;color:var(--white);margin-bottom:4px;}
 .time-slot.sel .ts-time{color:var(--green);}
-.ts-price{font-family:'Rajdhani',sans-serif;font-size:.65rem;color:var(--gray2);}
+.ts-price{font-family:'Plus Jakarta Sans',sans-serif;font-size:.65rem;color:var(--gray2);}
 .ts-check{position:absolute;top:6px;right:8px;font-size:.7rem;color:var(--green);opacity:0;transition:opacity .2s;}
 .time-slot.sel .ts-check{opacity:1;}
-.multi-note{font-family:'Rajdhani',sans-serif;font-size:.75rem;letter-spacing:1px;color:var(--gray2);margin-top:16px;line-height:1.6;}
+.multi-note{font-family:'Plus Jakarta Sans',sans-serif;font-size:.75rem;letter-spacing:1px;color:var(--gray2);margin-top:16px;line-height:1.6;}
 .multi-note span{color:var(--green); font-weight:700;}
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
 .form-group{display:flex;flex-direction:column;gap:6px;}
 .form-group.full{grid-column:1/-1;}
-.form-label{font-family:'Rajdhani',sans-serif;font-size:.68rem;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--green);}
-.form-input{background:var(--card);border:1px solid var(--border2);color:var(--white);font-family:'Barlow',sans-serif;font-size:.9rem;padding:12px 16px;outline:none;transition:border-color .25s;cursor:text;}
+.form-label{font-family:'Plus Jakarta Sans',sans-serif;font-size:.68rem;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--green);}
+.form-input{background:var(--card);border:1px solid var(--border2);color:var(--white);font-family:'Plus Jakarta Sans',sans-serif;font-size:.9rem;padding:12px 16px;outline:none;transition:border-color .25s;cursor:text;}
 .form-input::placeholder{color:var(--gray);}
 .form-input:focus{border-color:var(--green);}
-.form-note{font-family:'Barlow',sans-serif;font-size:.78rem;color:var(--gray);margin-top:4px;font-style:italic;}
+.form-note{font-family:'Plus Jakarta Sans',sans-serif;font-size:.78rem;color:var(--gray);margin-top:4px;font-style:italic;}
 .sidebar-title{font-family:'Orbitron',monospace;font-size:1rem;font-weight:700;color:var(--white);margin-bottom:22px;display:flex;align-items:center;gap:10px;}
 .sidebar-title::after{content:'';flex:1;height:1px;background:var(--border);}
 .summary-block{background:var(--card2);border:1px solid var(--border);padding:20px;margin-bottom:3px;}
@@ -372,31 +366,31 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:18px 64px;display:f
 .sum-field-img-ov{position:absolute;inset:0;background:linear-gradient(to top,rgba(6,6,8,.8) 0%,transparent 60%);}
 .sum-field-name{position:absolute;bottom:10px;left:12px;font-family:'Orbitron',monospace;font-size:.88rem;font-weight:700;color:var(--white);}
 .sum-row{display:flex;justify-content:space-between;margin-bottom:10px;align-items:flex-start;}
-.sum-key{font-family:'Rajdhani',sans-serif;font-size:.72rem;letter-spacing:1.5px;color:var(--gray);text-transform:uppercase;}
-.sum-val{font-family:'Rajdhani',sans-serif;font-size:.78rem;font-weight:600;color:var(--white);text-align:right;}
+.sum-key{font-family:'Plus Jakarta Sans',sans-serif;font-size:.72rem;letter-spacing:1.5px;color:var(--gray);text-transform:uppercase;}
+.sum-val{font-family:'Plus Jakarta Sans',sans-serif;font-size:.78rem;font-weight:600;color:var(--white);text-align:right;}
 .sum-val.green{color:var(--green);}
 .sum-divider{height:1px;background:var(--border);margin:14px 0;}
-.sum-total-key{font-family:'Rajdhani',sans-serif;font-size:.72rem;letter-spacing:2px;text-transform:uppercase;color:var(--gray2);}
+.sum-total-key{font-family:'Plus Jakarta Sans',sans-serif;font-size:.72rem;letter-spacing:2px;text-transform:uppercase;color:var(--gray2);}
 .sum-total-val{font-family:'Orbitron',monospace;font-size:1.3rem;font-weight:700;color:var(--green);}
-.sum-empty{text-align:center;padding:30px 10px;font-family:'Rajdhani',sans-serif;font-size:.75rem;letter-spacing:1.5px;color:var(--gray);text-transform:uppercase;}
+.sum-empty{text-align:center;padding:30px 10px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.75rem;letter-spacing:1.5px;color:var(--gray);text-transform:uppercase;}
 .action-row{display:flex;gap:8px;margin-top:28px;}
-.btn-next{flex:1;font-family:'Rajdhani',sans-serif;font-size:.82rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--black);background:var(--green);border:none;padding:15px;cursor:none;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0 100%);transition:all .3s;position:relative;overflow:hidden;}
+.btn-next{flex:1;font-family:'Plus Jakarta Sans',sans-serif;font-size:.82rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--black);background:var(--green);border:none;padding:15px;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0 100%);transition:all .3s;position:relative;overflow:hidden;}
 .btn-next::after{content:'';position:absolute;inset:0;background:rgba(255,255,255,.18);transform:translateX(-100%);transition:.3s;}
 .btn-next:hover::after{transform:translateX(0);}
 .btn-next:disabled{background:var(--border2);color:var(--gray);cursor:default;pointer-events:none;clip-path:none;}
-.btn-back{font-family:'Rajdhani',sans-serif;font-size:.82rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gray2);background:none;border:1px solid var(--border2);padding:15px 20px;cursor:none;transition:all .3s;}
+.btn-back{font-family:'Plus Jakarta Sans',sans-serif;font-size:.82rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gray2);background:none;border:1px solid var(--border2);padding:15px 20px;transition:all .3s;}
 .btn-back:hover{border-color:var(--green);color:var(--green);}
 #success-overlay{display:none;position:fixed;inset:0;z-index:5000;background:var(--black);align-items:center;justify-content:center;flex-direction:column;padding:20px;overflow-y:auto;}
 #success-overlay.show{display:flex;}
 .success-card{background:var(--card);border:1px solid rgba(0,255,136,.35);text-align:center;max-width:480px;position:relative;width:100%;margin:auto;display:flex;flex-direction:column;max-height:90vh;}
 .success-card-content{padding:24px 32px;overflow-y:auto;flex:1;min-height:0;}
 .success-title{font-family:'Orbitron',monospace;font-size:1.2rem;font-weight:900;color:var(--green);margin-bottom:6px;}
-.success-sub{font-family:'Barlow',sans-serif;font-size:.85rem;color:var(--gray2);line-height:1.4;margin-bottom:16px;}
+.success-sub{font-family:'Plus Jakarta Sans',sans-serif;font-size:.85rem;color:var(--gray2);line-height:1.4;margin-bottom:16px;}
 .success-detail{background:var(--card2);padding:14px;text-align:left;margin-bottom:16px;}
 .success-detail-row{display:flex;justify-content:space-between;margin-bottom:6px;}
 .success-detail-row:last-child{margin-bottom:0;}
-.sdk{font-family:'Rajdhani',sans-serif;font-size:.7rem;letter-spacing:2px;text-transform:uppercase;color:var(--gray);}
-.sdv{font-family:'Rajdhani',sans-serif;font-size:.8rem;font-weight:600;color:var(--white);}
+.sdk{font-family:'Plus Jakarta Sans',sans-serif;font-size:.7rem;letter-spacing:2px;text-transform:uppercase;color:var(--gray);}
+.sdv{font-family:'Plus Jakarta Sans',sans-serif;font-size:.8rem;font-weight:600;color:var(--white);}
 .success-code{font-family:'Orbitron',monospace;font-size:.75rem;letter-spacing:3px;color:var(--green);background:rgba(0,255,136,.07);border:1px solid rgba(0,255,136,.2);padding:6px 14px;display:inline-block;margin-bottom:16px;}
 .success-corner{position:absolute;width:20px;height:20px;border-color:var(--green);border-style:solid;}
 .success-corner.tl{top:-1px;left:-1px;border-width:2px 0 0 2px;}
@@ -437,7 +431,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:18px 64px;display:f
 
 /* ── Form Validation Errors ────────────────────── */
 .form-error{
-  font-family:'Barlow',sans-serif;font-size:.75rem;color:var(--red);
+  font-family:'Plus Jakarta Sans',sans-serif;font-size:.75rem;color:var(--red);
   margin-top:4px;display:none;align-items:center;gap:5px;
   animation:fadeInError .25s ease;
 }
@@ -449,14 +443,18 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:18px 64px;display:f
   box-shadow:0 0 0 1px rgba(255,59,92,.15);
 }
 .form-input.input-valid{border-color:rgba(0,255,136,.4);}
-.agree-error{color:var(--red);font-family:'Barlow',sans-serif;font-size:.75rem;margin-top:4px;display:none;}
+.agree-error{color:var(--red);font-family:'Plus Jakarta Sans',sans-serif;font-size:.75rem;margin-top:4px;display:none;}
 .agree-error.show{display:block;}
+body, a, button, .fc, .cal-day.available, .time-slot.avail, label, .step-item, .nav-back {
+  cursor: auto !important;
+}
+a, button, .fc, .cal-day.available, .time-slot.avail, label, .step-item, .nav-back {
+  cursor: pointer !important;
+}
 </style>
 </head>
 <body>
 <div id="noise"></div>
-<div id="cur"></div>
-<div id="cur-r"></div>
 <div class="bg-grid"></div>
 
 <div id="success-overlay">
@@ -473,32 +471,32 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:18px 64px;display:f
       <div class="success-detail" id="success-detail"></div>
       
       <div style="background:var(--card2); padding:14px; text-align:left; margin-bottom:20px; border:1px solid rgba(255,182,0,.3);">
-        <div style="font-family:'Rajdhani',sans-serif;font-size:.75rem;letter-spacing:2px;text-transform:uppercase;color:var(--amber);margin-bottom:12px;font-weight:700;">Instruksi Pembayaran</div>
+        <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:.75rem;letter-spacing:2px;text-transform:uppercase;color:var(--amber);margin-bottom:12px;font-weight:700;">Instruksi Pembayaran</div>
         <div style="margin-bottom:10px;">
-          <span style="font-family:'Barlow',sans-serif;font-size:.8rem;color:var(--gray);">Bank Tujuan:</span><br>
-          <strong style="font-family:'Orbitron',monospace;font-size:1.1rem;color:var(--white);">BCA - 1234567890</strong><br>
-          <span style="font-family:'Barlow',sans-serif;font-size:.8rem;color:var(--gray);">a.n. PT MiniFut Indonesia</span>
+          <span style="font-family:'Plus Jakarta Sans',sans-serif;font-size:.8rem;color:var(--gray);">Bank Tujuan:</span><br>
+          <strong style="font-family:'Orbitron',monospace;font-size:1.1rem;color:var(--white);">BCA - 6900879235</strong><br>
+          <span style="font-family:'Plus Jakarta Sans',sans-serif;font-size:.8rem;color:var(--gray);">a.n. PT MiniFut Indonesia</span>
         </div>
         <div style="margin-bottom:10px;">
-          <span style="font-family:'Barlow',sans-serif;font-size:.8rem;color:var(--gray);">Jumlah Transfer:</span><br>
+          <span style="font-family:'Plus Jakarta Sans',sans-serif;font-size:.8rem;color:var(--gray);">Jumlah Transfer:</span><br>
           <strong style="font-family:'Orbitron',monospace;font-size:1.3rem;color:var(--green);" id="transfer-amount">Rp 0</strong>
         </div>
-        <div id="sisa-bayar-info" style="display:none;font-family:'Barlow',sans-serif;font-size:.8rem;color:var(--gray2);margin-bottom:12px; font-style:italic;">
+        <div id="sisa-bayar-info" style="display:none;font-family:'Plus Jakarta Sans',sans-serif;font-size:.8rem;color:var(--gray2);margin-bottom:12px; font-style:italic;">
           *Sisa pembayaran <span id="sisa-amount" style="color:var(--amber);font-weight:bold;">Rp 0</span> dilunasi di lokasi (Cash/QRIS).
         </div>
         <div style="border-top:1px solid var(--border); padding-top:12px; margin-top:12px;">
-          <span style="font-family:'Barlow',sans-serif;font-size:.8rem;color:var(--gray);">Konfirmasi via WhatsApp (Kirim Bukti Transfer & Kode Booking):</span><br>
+          <span style="font-family:'Plus Jakarta Sans',sans-serif;font-size:.8rem;color:var(--gray);">Konfirmasi via WhatsApp (Kirim Bukti Transfer & Kode Booking):</span><br>
           <strong style="font-family:'Orbitron',monospace;font-size:1rem;color:var(--white);">+62 812-3456-7890</strong>
         </div>
       </div>
       <div id="payment-timer-box" style="background:var(--card2); padding:18px; text-align:center; margin-bottom:28px; border:1px solid var(--red);">
-        <div style="font-family:'Rajdhani',sans-serif;font-size:.8rem;letter-spacing:1px;text-transform:uppercase;color:var(--gray);margin-bottom:8px;">Batas Waktu Pembayaran</div>
+        <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:.8rem;letter-spacing:1px;text-transform:uppercase;color:var(--gray);margin-bottom:8px;">Batas Waktu Pembayaran</div>
         <div id="payment-timer" style="font-family:'Orbitron',monospace;font-size:2rem;font-weight:700;color:var(--red);margin-bottom:8px;text-shadow:0 0 10px rgba(255,59,92,.4);">05:00</div>
-        <div id="payment-timer-msg" style="font-family:'Barlow',sans-serif;font-size:.8rem;color:var(--gray2);">Jika dalam 5 menit belum melakukan pembayaran, booking otomatis dibatalkan.</div>
+        <div id="payment-timer-msg" style="font-family:'Plus Jakarta Sans',sans-serif;font-size:.8rem;color:var(--gray2);">Jika dalam 5 menit belum melakukan pembayaran, booking otomatis dibatalkan.</div>
       </div>
 
       <div style="display:flex;gap:8px;justify-content:center">
-        <button onclick="window.location.reload()" style="font-family:'Rajdhani',sans-serif;font-size:.78rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--black);background:var(--green);border:none;padding:12px 24px;cursor:none;">Selesai & Tutup</button>
+        <button onclick="window.location.reload()" style="font-family:'Plus Jakarta Sans',sans-serif;font-size:.78rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--black);background:var(--green);border:none;padding:12px 24px;">Selesai & Tutup</button>
       </div>
     </div> </div>
 </div>
@@ -670,11 +668,11 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:18px 64px;display:f
             <div style="display:flex; gap:20px; margin-top:6px;">
               <label style="display:flex;align-items:center;gap:8px;cursor:pointer;">
                 <input type="radio" name="pay_type" value="lunas" checked style="accent-color:var(--green);width:16px;height:16px;" onclick="updatePaymentUI()" onchange="updatePaymentUI()">
-                <span style="font-family:'Barlow',sans-serif;font-size:.9rem;">Bayar Lunas</span>
+                <span style="font-family:'Plus Jakarta Sans',sans-serif;font-size:.9rem;">Bayar Lunas</span>
               </label>
               <label style="display:flex;align-items:center;gap:8px;cursor:pointer;">
                 <input type="radio" name="pay_type" value="dp" style="accent-color:var(--green);width:16px;height:16px;" onclick="updatePaymentUI()" onchange="updatePaymentUI()">
-                <span style="font-family:'Barlow',sans-serif;font-size:.9rem;">DP 50%</span>
+                <span style="font-family:'Plus Jakarta Sans',sans-serif;font-size:.9rem;">DP 50%</span>
               </label>
             </div>
             <p class="form-note" id="dp-note" style="display:none; color:var(--amber); margin-top:8px;">*Sisa pembayaran wajib dilunasi di lokasi sebelum bermain.</p>
@@ -685,7 +683,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:18px 64px;display:f
             <textarea class="form-input" id="f-catatan" rows="3" placeholder="Permintaan khusus, keperluan tambahan, dll..." style="resize:vertical;" maxlength="1000"></textarea>
           </div>
           <div class="form-group full">
-            <label class="form-label" style="display:flex;align-items:center;gap:10px;cursor:none;">
+            <label class="form-label" style="display:flex;align-items:center;gap:10px;">
               <input type="checkbox" id="f-agree" style="accent-color:var(--green);width:14px;height:14px;">
               <span style="font-weight:400;letter-spacing:1px;font-size:.72rem;color:var(--gray2);line-height:1.4;">Saya menyetujui syarat & ketentuan MiniFut dan bersedia menjaga fasilitas, kebersihan, serta menaati aturan jam bermain.</span>
             </label>
@@ -725,17 +723,17 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:18px 64px;display:f
       </div>
     </div>
     <div style="margin-top:16px;padding:16px;border:1px solid rgba(0,255,136,.15);background:rgba(0,255,136,.03);">
-      <div style="font-family:'Rajdhani',sans-serif;font-size:.65rem;letter-spacing:2px;text-transform:uppercase;color:var(--green);margin-bottom:10px;">Info Lapangan</div>
+      <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:.65rem;letter-spacing:2px;text-transform:uppercase;color:var(--green);margin-bottom:10px;">Info Lapangan</div>
       <ul style="list-style:none;display:flex;flex-direction:column;gap:8px;">
-        <li style="font-family:'Barlow',sans-serif;font-size:.78rem;color:var(--gray2);line-height:1.5;">• Pelunasan bisa dilakukan di lokasi</li>
-        <li style="font-family:'Barlow',sans-serif;font-size:.78rem;color:var(--gray2);line-height:1.5;">• Harap hadir 15 menit sebelum sesi dimulai</li>
-        <li style="font-family:'Barlow',sans-serif;font-size:.78rem;color:var(--gray2);line-height:1.5;">• Dilarang membawa makanan dari luar</li>
-        <li style="font-family:'Barlow',sans-serif;font-size:.78rem;color:var(--gray2);line-height:1.5;">• Tersedia area Food Stand dan Ruang Ganti</li>
+        <li style="font-family:'Plus Jakarta Sans',sans-serif;font-size:.78rem;color:var(--gray2);line-height:1.5;">• Pelunasan bisa dilakukan di lokasi</li>
+        <li style="font-family:'Plus Jakarta Sans',sans-serif;font-size:.78rem;color:var(--gray2);line-height:1.5;">• Harap hadir 15 menit sebelum sesi dimulai</li>
+        <li style="font-family:'Plus Jakarta Sans',sans-serif;font-size:.78rem;color:var(--gray2);line-height:1.5;">• Dilarang membawa makanan dari luar</li>
+        <li style="font-family:'Plus Jakarta Sans',sans-serif;font-size:.78rem;color:var(--gray2);line-height:1.5;">• Tersedia area Food Stand dan Ruang Ganti</li>
       </ul>
     </div>
     <div style="margin-top:8px;padding:14px 16px;border:1px solid var(--border);background:var(--card2);display:flex;align-items:center;gap:12px;">
       <div>
-        <div style="font-family:'Rajdhani',sans-serif;font-size:.65rem;letter-spacing:2px;color:var(--gray);text-transform:uppercase;">Bantuan & Informasi</div>
+        <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:.65rem;letter-spacing:2px;color:var(--gray);text-transform:uppercase;">Bantuan & Informasi</div>
         <div style="font-family:'Orbitron',monospace;font-size:.85rem;color:var(--white);margin-top:4px;">+62 812-3456-7890</div>
       </div>
     </div>
@@ -743,15 +741,6 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:18px 64px;display:f
 </div>
 
 <script>
-/* ═══ CURSOR ═══ */
-const cur=document.getElementById('cur'),curR=document.getElementById('cur-r');
-let mx=0,my=0,rx=0,ry=0;
-document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
-(function t(){rx+=(mx-rx)*.11;ry+=(my-ry)*.11;curR.style.left=rx+'px';curR.style.top=ry+'px';requestAnimationFrame(t);})();
-document.querySelectorAll('a,button,.fc,.cal-day.available,.time-slot.avail,.f-links a,label,.step-item').forEach(el=>{
-  el.addEventListener('mouseenter',()=>{cur.style.width='15px';cur.style.height='15px';curR.style.width='50px';curR.style.height='50px';curR.style.opacity='.65';});
-  el.addEventListener('mouseleave',()=>{cur.style.width='10px';cur.style.height='10px';curR.style.width='34px';curR.style.height='34px';curR.style.opacity='.4';});
-});
 
 /* ═══ DATA ═══ */
 const FIELDS={
@@ -814,13 +803,6 @@ function renderTimeGridSync(){
       <div class="ts-check">✓</div>
     </div>`;
   }
-  
-  setTimeout(()=>{
-    grid.querySelectorAll('.time-slot.avail').forEach(el=>{
-      el.addEventListener('mouseenter',()=>{cur.style.width='15px';cur.style.height='15px';});
-      el.addEventListener('mouseleave',()=>{cur.style.width='10px';cur.style.height='10px';});
-    });
-  },0);
 }
 
 function toggleSlot(h){
@@ -935,13 +917,6 @@ function renderCalendar(){
     
     grid.innerHTML+=`<div class="${cls}" onclick="selectDate('${dateStr}',this)">${d}</div>`;
   }
-  
-  setTimeout(()=>{
-    grid.querySelectorAll('.cal-day.available').forEach(el=>{
-      el.addEventListener('mouseenter',()=>{cur.style.width='15px';cur.style.height='15px';});
-      el.addEventListener('mouseleave',()=>{cur.style.width='10px';cur.style.height='10px';});
-    });
-  },0);
 }
 
 function selectDate(dateStr,el){

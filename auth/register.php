@@ -60,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MiniFut — Daftar Akun</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;500;600;700&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Anton&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root {
   --black:#060608; --dark:#0c0d10; --card:#111318;
@@ -69,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   --gray:#6b7080; --gray2:#9aa0b0; --white:#eceef2; --red:#ff3b5c;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
-html,body{font-family:'Barlow',sans-serif;background:var(--black);color:var(--white);}
+html,body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--black);color:var(--white);}
 #shader-bg{position:fixed;inset:0;z-index:0;opacity:.45;}
 #shader-bg canvas{display:block;width:100%;height:100%;}
 .wrap {
@@ -92,9 +92,9 @@ html,body{font-family:'Barlow',sans-serif;background:var(--black);color:var(--wh
 .logo-wrap { text-align:center; margin-bottom:28px; }
 .logo { font-family:'Orbitron',monospace;font-size:1.5rem;font-weight:900;color:var(--green);letter-spacing:6px;text-decoration:none; }
 .logo em{color:var(--white);font-style:normal;}
-.tagline { font-family:'Rajdhani',sans-serif;font-size:.65rem;letter-spacing:4px;text-transform:uppercase;color:var(--gray);margin-top:5px; }
+.tagline { font-family:'Plus Jakarta Sans',sans-serif;font-size:.65rem;letter-spacing:4px;text-transform:uppercase;color:var(--gray);margin-top:5px; }
 h2 { font-family:'Orbitron',monospace;font-size:1rem;font-weight:700;color:var(--white);margin-bottom:5px; }
-.sub { font-family:'Barlow',sans-serif;font-size:.84rem;color:var(--gray2);margin-bottom:24px; }
+.sub { font-family:'Plus Jakarta Sans',sans-serif;font-size:.84rem;color:var(--gray2);margin-bottom:24px; }
 
 /* Alerts */
 .alert-err { background:rgba(255,59,92,.08);border:1px solid rgba(255,59,92,.25);border-radius:8px;padding:12px 14px;margin-bottom:18px; }
@@ -105,22 +105,22 @@ h2 { font-family:'Orbitron',monospace;font-size:1rem;font-weight:700;color:var(-
 .alert-ok p { font-size:.82rem;color:var(--gray2); }
 
 .field { margin-bottom:16px; }
-label { display:block;font-family:'Rajdhani',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--gray2);margin-bottom:7px; }
+label { display:block;font-family:'Plus Jakarta Sans',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--gray2);margin-bottom:7px; }
 input[type=text],input[type=email],input[type=password],input[type=tel] {
   width:100%;background:rgba(255,255,255,.03);border:1px solid var(--border2);
   border-radius:8px;padding:12px 14px;
-  font-family:'Barlow',sans-serif;font-size:.88rem;color:var(--white);
+  font-family:'Plus Jakarta Sans',sans-serif;font-size:.88rem;color:var(--white);
   outline:none;transition:border-color .25s,box-shadow .25s;
 }
 input:focus { border-color:rgba(0,255,136,.45);box-shadow:0 0 0 3px rgba(0,255,136,.08); }
 input::placeholder { color:var(--gray); }
 
 /* Password strength */
-.pw-hint { font-family:'Barlow',sans-serif;font-size:.72rem;color:var(--gray);margin-top:5px; }
+.pw-hint { font-family:'Plus Jakarta Sans',sans-serif;font-size:.72rem;color:var(--gray);margin-top:5px; }
 
 .btn-submit {
   width:100%;margin-top:10px;
-  font-family:'Rajdhani',sans-serif;font-size:.85rem;font-weight:700;
+  font-family:'Plus Jakarta Sans',sans-serif;font-size:.85rem;font-weight:700;
   letter-spacing:2.5px;text-transform:uppercase;
   color:var(--black);background:var(--green);border:none;border-radius:8px;padding:14px;
   cursor:pointer;transition:all .3s;box-shadow:0 4px 16px rgba(0,255,136,.25);
@@ -137,10 +137,10 @@ input::placeholder { color:var(--gray); }
 }
 @keyframes btn-spin { to { transform: rotate(360deg); } }
 
-.links { text-align:center;font-size:.82rem;color:var(--gray2);margin-top:20px;font-family:'Barlow',sans-serif; }
+.links { text-align:center;font-size:.82rem;color:var(--gray2);margin-top:20px;font-family:'Plus Jakarta Sans',sans-serif; }
 .links a {
   color:var(--green);text-decoration:none;transition:opacity .2s;
-  font-family:'Rajdhani',sans-serif;font-size:.8rem;font-weight:700;
+  font-family:'Plus Jakarta Sans',sans-serif;font-size:.8rem;font-weight:700;
   letter-spacing:2px;text-transform:uppercase;
 }
 .links a:hover { opacity:.8; }

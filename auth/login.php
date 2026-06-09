@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MiniFut — Login</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;500;600;700&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Anton&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 <style>
 :root {
@@ -56,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   --gray:#6b7080; --gray2:#9aa0b0; --white:#eceef2; --red:#ff3b5c;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
-html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--black);color:var(--white);overflow:hidden;}
+html,body{height:100%;font-family:'Plus Jakarta Sans',sans-serif;background:var(--black);color:var(--white);overflow:hidden;}
 
 /* Shader background */
 #shader-bg{position:fixed;inset:0;z-index:0;opacity:.45;}
@@ -94,7 +94,7 @@ html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--black);co
 }
 .logo em{color:var(--white);font-style:normal;}
 .tagline {
-  font-family:'Rajdhani',sans-serif;font-size:.68rem;letter-spacing:4px;
+  font-family:'Plus Jakarta Sans',sans-serif;font-size:.68rem;letter-spacing:4px;
   text-transform:uppercase;color:var(--gray);margin-top:6px;
 }
 
@@ -103,7 +103,7 @@ h2 {
   color:var(--white);margin-bottom:6px;
 }
 .sub {
-  font-family:'Barlow',sans-serif;font-size:.84rem;color:var(--gray2);
+  font-family:'Plus Jakarta Sans',sans-serif;font-size:.84rem;color:var(--gray2);
   margin-bottom:28px;
 }
 
@@ -117,14 +117,14 @@ h2 {
 /* Form fields */
 .field { margin-bottom:18px; }
 label {
-  display:block;font-family:'Rajdhani',sans-serif;font-size:.65rem;
+  display:block;font-family:'Plus Jakarta Sans',sans-serif;font-size:.65rem;
   font-weight:700;letter-spacing:3px;text-transform:uppercase;
   color:var(--gray2);margin-bottom:8px;
 }
 input[type=email], input[type=password], input[type=text] {
   width:100%;background:rgba(255,255,255,.03);border:1px solid var(--border2);
   border-radius:8px;padding:12px 14px;
-  font-family:'Barlow',sans-serif;font-size:.9rem;color:var(--white);
+  font-family:'Plus Jakarta Sans',sans-serif;font-size:.9rem;color:var(--white);
   outline:none;transition:border-color .25s, box-shadow .25s;
   -webkit-appearance:none;
 }
@@ -137,7 +137,7 @@ input::placeholder { color:var(--gray); }
 /* Submit */
 .btn-submit {
   width:100%;margin-top:8px;
-  font-family:'Rajdhani',sans-serif;font-size:.85rem;font-weight:700;
+  font-family:'Plus Jakarta Sans',sans-serif;font-size:.85rem;font-weight:700;
   letter-spacing:2.5px;text-transform:uppercase;
   color:var(--black);background:var(--green);
   border:none;border-radius:8px;padding:14px;
@@ -165,10 +165,10 @@ input::placeholder { color:var(--gray); }
 .divider span { font-size:.7rem;color:var(--gray);white-space:nowrap; }
 
 /* Links */
-.links { text-align:center;font-size:.82rem;color:var(--gray2);font-family:'Barlow',sans-serif; }
+.links { text-align:center;font-size:.82rem;color:var(--gray2);font-family:'Plus Jakarta Sans',sans-serif; }
 .links a {
   color:var(--green);text-decoration:none;transition:opacity .2s;
-  font-family:'Rajdhani',sans-serif;font-size:.8rem;font-weight:700;
+  font-family:'Plus Jakarta Sans',sans-serif;font-size:.8rem;font-weight:700;
   letter-spacing:2px;text-transform:uppercase;
 }
 .links a:hover { opacity:.8; }
@@ -176,7 +176,7 @@ input::placeholder { color:var(--gray); }
 /* Admin link */
 .admin-link {
   display:block;text-align:center;margin-top:20px;
-  font-family:'Rajdhani',sans-serif;font-size:.65rem;font-weight:600;
+  font-family:'Plus Jakarta Sans',sans-serif;font-size:.65rem;font-weight:600;
   letter-spacing:3px;text-transform:uppercase;color:var(--gray);
   text-decoration:none;transition:color .2s;
 }
