@@ -540,7 +540,7 @@ a, button, .fc, .cal-day.available, .time-slot.avail, label, .step-item, .nav-ba
         <div class="fc" id="fc-1" onclick="selectField('1')">
           <div class="fc-sel-mark">✓</div>
           <div class="fc-img">
-            <img src="https://images.unsplash.com/photo-1575361204480-aadea25e6e68?w=600&q=80" alt="Lapangan 1" loading="lazy">
+            <img src="https://images.unsplash.com/photo-1546717003-caee5f93a9db?w=600&auto=format&fit=crop&q=80" alt="Lapangan 1" loading="lazy">
             <div class="fc-img-ov"></div>
           </div>
           <div class="fc-body">
@@ -556,7 +556,7 @@ a, button, .fc, .cal-day.available, .time-slot.avail, label, .step-item, .nav-ba
         <div class="fc" id="fc-2" onclick="selectField('2')">
           <div class="fc-sel-mark">✓</div>
           <div class="fc-img">
-            <img src="https://images.unsplash.com/photo-1529900748604-07564a03e7a6?w=600&q=80" alt="Lapangan 2" loading="lazy">
+            <img src="assets/izuddin-helmi-adnan-K5ChxJaheKI-unsplash.jpg" alt="Lapangan 2" loading="lazy">
             <div class="fc-img-ov"></div>
           </div>
           <div class="fc-body">
@@ -572,7 +572,7 @@ a, button, .fc, .cal-day.available, .time-slot.avail, label, .step-item, .nav-ba
         <div class="fc" id="fc-3" onclick="selectField('3')">
           <div class="fc-sel-mark">✓</div>
           <div class="fc-img">
-            <img src="https://images.unsplash.com/photo-1518604666860-9ed391f76460?w=600&q=80" alt="Lapangan 3" loading="lazy">
+            <img src="https://images.unsplash.com/photo-1641029185333-7ed62a19d5f0?w=600&auto=format&fit=crop&q=80" alt="Lapangan 3" loading="lazy">
             <div class="fc-img-ov"></div>
           </div>
           <div class="fc-body">
@@ -728,7 +728,8 @@ a, button, .fc, .cal-day.available, .time-slot.avail, label, .step-item, .nav-ba
         <li style="font-family:'Plus Jakarta Sans',sans-serif;font-size:.78rem;color:var(--gray2);line-height:1.5;">• Pelunasan bisa dilakukan di lokasi</li>
         <li style="font-family:'Plus Jakarta Sans',sans-serif;font-size:.78rem;color:var(--gray2);line-height:1.5;">• Harap hadir 15 menit sebelum sesi dimulai</li>
         <li style="font-family:'Plus Jakarta Sans',sans-serif;font-size:.78rem;color:var(--gray2);line-height:1.5;">• Dilarang membawa makanan dari luar</li>
-        <li style="font-family:'Plus Jakarta Sans',sans-serif;font-size:.78rem;color:var(--gray2);line-height:1.5;">• Tersedia area Food Stand dan Ruang Ganti</li>
+        <li style="font-family:'Plus Jakarta Sans',sans-serif;font-size:.78rem;color:var(--gray2);line-height:1.5;">• Tersedia area Restaurant & Café dan Ruang Ganti</li>
+        <li style="font-family:'Plus Jakarta Sans',sans-serif;font-size:.78rem;color:var(--green);line-height:1.5;margin-top:6px;">• Jl. Kaliurang Km 7.5, RT 04/RW 12, Sinduharjo, Ngaglik, Sleman, D.I. Yogyakarta 55581</li>
       </ul>
     </div>
     <div style="margin-top:8px;padding:14px 16px;border:1px solid var(--border);background:var(--card2);display:flex;align-items:center;gap:12px;">
@@ -744,14 +745,14 @@ a, button, .fc, .cal-day.available, .time-slot.avail, label, .step-item, .nav-ba
 
 /* ═══ DATA ═══ */
 const FIELDS={
-  '1':{name:'LAPANGAN 1',type:'Rumput Sintetis Pro',price:1000000,cap:'16-20 Pemain (8v8 / 10v10)',surface:'Rumput Sintetis Grade Pro',lighting:'LED Penuh',location:'Outdoor',imgs:['https://images.unsplash.com/photo-1575361204480-aadea25e6e68?w=400&q=80','https://images.unsplash.com/photo-1529900748604-07564a03e7a6?w=400&q=80']},
-  '2':{name:'LAPANGAN 2',type:'Rumput Sintetis Premium',price:1200000,cap:'16-20 Pemain (8v8 / 10v10)',surface:'Rumput Sintetis Grade Premium',lighting:'LED Penuh',location:'Outdoor + Tribun Penonton',imgs:['https://images.unsplash.com/photo-1529900748604-07564a03e7a6?w=400&q=80','https://images.unsplash.com/photo-1575361204480-aadea25e6e68?w=400&q=80']},
-  '3':{name:'LAPANGAN 3',type:'Rumput Sintetis Elite',price:1000000,cap:'16-20 Pemain (8v8 / 10v10)',surface:'Rumput Sintetis Grade Elite',lighting:'LED Penuh',location:'Outdoor',imgs:['https://images.unsplash.com/photo-1518604666860-9ed391f76460?w=400&q=80','https://images.unsplash.com/photo-1543326727-cf6c39e8f84c?w=400&q=80']},
+  '1':{name:'LAPANGAN 1',type:'Rumput Sintetis Pro',price:1000000,cap:'16-20 Pemain (8v8 / 10v10)',surface:'Rumput Sintetis Grade Pro',lighting:'LED Penuh',location:'Outdoor',imgs:['https://images.unsplash.com/photo-1602432141202-e8b683524997?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fHNvY2NlciUyMGdyYXNzfGVufDB8fDB8fHww','https://images.unsplash.com/photo-1575361204480-aadea25e6e68?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8c29jY2VyJTIwZ3Jhc3N8ZW58MHx8MHx8fDA%3D']},
+  '2':{name:'LAPANGAN 2',type:'Rumput Sintetis Premium Elite',price:1200000,cap:'16-20 Pemain (8v8 / 10v10)',surface:'Rumput Sintetis Grade Premium',lighting:'LED Penuh',location:'Outdoor + Tribun Penonton',imgs:['https://images.unsplash.com/photo-1502481686408-d428268c24ff?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fHNvY2NlciUyMGdyYXNzfGVufDB8fDB8fHww','https://images.unsplash.com/photo-1517769798-ff41bc33467e?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fHNvY2NlciUyMGdyYXNzfGVufDB8fDB8fHww']},
+  '3':{name:'LAPANGAN 3',type:'Rumput Sintetis Pro',price:1000000,cap:'16-20 Pemain (8v8 / 10v10)',surface:'Rumput Sintetis Grade Elite',lighting:'LED Penuh',location:'Outdoor',imgs:['https://images.unsplash.com/photo-1638868699118-73af322e79c9?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjB8fHNvY2NlciUyMGZpZWxkfGVufDB8fDB8fHww','https://images.unsplash.com/photo-1565308674684-1d8c0b4433d2?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzJ8fHNvY2NlciUyMGZpZWxkfGVufDB8fDB8fHww']},
 };
 const fieldDetail={
-  '1':{info:[['Kapasitas','16-20 Pemain'],['Jenis Rumput','Sintetis Grade Pro'],['Pencahayaan','LED Standar Kompetisi'],['Fasilitas','Ruang Ganti, Toilet, Food Stand, Parkir Luas']]},
-  '2':{info:[['Kapasitas','16-20 Pemain'],['Jenis Rumput','Sintetis Premium'],['Pencahayaan','LED Standar Kompetisi'],['Fasilitas','Tribun, Ruang Ganti, Toilet, Food Stand, Parkir Luas']]},
-  '3':{info:[['Kapasitas','16-20 Pemain'],['Jenis Rumput','Sintetis Grade Elite'],['Pencahayaan','LED Standar Kompetisi'],['Fasilitas','Ruang Ganti, Toilet, Food Stand, Parkir Luas']]},
+  '1':{info:[['Kapasitas','16-20 Pemain'],['Jenis Rumput','Sintetis Grade Pro'],['Pencahayaan','LED Standar Kompetisi'],['Fasilitas','Ruang Ganti, Toilet, Restaurant, Parkir Luas']]},
+  '2':{info:[['Kapasitas','16-20 Pemain'],['Jenis Rumput','Sintetis Premium Elite'],['Pencahayaan','LED Standar Kompetisi'],['Fasilitas','Tribun, Ruang Ganti, Toilet, Restaurant, Parkir Luas']]},
+  '3':{info:[['Kapasitas','16-20 Pemain'],['Jenis Rumput','Sintetis Grade Pro'],['Pencahayaan','LED Standar Kompetisi'],['Fasilitas','Ruang Ganti, Toilet, Restaurant, Parkir Luas']]},
 };
 
 let state={field:null,date:null,slots:[],step:1,calYear:0,calMonth:0};

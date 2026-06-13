@@ -232,6 +232,70 @@ nav.shrunk .nav-cta { padding: 8px 16px; font-size: 0.68rem; border-radius: 30px
 .hero-grid{position:absolute;inset:0;z-index:3;background-image:linear-gradient(rgba(0,255,136,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,136,.03) 1px,transparent 1px);background-size:56px 56px;animation:gridDrift 25s linear infinite;pointer-events:none;}
 @keyframes gridDrift{0%{transform:translateY(0)}100%{transform:translateY(56px)}}
 
+/* ══ HERO CONTENT — Horizontal Heading di Atas ══ */
+.hero-content {
+  position: absolute;
+  top: clamp(100px, 15vh, 140px);
+  left: 0;
+  right: 0;
+  z-index: 5;
+  pointer-events: none;
+  opacity: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.hero-title {
+  font-family: 'Anton', sans-serif;
+  font-weight: 400;
+  line-height: 0.9;
+  text-transform: uppercase;
+  margin: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.hero-line-wrap {
+  display: block;
+  overflow: hidden;
+  line-height: 0.98;
+}
+.hero-line {
+  display: block;
+  font-size: clamp(2rem, 5vw, 4.2rem);
+  letter-spacing: -1px;
+}
+.hero-line-1 {
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgba(255,255,255,0.22);
+}
+.hero-line-2 { color: var(--white); }
+.hero-line-3 {
+  color: var(--green);
+  text-shadow: 0 0 40px rgba(0,255,136,0.25);
+}
+.hero-title-accent { color: var(--green); }
+
+@media (max-width: 1024px) {
+  .hero-title {
+    gap: 12px;
+  }
+  .hero-line {
+    font-size: clamp(1.8rem, 6vw, 3rem);
+  }
+}
+@media (max-width: 600px) {
+  .hero-title {
+    gap: 8px;
+    flex-direction: column;
+    align-items: center;
+  }
+  .hero-line { font-size: clamp(2.4rem, 11.5vw, 3.6rem); }
+}
+
 .btn-p { clip-path:polygon(0 0, 100% 0, calc(100% - 18px) 100%, 0 100%); padding-right:52px;}
 .btn-s { 
   clip-path:polygon(18px 0, 100% 0, 100% 100%, 0 100%); 
@@ -404,6 +468,7 @@ nav.shrunk .nav-cta { padding: 8px 16px; font-size: 0.68rem; border-radius: 30px
   color: transparent;
   -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.22);
 }
+
 @media(max-width:768px){.fields-head{flex-direction:column;align-items:flex-start;gap:20px;}}
 .fields-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:3px;}
 .f-card{background:var(--card);border:1px solid var(--border);position:relative;overflow:hidden;transition:transform .4s,border-color .3s;transform-style:preserve-3d;}
@@ -414,7 +479,7 @@ nav.shrunk .nav-cta { padding: 8px 16px; font-size: 0.68rem; border-radius: 30px
 .f-card-img-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(6,6,8,.95) 0%,transparent 55%);}
 .f-card-badge-wrap{position:absolute;bottom:18px;left:20px;z-index:1;}
 .f-badge{display:inline-block;font-family:'Plus Jakarta Sans',sans-serif;font-size:.6rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--green);border:1px solid rgba(0,255,136,.4);padding:3px 10px;background:rgba(0,255,136,.06);margin-bottom:6px;}
-.f-card-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:1.4rem;font-weight:800;color:var(--white);text-transform:uppercase;letter-spacing:0.5px;line-height:1;}
+.f-card-title{font-family:'Orbitron',sans-serif;font-size:1.4rem;font-weight:800;color:var(--white);text-transform:uppercase;letter-spacing:1px;line-height:1;}
 .f-card-body{padding:22px;}
 .f-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px;}
 .f-card-body 
@@ -448,6 +513,7 @@ nav.shrunk .nav-cta { padding: 8px 16px; font-size: 0.68rem; border-radius: 30px
   z-index: 1;
   pointer-events: none;
 }
+
 .gallery-fg-text {
   font-family: 'Anton', sans-serif;
   font-size: clamp(3rem, 6vw, 4.8rem);
@@ -517,20 +583,56 @@ nav.shrunk .nav-cta { padding: 8px 16px; font-size: 0.68rem; border-radius: 30px
   vertical-align: baseline;
   box-shadow: 0 0 15px var(--glow);
 }
-.gallery-mosaic{display:grid;grid-template-columns:repeat(12,1fr);grid-template-rows:220px 220px;gap:3px;max-width:1200px;margin:0 auto;padding:0 64px;}
-.g-item{position:relative;overflow:hidden;}
+.gallery-mosaic{display:grid;grid-template-columns:repeat(12,1fr);grid-template-rows:320px 320px;gap:16px;max-width:1400px;margin:0 auto;padding:0 24px;}
+.g-item{
+  position:relative;
+  overflow:hidden;
+  border-radius:16px;
+  border:1px solid rgba(255,255,255,0.05);
+  transition:border-color 0.4s ease, box-shadow 0.4s ease;
+}
+.g-item:hover {
+  border-color:rgba(0,255,136,0.4);
+  box-shadow:0 16px 35px rgba(0,255,136,0.15), inset 0 0 15px rgba(0,255,136,0.05);
+}
 .g-item:nth-child(1){grid-column:1/6;grid-row:1/2;}
 .g-item:nth-child(2){grid-column:6/9;grid-row:1/2;}
 .g-item:nth-child(3){grid-column:9/13;grid-row:1/3;}
 .g-item:nth-child(4){grid-column:1/5;grid-row:2/3;}
 .g-item:nth-child(5){grid-column:5/9;grid-row:2/3;}
-.g-item img{width:100%;height:100%;object-fit:cover;filter:brightness(0.3) saturate(0.5);transition:transform .65s ease,filter .65s ease;}
-.g-item:hover img{transform:scale(1.07);filter:brightness(1) saturate(1.1);}
-.g-overlay{position:absolute;inset:0;background:rgba(0,255,136,.06);opacity:0;transition:opacity .3s;display:flex;align-items:center;justify-content:center;}
+.g-item img{width:100%;height:100%;object-fit:cover;filter:brightness(0.4) saturate(0.6) contrast(1.1);transition:transform .8s cubic-bezier(0.25, 1, 0.5, 1), filter .5s ease;}
+.g-item:hover img{transform:scale(1.1);filter:brightness(0.9) saturate(1.15) contrast(1.0);}
+.g-overlay{position:absolute;inset:0;background:radial-gradient(circle at center, rgba(0,255,136,0.08) 0%, rgba(6,6,8,0.6) 100%);opacity:0;transition:opacity 0.4s ease;display:flex;align-items:center;justify-content:center;z-index:2;}
 .g-item:hover .g-overlay{opacity:1;}
-.g-zoom{width:44px;height:44px;border:1px solid var(--green);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--green);font-size:1.1rem;font-weight:300;}
-.g-label{position:absolute;bottom:14px;left:14px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.65rem;letter-spacing:2.5px;text-transform:uppercase;color:var(--green);opacity:0;transition:opacity .3s;}
-.g-item:hover .g-label{opacity:1;}
+.g-zoom{
+  color:var(--green);
+  font-size:3.5rem;
+  font-weight:300;
+  text-shadow:0 0 10px rgba(0,255,136,0.3);
+  transform:scale(0.8) rotate(-45deg);
+  transition:transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), text-shadow 0.3s;
+}
+.g-item:hover .g-zoom{
+  transform:scale(1) rotate(0deg);
+  text-shadow:0 0 25px rgba(0,255,136,0.8);
+}
+.g-label{
+  position:absolute;
+  bottom:20px;
+  left:20px;
+  font-family:'Orbitron',sans-serif;
+  font-size:0.8rem;
+  font-weight:700;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--green);
+  text-shadow:0 2px 10px rgba(0,0,0,0.8);
+  opacity:0;
+  transform:translateY(15px);
+  transition:opacity 0.4s ease, transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  z-index:3;
+}
+.g-item:hover .g-label{opacity:1;transform:translateY(0);}
 
 /* ── LIGHTBOX ── */
 #lb{position:fixed;inset:0;background:rgba(0,0,0,.96);z-index:9999;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s;}
@@ -540,27 +642,34 @@ nav.shrunk .nav-cta { padding: 8px 16px; font-size: 0.68rem; border-radius: 30px
 #lb-close:hover { color: var(--white); text-shadow: 0 0 10px var(--green); }
 
 .showcase-sec{padding:120px 0;background:var(--dark);overflow:hidden;}
-.showcase-head{text-align:center;margin-bottom:56px;}
+.showcase-head {
+  text-align: left;
+  margin-bottom: 56px;
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 24px;
+}
+.pricing-head {
+  text-align: center;
+  margin-bottom: 56px;
+}
 .showcase-grid-layout {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 24px;
-  max-width: 1200px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 32px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 0 16px;
+  padding: 0 24px;
 }
-@media(max-width: 1024px) {
-  .showcase-grid-layout {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-@media(max-width: 600px) {
+@media(max-width: 768px) {
   .showcase-grid-layout {
     grid-template-columns: 1fr;
   }
 }
 
 .sc-card {
+  height: 340px;
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: 16px;
@@ -576,41 +685,50 @@ nav.shrunk .nav-cta { padding: 8px 16px; font-size: 0.68rem; border-radius: 30px
   box-shadow: 0 15px 35px rgba(0, 255, 136, 0.08);
 }
 .sc-card-img-wrap {
-  height: 200px;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   overflow: hidden;
-  position: relative;
+  z-index: 0;
 }
 .sc-card-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: brightness(0.65) saturate(0.8);
+  filter: brightness(0.6) saturate(0.85);
   transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), filter 0.6s ease;
 }
 .sc-card:hover .sc-card-img {
   transform: scale(1.08);
-  filter: brightness(0.8) saturate(1.1);
+  filter: brightness(0.7) saturate(1.0);
 }
 .sc-card-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba(6, 6, 8, 0.95) 0%, transparent 60%);
+  background: linear-gradient(to top, rgba(6, 6, 8, 0.95) 0%, rgba(6, 6, 8, 0.4) 40%, transparent 80%);
+  z-index: 1;
 }
 .sc-card-body {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
   padding: 24px;
-  flex-grow: 1;
+  z-index: 2;
   display: flex;
   flex-direction: column;
-  z-index: 1;
+  justify-content: flex-end;
+  pointer-events: none;
 }
 .sc-card-title {
   font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 1.15rem;
-  font-weight: 700;
+  font-size: 1.45rem;
+  font-weight: 800;
   color: var(--white);
-  margin-bottom: 10px;
+  margin-bottom: 6px;
   letter-spacing: 0.5px;
-  line-height: 1.3;
+  line-height: 1.2;
   transition: color 0.3s ease;
 }
 .sc-card:hover .sc-card-title {
@@ -618,9 +736,9 @@ nav.shrunk .nav-cta { padding: 8px 16px; font-size: 0.68rem; border-radius: 30px
 }
 .sc-card-desc {
   font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 0.85rem;
-  color: var(--gray2);
-  line-height: 1.6;
+  font-size: 0.88rem;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.4;
   margin: 0;
 }
 .sc-card-glow {
@@ -1026,12 +1144,12 @@ footer{padding:64px 0 28px;border-top:1px solid var(--border);position:relative;
 }
 .bst-title { 
   font-family: 'Anton', sans-serif; 
-  font-size: clamp(2.8rem, 5.2vw, 4.4rem); 
+  font-size: clamp(3.6rem, 6.5vw, 5.6rem); 
   font-weight: 400; 
-  line-height: 0.95; 
+  line-height: 0.9; 
   color: var(--white); 
   text-transform: uppercase; 
-  letter-spacing: -0.5px; 
+  letter-spacing: -1px; 
 }
 .bst-title span {
   transition: color 0.3s ease;
@@ -1047,11 +1165,25 @@ footer{padding:64px 0 28px;border-top:1px solid var(--border);position:relative;
   gap: 32px;
 }
 .bst-stat-item {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 2px;
   padding-left: 20px;
-  border-left: 1.5px solid rgba(255, 255, 255, 0.25);
+}
+.bst-stat-item::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 4px;
+  height: 100%;
+  border-left: 4px double rgba(255, 255, 255, 0.25);
+  transition: all 0.3s ease;
+}
+.bst-stat-item:hover::before {
+  border-left: 4px double var(--green);
+  filter: drop-shadow(0 0 5px var(--glow));
 }
 .bst-stat-val {
   font-family: 'Anton', sans-serif;
@@ -1073,15 +1205,25 @@ footer{padding:64px 0 28px;border-top:1px solid var(--border);position:relative;
   color: var(--white);
   letter-spacing: 2px;
   text-transform: uppercase;
+  transition: all 0.3s ease;
+}
+.bst-stat-item:hover .bst-stat-sub {
+  color: var(--green);
+  transform: translateX(4px);
 }
 .bst-stat-desc {
   font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 0.78rem;
+  font-size: 0.92rem;
   font-weight: 300;
   color: var(--gray2);
-  line-height: 1.5;
+  line-height: 1.7;
   margin-top: 4px;
   max-width: 320px;
+  transition: all 0.3s ease;
+}
+.bst-stat-item:hover .bst-stat-desc {
+  color: var(--white);
+  transform: translateX(4px);
 }
 .bst-stats-right-wrap {
   margin-top: 40px;
@@ -1199,10 +1341,11 @@ footer{padding:64px 0 28px;border-top:1px solid var(--border);position:relative;
 /* REVISI RESPONSIVE: Tata letak teks BST di HP */
 @media (max-width: 1024px) {
   .ball-section-text {
-    max-width: 180px !important;
+    max-width: 320px !important;
     width: auto;
     top: 50% !important;
     transform: translateY(-50%) !important;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.8);
   }
   #bst-left {
     left: 20px;
@@ -1216,30 +1359,12 @@ footer{padding:64px 0 28px;border-top:1px solid var(--border);position:relative;
     align-items: flex-end;
   }
   .bst-title {
-    font-size: clamp(1.4rem, 5.5vw, 1.8rem);
-    line-height: 1.1;
+    font-size: clamp(2.4rem, 8vw, 3.2rem);
+    line-height: 1.05;
+    margin-bottom: 8px;
   }
-  .bst-stats-wrap {
-    margin-top: 16px;
-    gap: 16px;
-    padding-left: 12px;
-  }
-  .bst-stat-val, .bst-stat-right-val {
-    font-size: 1.6rem;
-  }
-  .bst-stat-desc, .bst-bottom-desc {
+  .bst-stats-wrap, .bst-stats-right-wrap, .bst-bottom-desc, .bst-stat-desc {
     display: none !important;
-  }
-  .bst-stats-right-wrap {
-    margin-top: 16px;
-    gap: 16px;
-  }
-  .bst-stat-right-dot {
-    width: 24px;
-    height: 24px;
-  }
-  .bst-stat-right-item {
-    gap: 10px;
   }
   .bst-helper-dot, .bst-helper-dot-bottom, .bst-grid-lines, .bst-curved-bg {
     display: none !important;
@@ -1586,6 +1711,95 @@ a, button, [role="button"], input[type="submit"], select, textarea, .btn-p, .btn
   background: radial-gradient(circle at center, rgba(0, 255, 136, 0.06) 0%, transparent 70%);
   pointer-events: none;
 }
+
+/* ── IMAGE FULL-SCREEN SECTION ── */
+.image-sec {
+  position: relative;
+  width: 100%;
+  height: 60vh;
+  min-height: 360px;
+  overflow: hidden;
+}
+.image-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 120%;
+  object-fit: cover;
+  filter: brightness(0.45) saturate(0.85);
+  will-change: transform;
+}
+.image-overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to right, rgba(6,6,8,0.85) 0%, rgba(6,6,8,0.2) 40%, rgba(6,6,8,0.2) 60%, rgba(6,6,8,0.85) 100%),
+    linear-gradient(to bottom, rgba(6,6,8,0.6) 0%, transparent 30%, transparent 70%, rgba(6,6,8,0.9) 100%);
+  z-index: 1;
+  pointer-events: none;
+}
+.image-content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0 8%;
+  z-index: 2;
+}
+.image-text-wrap {
+  max-width: 480px;
+}
+.image-label {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  color: var(--green);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.image-label .ml-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 10px var(--glow);
+}
+.image-title {
+  font-family: 'Anton', sans-serif;
+  font-size: clamp(2.4rem, 5vw, 4rem);
+  font-weight: 400;
+  color: var(--white);
+  text-transform: uppercase;
+  line-height: 0.95;
+  letter-spacing: 2px;
+  margin-bottom: 18px;
+}
+.image-title span {
+  color: var(--green);
+}
+
+.image-sep-top,
+.image-sep-bottom {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0,255,136,0.3), transparent);
+  z-index: 3;
+}
+.image-sep-top { top: 0; }
+.image-sep-bottom { bottom: 0; }
+
+@media (max-width: 768px) {
+  .image-sec { height: 50vh; min-height: 300px; }
+  .image-content { padding: 0 24px; }
+  .image-title { font-size: clamp(1.8rem, 6vw, 2.6rem); }
+}
 </style>
 </head>
 <body>
@@ -1642,6 +1856,13 @@ a, button, [role="button"], input[type="submit"], select, textarea, .btn-p, .btn
     
     <div class="hero-overlay"></div>
     <div class="hero-grid"></div>
+    <div class="hero-content" id="hero-content">
+      <h1 class="hero-title">
+        <div class="hero-line-wrap"><span class="hero-line hero-line-1">PREMIUM</span></div>
+        <div class="hero-line-wrap"><span class="hero-line hero-line-2">SOCCER</span></div>
+        <div class="hero-line-wrap"><span class="hero-line hero-line-3">ARENA<span class="hero-title-accent">.</span></span></div>
+      </h1>
+    </div>
     <div class="scroll-ind center">
       <span>Scroll Down</span>
       <div class="scroll-bar"></div>
@@ -1675,7 +1896,7 @@ a, button, [role="button"], input[type="submit"], select, textarea, .btn-p, .btn
         </div>
         <div class="bst-stat-item">
           <div class="bst-stat-sub">BEBAS GENANGAN AIR</div>
-          <p class="bst-stat-desc">Sistem drainase superior menjaga lapangan tetap kering and aman setelah hujan deras.</p>
+          <p class="bst-stat-desc">Sistem drainase superior menjaga lapangan tetap kering dan aman setelah hujan deras.</p>
         </div>
         <div class="bst-stat-item">
           <div class="bst-stat-sub">PERFORMA KONSISTEN</div>
@@ -1755,23 +1976,23 @@ a, button, [role="button"], input[type="submit"], select, textarea, .btn-p, .btn
   <!-- ROW 2 — scroll kanan (reverse) -->
   <div class="fanwall-track-wrap">
     <div class="fanwall-track fanwall-track-rev">
-      <div class="fw-card sz-s"><img src="https://images.unsplash.com/photo-1517466787929-bc90951d0974?w=600&q=80" alt="" loading="lazy"></div>
-      <div class="fw-card sz-p"><img src="https://images.unsplash.com/photo-1553778263-73a83bab9b0c?w=600&q=80" alt="" loading="lazy"></div>
-      <div class="fw-card sz-m"><img src="https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?w=600&q=80" alt="" loading="lazy"></div>
-      <div class="fw-card sz-l"><img src="https://images.unsplash.com/photo-1570498839593-e565b39455fc?w=600&q=80" alt="" loading="lazy"></div>
-      <div class="fw-card sz-s"><img src="https://images.unsplash.com/photo-1526232761682-d26e03ac148e?w=600&q=80" alt="" loading="lazy"></div>
-      <div class="fw-card sz-m"><img src="https://images.unsplash.com/photo-1560272564-c83b66b1ad12?w=600&q=80" alt="" loading="lazy"></div>
-      <div class="fw-card sz-l"><img src="https://images.unsplash.com/photo-1543326727-cf6c39e8f84c?w=600&q=80" alt="" loading="lazy"></div>
-      <div class="fw-card sz-p"><img src="https://images.unsplash.com/photo-1517927033932-b3d18e61fb3a?w=600&q=80" alt="" loading="lazy"></div>
+      <div class="fw-card sz-s"><img src="https://i.pinimg.com/736x/4e/ef/d5/4eefd50c21b7c794e4f7f47f455c34c4.jpg" alt="" loading="lazy"></div>
+      <div class="fw-card sz-p"><img src="https://images.unsplash.com/photo-1579952363873-27f3bade9f55?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c29jY2VyfGVufDB8fDB8fHww" alt="" loading="lazy"></div>
+      <div class="fw-card sz-m"><img src="https://i.pinimg.com/736x/fe/1c/8e/fe1c8edfb341d4ad913bde066b59fcd1.jpg" alt="" loading="lazy"></div>
+      <div class="fw-card sz-l"><img src="https://images.unsplash.com/photo-1632300951015-42d7df909581?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fG1pbmklMjBzb2NjZXJ8ZW58MHx8MHx8fDA%3D" alt="" loading="lazy"></div>
+      <div class="fw-card sz-s"><img src="https://images.unsplash.com/photo-1715277331635-386d4a875b25?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mjd8fG1pbmklMjBzb2NjZXJ8ZW58MHx8MHx8fDA%3D" alt="" loading="lazy"></div>
+      <div class="fw-card sz-m"><img src="https://images.unsplash.com/photo-1486286701208-1d58e9338013?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fHNvY2NlcnxlbnwwfHwwfHx8MA%3D%3D" alt="" loading="lazy"></div>
+      <div class="fw-card sz-l"><img src="https://i.pinimg.com/1200x/6b/52/e4/6b52e43d320c6767c098f0822b3f7582.jpg" alt="" loading="lazy"></div>
+      <div class="fw-card sz-p"><img src="https://images.unsplash.com/photo-1632300873131-1dd749c83f97?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjB8fG1pbmklMjBzb2NjZXJ8ZW58MHx8MHx8fDA%3D" alt="" loading="lazy"></div>
       <!-- duplikat untuk seamless loop -->
-      <div class="fw-card sz-s"><img src="https://images.unsplash.com/photo-1517466787929-bc90951d0974?w=600&q=80" alt="" loading="lazy"></div>
-      <div class="fw-card sz-p"><img src="https://images.unsplash.com/photo-1553778263-73a83bab9b0c?w=600&q=80" alt="" loading="lazy"></div>
-      <div class="fw-card sz-m"><img src="https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?w=600&q=80" alt="" loading="lazy"></div>
-      <div class="fw-card sz-l"><img src="https://images.unsplash.com/photo-1570498839593-e565b39455fc?w=600&q=80" alt="" loading="lazy"></div>
-      <div class="fw-card sz-s"><img src="https://images.unsplash.com/photo-1526232761682-d26e03ac148e?w=600&q=80" alt="" loading="lazy"></div>
-      <div class="fw-card sz-m"><img src="https://images.unsplash.com/photo-1560272564-c83b66b1ad12?w=600&q=80" alt="" loading="lazy"></div>
-      <div class="fw-card sz-l"><img src="https://images.unsplash.com/photo-1543326727-cf6c39e8f84c?w=600&q=80" alt="" loading="lazy"></div>
-      <div class="fw-card sz-p"><img src="https://images.unsplash.com/photo-1517927033932-b3d18e61fb3a?w=600&q=80" alt="" loading="lazy"></div>
+      <div class="fw-card sz-s"><img src="https://i.pinimg.com/736x/4e/ef/d5/4eefd50c21b7c794e4f7f47f455c34c4.jpg" alt="" loading="lazy"></div>
+      <div class="fw-card sz-p"><img src="https://images.unsplash.com/photo-1579952363873-27f3bade9f55?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c29jY2VyfGVufDB8fDB8fHww" alt="" loading="lazy"></div>
+      <div class="fw-card sz-m"><img src="https://i.pinimg.com/736x/fe/1c/8e/fe1c8edfb341d4ad913bde066b59fcd1.jpg" alt="" loading="lazy"></div>
+      <div class="fw-card sz-l"><img src="https://images.unsplash.com/photo-1632300951015-42d7df909581?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fG1pbmklMjBzb2NjZXJ8ZW58MHx8MHx8fDA%3D" alt="" loading="lazy"></div>
+      <div class="fw-card sz-s"><img src="https://images.unsplash.com/photo-1715277331635-386d4a875b25?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mjd8fG1pbmklMjBzb2NjZXJ8ZW58MHx8MHx8fDA%3D" alt="" loading="lazy"></div>
+      <div class="fw-card sz-m"><img src="https://images.unsplash.com/photo-1486286701208-1d58e9338013?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fHNvY2NlcnxlbnwwfHwwfHx8MA%3D%3D" alt="" loading="lazy"></div>
+      <div class="fw-card sz-l"><img src="https://i.pinimg.com/1200x/6b/52/e4/6b52e43d320c6767c098f0822b3f7582.jpg" alt="" loading="lazy"></div>
+      <div class="fw-card sz-p"><img src="https://images.unsplash.com/photo-1632300873131-1dd749c83f97?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjB8fG1pbmklMjBzb2NjZXJ8ZW58MHx8MHx8fDA%3D" alt="" loading="lazy"></div>
     </div>
   </div>
 </section>
@@ -1787,7 +2008,6 @@ a, button, [role="button"], input[type="submit"], select, textarea, .btn-p, .btn
           <span class="fields-fg-text">OUTDOOR<span class="fields-green-dot"></span></span>
         </h2>
       </div>
-      <p class="sec-sub" style="max-width:360px;text-align:right;">Sistem pencahayaan LED penuh untuk bermain siang maupun malam di atas rumput sintetis berkualitas.</p>
     </div>
     <div class="fields-grid">
       <div class="f-card reveal">
@@ -1869,20 +2089,20 @@ a, button, [role="button"], input[type="submit"], select, textarea, .btn-p, .btn
     </div>
   </div>
   <div class="gallery-mosaic reveal">
-    <div class="g-item" data-full="https://images.unsplash.com/photo-1575361204480-aadea25e6e68?w=1400&q=90">
-      <img src="https://images.unsplash.com/photo-1575361204480-aadea25e6e68?w=900&q=80" alt="" loading="lazy">
+    <div class="g-item" data-full="https://images.unsplash.com/photo-1546717003-caee5f93a9db?w=1400&auto=format&fit=crop&q=90">
+      <img src="https://images.unsplash.com/photo-1546717003-caee5f93a9db?w=900&auto=format&fit=crop&q=80" alt="" loading="lazy">
       <div class="g-overlay"><div class="g-zoom">+</div></div>
       <div class="g-label">Lapangan A</div>
     </div>
-    <div class="g-item" data-full="https://images.unsplash.com/photo-1529900748604-07564a03e7a6?w=1400&q=90">
-      <img src="https://images.unsplash.com/photo-1529900748604-07564a03e7a6?w=900&q=80" alt="" loading="lazy">
-      <div class="g-overlay"><div class="g-zoom">+</div></div>
-      <div class="g-label">Lapangan B</div>
-    </div>
-    <div class="g-item" data-full="https://images.unsplash.com/photo-1518604666860-9ed391f76460?w=1400&q=90">
-      <img src="https://images.unsplash.com/photo-1518604666860-9ed391f76460?w=900&q=80" alt="" loading="lazy">
+    <div class="g-item" data-full="https://images.unsplash.com/photo-1641029185333-7ed62a19d5f0?w=1400&auto=format&fit=crop&q=90">
+      <img src="https://images.unsplash.com/photo-1641029185333-7ed62a19d5f0?w=900&auto=format&fit=crop&q=80" alt="" loading="lazy">
       <div class="g-overlay"><div class="g-zoom">+</div></div>
       <div class="g-label">Lapangan C</div>
+    </div>
+    <div class="g-item" data-full="assets/izuddin-helmi-adnan-K5ChxJaheKI-unsplash.jpg">
+      <img src="assets/izuddin-helmi-adnan-K5ChxJaheKI-unsplash.jpg" alt="" loading="lazy">
+      <div class="g-overlay"><div class="g-zoom">+</div></div>
+      <div class="g-label">Lapangan B</div>
     </div>
     <div class="g-item" data-full="assets/tribun.png?w=1400&q=90">
       <img src="assets/tribun.png?w=900&q=80" alt="" loading="lazy">
@@ -1915,7 +2135,7 @@ a, button, [role="button"], input[type="submit"], select, textarea, .btn-p, .btn
         </div>
         <div class="sc-card-body">
           <h3 class="sc-card-title">Parkir Luas & Aman</h3>
-          <p class="sc-card-desc">Area parkir kami mampu menampung puluhan kendaraan baik motor maupun mobil. Akses keluar masuk yang mudah dan diawasi CCTV.</p>
+          <p class="sc-card-desc">Area parkir kendaraan roda dua dan empat yang aman dipantau CCTV.</p>
         </div>
         <div class="sc-card-glow"></div>
       </div>
@@ -1927,7 +2147,7 @@ a, button, [role="button"], input[type="submit"], select, textarea, .btn-p, .btn
         </div>
         <div class="sc-card-body">
           <h3 class="sc-card-title">Restaurant & Café</h3>
-          <p class="sc-card-desc">Haus setelah bertanding? Pesan minuman atau makanan di area restaurant kami sambil bersantai setelah pertandingan.</p>
+          <p class="sc-card-desc">Tempat bersantai nyaman untuk menikmati makanan setelah bertanding.</p>
         </div>
         <div class="sc-card-glow"></div>
       </div>
@@ -1939,7 +2159,7 @@ a, button, [role="button"], input[type="submit"], select, textarea, .btn-p, .btn
         </div>
         <div class="sc-card-body">
           <h3 class="sc-card-title">Ruang Ganti & Kamar Mandi</h3>
-          <p class="sc-card-desc">Fasilitas kamar mandi dan ruang ganti yang selalu dijaga kebersihannya, lengkap, dan nyaman digunakan.</p>
+          <p class="sc-card-desc">Kamar bilas dan ruang ganti bersih, wangi, dan tertata rapi.</p>
         </div>
         <div class="sc-card-glow"></div>
       </div>
@@ -1951,12 +2171,26 @@ a, button, [role="button"], input[type="submit"], select, textarea, .btn-p, .btn
         </div>
         <div class="sc-card-body">
           <h3 class="sc-card-title">Pencahayaan LED Penuh</h3>
-          <p class="sc-card-desc">Bermain malam hari bukan masalah. Lapangan kami dilengkapi dengan lampu sorot LED standar internasional untuk visibilitas maksimal.</p>
+          <p class="sc-card-desc">Lampu sorot LED berstandar internasional untuk main malam hari.</p>
         </div>
         <div class="sc-card-glow"></div>
       </div>
     </div>
   </div>
+</section>
+
+<!-- ── IMAGE: FULL-SCREEN HORIZONTAL IMAGE ── -->
+<section class="image-sec" id="image-banner">
+  <div class="image-sep-top"></div>
+  <img class="image-img" src="assets/image.jpeg" alt="Mini Soccer Action" loading="lazy">
+  <div class="image-overlay"></div>
+  <div class="image-content">
+    <div class="image-text-wrap">
+      <div class="image-label"><span class="ml-dot"></span>THE GAME NEVER STOPS</div>
+      <h2 class="image-title">PLAY<br><span>BEYOND</span><br>LIMITS</h2>
+    </div>
+  </div>
+  <div class="image-sep-bottom"></div>
 </section>
 
 <section class="pricing-sec" id="harga">
@@ -1966,7 +2200,7 @@ a, button, [role="button"], input[type="submit"], select, textarea, .btn-p, .btn
   </div>
   <div class="bg-pricing-grid"></div>
   <div class="container">
-    <div class="showcase-head reveal" style="margin-bottom:56px;">
+    <div class="pricing-head reveal">
       <div class="sec-label">⬡ Harga Sewa</div>
       <div class="pricing-title-wrap">
         <h2 class="pricing-fg-text">AFFORDABLE</h2>
@@ -2055,22 +2289,22 @@ a, button, [role="button"], input[type="submit"], select, textarea, .btn-p, .btn
       <div class="val-card reveal">
         <div class="val-num">03</div>
         <div class="val-name">Customer Experience</div>
-        <div class="val-desc">Kemudahan booking, pelayanan yang responsif, and lingkungan yang nyaman menjadi bagian dari komitmen kami kepada pelanggan.</div>
+        <div class="val-desc">Kemudahan booking, pelayanan yang responsif, dan lingkungan yang nyaman menjadi bagian dari komitmen kami kepada pelanggan.</div>
       </div>
       <div class="val-card reveal">
         <div class="val-num">04</div>
         <div class="val-name">Professional Service</div>
-        <div class="val-desc">Kami mengutamakan pelayanan yang profesional, jadwal yang jelas, and pengalaman booking yang dapat diandalkan.</div>
+        <div class="val-desc">Kami mengutamakan pelayanan yang profesional, jadwal yang jelas, dan pengalaman booking yang dapat diandalkan.</div>
       </div>
       <div class="val-card reveal">
         <div class="val-num">05</div>
         <div class="val-name">Community & Sportsmanship</div>
-        <div class="val-desc">MiniFut menjadi tempat bagi para pemain untuk berkumpul, bertanding, membangun kebersamaan, and menjunjung sportivitas.</div>
+        <div class="val-desc">MiniFut menjadi tempat bagi para pemain untuk berkumpul, bertanding, membangun kebersamaan, dan menjunjung sportivitas.</div>
       </div>
       <div class="val-card reveal">
         <div class="val-num">06</div>
         <div class="val-name">Integrity & Transparency</div>
-        <div class="val-desc">Harga yang jelas, komunikasi yang terbuka, and pelayanan yang jujur adalah prinsip yang selalu kami pegang.</div>
+        <div class="val-desc">Harga yang jelas, komunikasi yang terbuka, dan pelayanan yang jujur adalah prinsip yang selalu kami pegang.</div>
       </div>
     </div>
   </div>
@@ -2276,7 +2510,57 @@ ScrollTrigger.batch(".reveal", {
   start: "top 85%"
 });
 
+/* ══════════════════════════════════════════════
+   HERO CONTENT — ENTRANCE ANIMATION
+   Stagger per-line reveal (slide up from overflow:hidden wrappers)
+   Delay: 0.5s (memberi ruang shader & stadium 3D untuk init)
+   ══════════════════════════════════════════════ */
+(function initHeroEntrance() {
+  // Set initial transform states
+  gsap.set(".hero-line",  { yPercent: 110 });      // Tersembunyi di bawah overflow:hidden wrapper
+
+  const heroEnterTl = gsap.timeline({ delay: 0.5 });
+  heroEnterTl
+    // Title lines: slide-up stagger reveal dari bawah wrapper
+    .to(".hero-line", {
+      yPercent: 0,
+      duration: 1.15,
+      ease: "power4.out",
+      stagger: 0.1
+    });
+})();
+/* ══ END HERO ENTRANCE ══ */
+
 /* --- LOGIKA SC-CARD TILT & GLOW --- */
+/* ── IMAGE-SEC: Parallax image + text fade ── */
+gsap.to(".image-img", {
+  scrollTrigger: {
+    trigger: ".image-sec",
+    start: "top bottom",
+    end: "bottom top",
+    scrub: 1.2
+  },
+  y: -80,
+  ease: "none"
+});
+
+const tlImage = gsap.timeline({
+  scrollTrigger: {
+    trigger: ".image-sec",
+    start: "top 70%",
+    toggleActions: "play none none none"
+  }
+});
+tlImage.fromTo(".image-label", 
+  { x: -50, opacity: 0 }, 
+  { x: 0, opacity: 1, duration: 0.8, ease: "power2.out" }
+)
+.fromTo(".image-title", 
+  { y: 60, opacity: 0 }, 
+  { y: 0, opacity: 1, duration: 0.9, ease: "power3.out" }, 
+  "-=0.5"
+);
+
 document.querySelectorAll('.sc-card').forEach(card => {
   card.addEventListener('mousemove', e => {
     const rect = card.getBoundingClientRect();
@@ -2350,33 +2634,6 @@ if(typeof particlesJS !== 'undefined') {
   });
 }
 
-/* --- LOGIKA 3D TILT & GLARE --- */
-document.querySelectorAll('.f-card').forEach(card => {
-  const glare = document.createElement('div');
-  glare.classList.add('f-glare');
-  card.appendChild(glare);
-
-  card.addEventListener('mousemove', (e) => {
-    const rect = card.getBoundingClientRect();
-    const x = e.clientX - rect.left, y = e.clientY - rect.top;
-    const centerX = rect.width / 2, centerY = rect.height / 2;
-    const rotateX = ((y - centerY) / centerY) * -12; 
-    const rotateY = ((x - centerX) / centerX) * 12;
-    
-    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
-    card.style.transition = 'none';
-    
-    glare.style.background = `radial-gradient(circle at ${x}px ${y}px, rgba(255,255,255,0.15) 0%, transparent 70%)`;
-    glare.style.opacity = '1';
-  });
-
-  card.addEventListener('mouseleave', () => {
-    card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
-    card.style.transition = 'transform 0.4s ease, border-color 0.3s';
-    glare.style.opacity = '0';
-  });
-});
-
 /* ─── VALUES CARDS REACTIVE GLOW ─── */
 document.querySelectorAll('.val-card').forEach(card => {
   card.addEventListener('mousemove', e => {
@@ -2391,8 +2648,9 @@ document.querySelectorAll('.val-card').forEach(card => {
   const canvas = document.getElementById('shader-canvas');
   if (!canvas) return;
 
-  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  const _dpr = Math.min(window.devicePixelRatio, window.innerWidth <= 768 ? 1.0 : 1.5);
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: _dpr <= 1, powerPreference: 'high-performance' });
+  renderer.setPixelRatio(_dpr);
   renderer.setSize(window.innerWidth, window.innerHeight);
 
   const scene = new THREE.Scene();
@@ -2466,10 +2724,15 @@ document.querySelectorAll('.val-card').forEach(card => {
   }
   window.addEventListener('resize', handleResize);
 
+  let _shaderVisible = true;
+  const _shaderObs = new IntersectionObserver(([entry]) => { _shaderVisible = entry.isIntersecting; }, { threshold: 0 });
+  _shaderObs.observe(canvas);
+
   function animate() {
+    requestAnimationFrame(animate);
+    if (!_shaderVisible) return;
     uniforms.time.value += 0.01;
     renderer.render(scene, camera);
-    requestAnimationFrame(animate);
   }
   animate();
 })();
@@ -2478,8 +2741,9 @@ document.querySelectorAll('.val-card').forEach(card => {
 (function initHeroThree() {
   const canvas = document.getElementById('three-canvas');
   if (!canvas) return;
-  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  const _heroDpr = Math.min(window.devicePixelRatio, window.innerWidth <= 768 ? 1.0 : 1.5);
+  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: _heroDpr <= 1, powerPreference: 'high-performance' });
+  renderer.setPixelRatio(_heroDpr);
 
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
@@ -2580,7 +2844,13 @@ document.querySelectorAll('.val-card').forEach(card => {
   document.addEventListener('mousemove', e => { mouseX = (e.clientX / window.innerWidth - 0.5) * 2; mouseY = (e.clientY / window.innerHeight - 0.5) * 2; });
 
   let t = 0;
+  let _heroVisible = true;
+  const _heroObs = new IntersectionObserver(([entry]) => { _heroVisible = entry.isIntersecting; }, { threshold: 0 });
+  _heroObs.observe(canvas);
+
   function animate() {
+    requestAnimationFrame(animate);
+    if (!_heroVisible) return;
     t += 0.01;
 
     // Interpolasi halus scroll progress dengan efek buttery smooth damping
@@ -2593,7 +2863,6 @@ document.querySelectorAll('.val-card').forEach(card => {
     fieldMat.emissive = new THREE.Color(0x001a08);
     fieldMat.emissiveIntensity = 0.3 + Math.sin(t * 0.5) * 0.1;
     renderer.render(scene, camera);
-    requestAnimationFrame(animate);
   }
   animate();
 })();
@@ -2603,8 +2872,9 @@ document.querySelectorAll('.val-card').forEach(card => {
   const canvasScroll = document.getElementById('ball-scroll-canvas');
   if (!canvasScroll) return;
 
-  const rendererS = new THREE.WebGLRenderer({ canvas: canvasScroll, antialias: true, alpha: true });
-  rendererS.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  const _ballDpr = Math.min(window.devicePixelRatio, window.innerWidth <= 768 ? 1.0 : 1.5);
+  const rendererS = new THREE.WebGLRenderer({ canvas: canvasScroll, antialias: _ballDpr <= 1, alpha: true, powerPreference: 'high-performance' });
+  rendererS.setPixelRatio(_ballDpr);
   rendererS.toneMapping = THREE.ACESFilmicToneMapping;
   rendererS.toneMappingExposure = 1.2;
 
@@ -2621,7 +2891,8 @@ document.querySelectorAll('.val-card').forEach(card => {
   resizeS();
 
   // Menggunakan shared shader ballVertS dan ballFragS global agar konsisten
-  const ballSGeo = new THREE.SphereGeometry(1.6, 64, 64);
+  const _ballSegs = window.innerWidth <= 768 ? 32 : 48;
+  const ballSGeo = new THREE.SphereGeometry(1.6, _ballSegs, _ballSegs);
   const ballSMat = new THREE.ShaderMaterial({ vertexShader: ballVertS, fragmentShader: ballFragS, uniforms: { uTime: { value: 0 } } });
   const scrollBall = new THREE.Mesh(ballSGeo, ballSMat);
   
@@ -2733,7 +3004,7 @@ document.querySelectorAll('.val-card').forEach(card => {
   // REVISI RESPONSIVE: Penyetelan skala & batas translasi horizontal bola secara adaptif di Mobile & Desktop
   let isMobile = window.innerWidth <= 768;
   let responsiveScale = {
-    hero: isMobile ? 0.08 : 0.15,
+    hero: isMobile ? 0.15 : 0.15,
     sec2: isMobile ? 0.6 : 0.9,
     sec3: isMobile ? 1.4 : 3.2,
     sec4: isMobile ? 1.4 : 3.2
@@ -2742,7 +3013,7 @@ document.querySelectorAll('.val-card').forEach(card => {
   let targetX = 3.5;
   function updateTargetX() {
     isMobile = window.innerWidth <= 768;
-    responsiveScale.hero = isMobile ? 0.08 : 0.15;
+    responsiveScale.hero = isMobile ? 0.15 : 0.15;
     responsiveScale.sec2 = isMobile ? 0.6 : 0.9;
     responsiveScale.sec3 = isMobile ? 1.4 : 3.2;
     responsiveScale.sec4 = isMobile ? 1.4 : 3.2;
@@ -2788,11 +3059,13 @@ document.querySelectorAll('.val-card').forEach(card => {
   ballScrollTl
     // Jeda diam awal di Hero Section agar user bisa membaca / melihat pantulan bola sebelum menggelinding
     .to({}, { duration: 1.0 })
-    // REVISI: Sembunyikan scroll indicator tengah bawah secara smooth begitu mulai di-scroll
-    .to(".scroll-ind.center", { opacity: 0, y: 15, duration: 0.5, ease: "power1.in" }, "<")
     // 1. TRANSISI SEAMLESS HERO -> SECTION 2 (MINI FUT)
+    // Sembunyikan heading dan scroll indicator smooth saat hero mulai transisi
+    .to("#hero-content", { opacity: 0, y: -20, duration: 0.5, ease: "power2.in" })
+    // REVISI: Sembunyikan scroll indicator tengah bawah secara smooth
+    .to(".scroll-ind.center", { opacity: 0, y: 15, duration: 0.5, ease: "power1.in" }, "<")
     // Lapangan stadium 3D & background shader air di belakang memudar halus ke hitam
-    .to("#scroll-sec-hero", { opacity: 0, autoAlpha: 0, duration: 1.5, ease: "power2.inOut" })
+    .to("#scroll-sec-hero", { opacity: 0, autoAlpha: 0, duration: 1.5, ease: "power2.inOut" }, "<")
     // Slide Section 2 (MINI FUT) memudar masuk
     .to("#scroll-sec-1", { opacity: 1, autoAlpha: 1, duration: 1.5, ease: "power2.inOut" }, "<")
     // Munculkan outline lapangan taktis putih & bingkai hijau overlay
@@ -2867,7 +3140,14 @@ document.querySelectorAll('.val-card').forEach(card => {
 
   // Loop Render Animasi
   let timeS = 0;
+
+  let _ballVisible = true;
+  const _ballObs = new IntersectionObserver(([entry]) => { _ballVisible = entry.isIntersecting; }, { threshold: 0 });
+  _ballObs.observe(containerShowcase);
+
   function renderScrollBall() {
+    requestAnimationFrame(renderScrollBall);
+    if (!_ballVisible) return;
     timeS += 0.01;
 
     // Kalkulasi efek memantul (bounce) bola saat diam di Hero Section (Scroll progress paling atas)
@@ -2930,7 +3210,6 @@ document.querySelectorAll('.val-card').forEach(card => {
     
     ballSMat.uniforms.uTime.value = timeS;
     rendererS.render(sceneS, cameraS);
-    requestAnimationFrame(renderScrollBall);
   }
   renderScrollBall();
 })();

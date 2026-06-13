@@ -1126,7 +1126,7 @@ function checkConfirm() {
   const cv = document.getElementById('confPw')?.value;
   const hint = document.getElementById('matchHint');
   if (!hint || !cv) return;
-  hint.textContent = cv === nv ? '✓ Password cocok' : '✗ Password tidak cocok';
+  hint.textContent = cv === nv ? 'Password cocok' : 'Password tidak cocok';
   hint.style.color  = cv === nv ? 'var(--green)' : '#ff8099';
 }
 

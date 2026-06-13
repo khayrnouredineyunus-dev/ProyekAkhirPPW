@@ -52,7 +52,7 @@ if (isset($_SESSION['user_id'])) {
 :root {
   --black:   #060608; --dark:    #0c0d10; --card:    #111318; --card2:   #161820;
   --border:  rgba(255,255,255,0.06); --border2: rgba(255,255,255,0.1);
-  --green:   #00ff88; --green2:  --green; --glow:    rgba(0,255,136,0.18); --glow-sm: rgba(0,255,136,0.07);
+  --green:   #00ff88; --green2:  var(--green); --glow:    rgba(0,255,136,0.18); --glow-sm: rgba(0,255,136,0.07);
   --gray:    #6b7080; --gray2:   #9aa0b0; --white:   #eceef2; --red:     #ff3b5c;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -252,8 +252,189 @@ nav.shrunk .nav-cta { padding: 8px 16px; font-size: 0.68rem; border-radius: 30px
 #shader-canvas{position:absolute;inset:0;width:100%!important;height:100%!important;z-index:0;}
 #three-canvas{position:absolute;inset:0;width:100%!important;height:100%!important;z-index:4;opacity:1;}
 .hero-overlay{position:absolute;inset:0;background:linear-gradient(135deg,rgba(6,6,8,.85) 0%,rgba(6,6,8,.3) 60%,rgba(6,6,8,.7) 100%);z-index:2;pointer-events:none;}
-.hero-grid{position:absolute;inset:0;z-index:3;background-image:linear-gradient(rgba(0,255,136,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,136,.03) 1px,transparent 1px);background-size:56px 56px;animation:gridDrift 25s linear infinite;pointer-events:none;}
-@keyframes gridDrift{0%{transform:translateY(0)}100%{transform:translateY(56px)}}
+.hero-grid{display:none;}
+
+/* ══ HERO CONTENT — Heading Premium di Atas ══ */
+.hero-content {
+  position: absolute;
+  top: clamp(112px, 16vh, 164px);
+  left: 0;
+  right: 0;
+  z-index: 5;
+  pointer-events: none;
+  opacity: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0 24px;
+}
+
+/* Halo gelap lembut di belakang heading agar tetap kontras di atas canvas 3D */
+.hero-content::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(920px, 130vw);
+  height: 320px;
+  background: radial-gradient(ellipse, rgba(6,6,8,.55) 0%, transparent 72%);
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* Eyebrow label */
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--green);
+  margin-bottom: 20px;
+  padding: 8px 20px;
+  border: 1px solid rgba(0,255,136,.25);
+  border-radius: 30px;
+  background: rgba(0,255,136,.05);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  opacity: 0; /* GSAP */
+}
+.hero-eyebrow-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  flex-shrink: 0;
+  animation: heroDotPulse 2.4s ease-in-out infinite;
+}
+@keyframes heroDotPulse {
+  0%, 100% { box-shadow: 0 0 6px rgba(0,255,136,.45); transform: scale(1); }
+  50%      { box-shadow: 0 0 16px rgba(0,255,136,.85), 0 0 28px rgba(0,255,136,.2); transform: scale(1.3); }
+}
+.hero-eyebrow-short { display: none; }
+
+.hero-title {
+  font-family: 'Anton', sans-serif;
+  font-weight: 400;
+  line-height: 0.9;
+  text-transform: uppercase;
+  margin: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+  perspective: 700px;
+}
+.hero-line-wrap {
+  display: block;
+  overflow: hidden;
+  line-height: 0.98;
+  padding: 0 2px;
+}
+.hero-line {
+  display: block;
+  font-size: clamp(2rem, 5vw, 4.2rem);
+  letter-spacing: -1px;
+  will-change: transform, filter;
+}
+.hero-line-1 {
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgba(255,255,255,0.22);
+  animation: heroOutlinePulse 5s ease-in-out infinite;
+}
+@keyframes heroOutlinePulse {
+  0%, 100% { -webkit-text-stroke-color: rgba(255,255,255,.18); }
+  50%      { -webkit-text-stroke-color: rgba(0,255,136,.4); }
+}
+.hero-line-2 {
+  color: var(--white);
+  text-shadow: 0 4px 30px rgba(0,0,0,.35);
+}
+.hero-line-3 {
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  background: linear-gradient(110deg, var(--green) 25%, #d4ffec 50%, var(--green) 75%);
+  background-size: 220% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: heroShine 6s linear infinite;
+}
+@keyframes heroShine {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+.hero-title-accent {
+  color: var(--green);
+  display: inline-block;
+  transform-origin: center;
+  animation: heroAccentPulse 2.4s ease-in-out infinite;
+}
+@keyframes heroAccentPulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50%      { transform: scale(1.4); opacity: .65; }
+}
+
+/* Garis aksen hijau di bawah judul */
+.hero-underline {
+  width: clamp(70px, 9vw, 130px);
+  height: 3px;
+  margin-top: 24px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, transparent, var(--green), transparent);
+  transform: scaleX(0);
+  opacity: 0; /* GSAP */
+  animation: heroUnderlinePulse 3s ease-in-out infinite;
+}
+@keyframes heroUnderlinePulse {
+  0%, 100% { box-shadow: 0 0 10px rgba(0,255,136,.3); }
+  50%      { box-shadow: 0 0 22px rgba(0,255,136,.6); }
+}
+
+@media (max-width: 1024px) {
+  .hero-content { top: clamp(98px, 14vh, 144px); }
+  .hero-content::before { height: 260px; }
+  .hero-title {
+    gap: 12px;
+  }
+  .hero-line {
+    font-size: clamp(1.8rem, 6vw, 3rem);
+  }
+  .hero-eyebrow { font-size: 0.6rem; letter-spacing: 3px; padding: 7px 16px; }
+}
+@media (max-width: 600px) {
+  .hero-title {
+    gap: 8px;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .hero-line-wrap:nth-child(2) {
+    display: none;
+  }
+  .hero-eyebrow {
+    font-size: 0.55rem;
+    letter-spacing: 2.5px;
+    gap: 8px;
+    padding: 6px 14px;
+    white-space: normal;
+    text-align: center;
+    line-height: 1.6;
+  }
+  .hero-eyebrow-full { display: none; }
+  .hero-eyebrow-short { display: inline; }
+  .hero-line { font-size: clamp(1.8rem, 9vw, 2.8rem); }
+  .hero-content::before { width: 100vw; height: 220px; }
+  .hero-underline { margin-top: 16px; }
+}
 
 .btn-p { clip-path:polygon(0 0, 100% 0, calc(100% - 18px) 100%, 0 100%); padding-right:52px;}
 .btn-s { 
@@ -427,6 +608,7 @@ nav.shrunk .nav-cta { padding: 8px 16px; font-size: 0.68rem; border-radius: 30px
   color: transparent;
   -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.22);
 }
+
 @media(max-width:768px){.fields-head{flex-direction:column;align-items:flex-start;gap:20px;}}
 .fields-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:3px;}
 .f-card{background:var(--card);border:1px solid var(--border);position:relative;overflow:hidden;transition:transform .4s,border-color .3s;transform-style:preserve-3d;}
@@ -437,7 +619,7 @@ nav.shrunk .nav-cta { padding: 8px 16px; font-size: 0.68rem; border-radius: 30px
 .f-card-img-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(6,6,8,.95) 0%,transparent 55%);}
 .f-card-badge-wrap{position:absolute;bottom:18px;left:20px;z-index:1;}
 .f-badge{display:inline-block;font-family:'Plus Jakarta Sans',sans-serif;font-size:.6rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--green);border:1px solid rgba(0,255,136,.4);padding:3px 10px;background:rgba(0,255,136,.06);margin-bottom:6px;}
-.f-card-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:1.4rem;font-weight:700;color:var(--white);letter-spacing:0.5px;line-height:1;}
+.f-card-title{font-family:'Orbitron',sans-serif;font-size:1.4rem;font-weight:700;color:var(--white);letter-spacing:1px;line-height:1;}
 .f-card-body{padding:22px;}
 .f-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px;}
 .f-card-body 
@@ -541,20 +723,56 @@ nav.shrunk .nav-cta { padding: 8px 16px; font-size: 0.68rem; border-radius: 30px
   box-shadow: 0 0 15px var(--glow);
 }
 
-.gallery-mosaic{display:grid;grid-template-columns:repeat(12,1fr);grid-template-rows:220px 220px;gap:3px;max-width:1200px;margin:0 auto;padding:0 64px;}
-.g-item{position:relative;overflow:hidden;}
+.gallery-mosaic{display:grid;grid-template-columns:repeat(12,1fr);grid-template-rows:320px 320px;gap:16px;max-width:1400px;margin:0 auto;padding:0 24px;}
+.g-item{
+  position:relative;
+  overflow:hidden;
+  border-radius:16px;
+  border:1px solid rgba(255,255,255,0.05);
+  transition:border-color 0.4s ease, box-shadow 0.4s ease;
+}
+.g-item:hover {
+  border-color:rgba(0,255,136,0.4);
+  box-shadow:0 16px 35px rgba(0,255,136,0.15), inset 0 0 15px rgba(0,255,136,0.05);
+}
 .g-item:nth-child(1){grid-column:1/6;grid-row:1/2;}
 .g-item:nth-child(2){grid-column:6/9;grid-row:1/2;}
 .g-item:nth-child(3){grid-column:9/13;grid-row:1/3;}
 .g-item:nth-child(4){grid-column:1/5;grid-row:2/3;}
 .g-item:nth-child(5){grid-column:5/9;grid-row:2/3;}
-.g-item img{width:100%;height:100%;object-fit:cover;filter:brightness(0.3) saturate(0.5);transition:transform .65s ease,filter .65s ease;}
-.g-item:hover img{transform:scale(1.07);filter:brightness(1) saturate(1.1);}
-.g-overlay{position:absolute;inset:0;background:rgba(0,255,136,.06);opacity:0;transition:opacity .3s;display:flex;align-items:center;justify-content:center;}
+.g-item img{width:100%;height:100%;object-fit:cover;filter:brightness(0.4) saturate(0.6) contrast(1.1);transition:transform .8s cubic-bezier(0.25, 1, 0.5, 1), filter .5s ease;}
+.g-item:hover img{transform:scale(1.1);filter:brightness(0.9) saturate(1.15) contrast(1.0);}
+.g-overlay{position:absolute;inset:0;background:radial-gradient(circle at center, rgba(0,255,136,0.08) 0%, rgba(6,6,8,0.6) 100%);opacity:0;transition:opacity 0.4s ease;display:flex;align-items:center;justify-content:center;z-index:2;}
 .g-item:hover .g-overlay{opacity:1;}
-.g-zoom{width:44px;height:44px;border:1px solid var(--green);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--green);font-size:1.1rem;font-weight:300;}
-.g-label{position:absolute;bottom:14px;left:14px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.65rem;letter-spacing:2.5px;text-transform:uppercase;color:var(--green);opacity:0;transition:opacity .3s;}
-.g-item:hover .g-label{opacity:1;}
+.g-zoom{
+  color:var(--green);
+  font-size:3.5rem;
+  font-weight:300;
+  text-shadow:0 0 10px rgba(0,255,136,0.3);
+  transform:scale(0.8) rotate(-45deg);
+  transition:transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), text-shadow 0.3s;
+}
+.g-item:hover .g-zoom{
+  transform:scale(1) rotate(0deg);
+  text-shadow:0 0 25px rgba(0,255,136,0.8);
+}
+.g-label{
+  position:absolute;
+  bottom:20px;
+  left:20px;
+  font-family:'Orbitron',sans-serif;
+  font-size:0.8rem;
+  font-weight:700;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--green);
+  text-shadow:0 2px 10px rgba(0,0,0,0.8);
+  opacity:0;
+  transform:translateY(15px);
+  transition:opacity 0.4s ease, transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  z-index:3;
+}
+.g-item:hover .g-label{opacity:1;transform:translateY(0);}
 
 #lb{position:fixed;inset:0;background:rgba(0,0,0,.96);z-index:9999;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s;}
 #lb.open{opacity:1;pointer-events:all;}
@@ -563,27 +781,34 @@ nav.shrunk .nav-cta { padding: 8px 16px; font-size: 0.68rem; border-radius: 30px
 #lb-close:hover { color: var(--white); text-shadow: 0 0 10px var(--green); }
 
 .showcase-sec{padding:120px 0;background:var(--dark);overflow:hidden;}
-.showcase-head{text-align:center;margin-bottom:56px;}
+.showcase-head {
+  text-align: left;
+  margin-bottom: 56px;
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 24px;
+}
+.pricing-head {
+  text-align: center;
+  margin-bottom: 56px;
+}
 .showcase-grid-layout {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 24px;
-  max-width: 1200px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 32px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 0 16px;
+  padding: 0 24px;
 }
-@media(max-width: 1024px) {
-  .showcase-grid-layout {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-@media(max-width: 600px) {
+@media(max-width: 768px) {
   .showcase-grid-layout {
     grid-template-columns: 1fr;
   }
 }
 
 .sc-card {
+  height: 340px;
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: 16px;
@@ -599,41 +824,50 @@ nav.shrunk .nav-cta { padding: 8px 16px; font-size: 0.68rem; border-radius: 30px
   box-shadow: 0 15px 35px rgba(0, 255, 136, 0.08);
 }
 .sc-card-img-wrap {
-  height: 200px;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   overflow: hidden;
-  position: relative;
+  z-index: 0;
 }
 .sc-card-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: brightness(0.65) saturate(0.8);
+  filter: brightness(0.6) saturate(0.85);
   transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), filter 0.6s ease;
 }
 .sc-card:hover .sc-card-img {
   transform: scale(1.08);
-  filter: brightness(0.8) saturate(1.1);
+  filter: brightness(0.7) saturate(1.0);
 }
 .sc-card-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba(6, 6, 8, 0.95) 0%, transparent 60%);
+  background: linear-gradient(to top, rgba(6, 6, 8, 0.95) 0%, rgba(6, 6, 8, 0.4) 40%, transparent 80%);
+  z-index: 1;
 }
 .sc-card-body {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
   padding: 24px;
-  flex-grow: 1;
+  z-index: 2;
   display: flex;
   flex-direction: column;
-  z-index: 1;
+  justify-content: flex-end;
+  pointer-events: none;
 }
 .sc-card-title {
   font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 1.15rem;
-  font-weight: 700;
+  font-size: 1.45rem;
+  font-weight: 800;
   color: var(--white);
-  margin-bottom: 10px;
+  margin-bottom: 6px;
   letter-spacing: 0.5px;
-  line-height: 1.3;
+  line-height: 1.2;
   transition: color 0.3s ease;
 }
 .sc-card:hover .sc-card-title {
@@ -641,9 +875,9 @@ nav.shrunk .nav-cta { padding: 8px 16px; font-size: 0.68rem; border-radius: 30px
 }
 .sc-card-desc {
   font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 0.85rem;
-  color: var(--gray2);
-  line-height: 1.6;
+  font-size: 0.88rem;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.4;
   margin: 0;
 }
 .sc-card-glow {
@@ -761,6 +995,7 @@ nav.shrunk .nav-cta { padding: 8px 16px; font-size: 0.68rem; border-radius: 30px
 footer{padding:64px 0 28px;border-top:1px solid var(--border);position:relative;z-index:6;background:var(--black);}
 .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:60px;margin-bottom:56px;}
 @media(max-width:900px){.footer-grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:480px){.footer-grid{grid-template-columns:1fr;gap:32px;} .footer-bottom{flex-wrap:wrap;gap:12px;justify-content:center;text-align:center;}}
 .footer-desc{font-family:'Plus Jakarta Sans',sans-serif;font-size:.84rem;color:var(--gray);line-height:1.75;max-width:270px;margin-top:14px;}
 .f-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:.65rem;letter-spacing:3px;text-transform:uppercase;color:var(--gray2);margin-bottom:20px;font-weight:700;}
 .f-links{list-style:none;display:flex;flex-direction:column;gap:11px;}
@@ -771,6 +1006,12 @@ footer{padding:64px 0 28px;border-top:1px solid var(--border);position:relative;
 .footer-copy{font-family:'Plus Jakarta Sans',sans-serif;font-size:.7rem;letter-spacing:1px;color:var(--gray);}
 ::-webkit-scrollbar{width:4px;height:4px;}
 ::-webkit-scrollbar-thumb{background:rgba(0,255,136,.15) }
+
+/* Keyboard accessibility: focus-visible ring */
+a:focus-visible, button:focus-visible, [role="button"]:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: 3px;
+}
 
 .fields-sec, .gallery-sec, .showcase-sec, .pricing-sec, .cta-sec { position: relative; }
 
@@ -1046,12 +1287,12 @@ footer{padding:64px 0 28px;border-top:1px solid var(--border);position:relative;
 }
 .bst-title { 
   font-family: 'Anton', sans-serif; 
-  font-size: clamp(2.8rem, 5.2vw, 4.4rem); 
+  font-size: clamp(3.6rem, 6.5vw, 5.6rem); 
   font-weight: 400; 
-  line-height: 0.95; 
+  line-height: 0.9; 
   color: var(--white); 
   text-transform: uppercase; 
-  letter-spacing: -0.5px; 
+  letter-spacing: -1px; 
 }
 .bst-title span {
   transition: color 0.3s ease;
@@ -1067,11 +1308,25 @@ footer{padding:64px 0 28px;border-top:1px solid var(--border);position:relative;
   gap: 32px;
 }
 .bst-stat-item {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 2px;
   padding-left: 20px;
-  border-left: 1.5px solid rgba(255, 255, 255, 0.25);
+}
+.bst-stat-item::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 2px;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.25);
+  transition: all 0.3s ease;
+}
+.bst-stat-item:hover::before {
+  background: var(--green);
+  box-shadow: 0 0 8px var(--glow);
 }
 .bst-stat-val {
   font-family: 'Anton', sans-serif;
@@ -1093,15 +1348,25 @@ footer{padding:64px 0 28px;border-top:1px solid var(--border);position:relative;
   color: var(--white);
   letter-spacing: 2px;
   text-transform: uppercase;
+  transition: all 0.3s ease;
+}
+.bst-stat-item:hover .bst-stat-sub {
+  color: var(--green);
+  transform: translateX(4px);
 }
 .bst-stat-desc {
   font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 0.78rem;
+  font-size: 0.92rem;
   font-weight: 300;
   color: var(--gray2);
-  line-height: 1.5;
+  line-height: 1.7;
   margin-top: 4px;
   max-width: 320px;
+  transition: all 0.3s ease;
+}
+.bst-stat-item:hover .bst-stat-desc {
+  color: var(--white);
+  transform: translateX(4px);
 }
 .bst-stats-right-wrap {
   margin-top: 40px;
@@ -1194,10 +1459,11 @@ footer{padding:64px 0 28px;border-top:1px solid var(--border);position:relative;
 
 @media (max-width: 1024px) {
   .ball-section-text {
-    max-width: 180px !important;
+    max-width: 320px !important;
     width: auto;
     top: 50% !important;
     transform: translateY(-50%) !important;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.8);
   }
   #bst-left {
     left: 20px;
@@ -1211,30 +1477,15 @@ footer{padding:64px 0 28px;border-top:1px solid var(--border);position:relative;
     align-items: flex-end;
   }
   .bst-title {
-    font-size: clamp(1.4rem, 5.5vw, 1.8rem);
-    line-height: 1.1;
+    font-size: clamp(2.4rem, 8vw, 3.2rem);
+    line-height: 1.05;
+    margin-bottom: 8px;
   }
-  .bst-stats-wrap {
-    margin-top: 16px;
-    gap: 16px;
-    padding-left: 12px;
-  }
-  .bst-stat-val, .bst-stat-right-val {
-    font-size: 1.6rem;
-  }
-  .bst-stat-desc, .bst-bottom-desc {
+  .bst-stats-wrap, .bst-stats-right-wrap, .bst-bottom-desc, .bst-stat-desc {
     display: none !important;
   }
-  .bst-stats-right-wrap {
-    margin-top: 16px;
-    gap: 16px;
-  }
-  .bst-stat-right-dot {
-    width: 24px;
-    height: 24px;
-  }
-  .bst-stat-right-item {
-    gap: 10px;
+  .bst-grid-lines, .bst-curved-bg {
+    display: none !important;
   }
 }
 
@@ -1574,6 +1825,95 @@ a, button, [role="button"], input[type="submit"], select, textarea, .btn-p, .btn
   background: radial-gradient(circle at center, rgba(0, 255, 136, 0.06) 0%, transparent 70%);
   pointer-events: none;
 }
+
+/* ── IMAGE FULL-SCREEN SECTION ── */
+.image-sec {
+  position: relative;
+  width: 100%;
+  height: 60vh;
+  min-height: 360px;
+  overflow: hidden;
+}
+.image-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 120%;
+  object-fit: cover;
+  filter: brightness(0.45) saturate(0.85);
+  will-change: transform;
+}
+.image-overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to right, rgba(6,6,8,0.85) 0%, rgba(6,6,8,0.2) 40%, rgba(6,6,8,0.2) 60%, rgba(6,6,8,0.85) 100%),
+    linear-gradient(to bottom, rgba(6,6,8,0.6) 0%, transparent 30%, transparent 70%, rgba(6,6,8,0.9) 100%);
+  z-index: 1;
+  pointer-events: none;
+}
+.image-content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0 8%;
+  z-index: 2;
+}
+.image-text-wrap {
+  max-width: 480px;
+}
+.image-label {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  color: var(--green);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.image-label .ml-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 10px var(--glow);
+}
+.image-title {
+  font-family: 'Anton', sans-serif;
+  font-size: clamp(2.4rem, 5vw, 4rem);
+  font-weight: 400;
+  color: var(--white);
+  text-transform: uppercase;
+  line-height: 0.95;
+  letter-spacing: 2px;
+  margin-bottom: 18px;
+}
+.image-title span {
+  color: var(--green);
+}
+
+.image-sep-top,
+.image-sep-bottom {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0,255,136,0.3), transparent);
+  z-index: 3;
+}
+.image-sep-top { top: 0; }
+.image-sep-bottom { bottom: 0; }
+
+@media (max-width: 768px) {
+  .image-sec { height: 50vh; min-height: 300px; }
+  .image-content { padding: 0 24px; }
+  .image-title { font-size: clamp(1.8rem, 6vw, 2.6rem); }
+}
 </style>
 </head>
 <body>
@@ -1658,6 +1998,19 @@ a, button, [role="button"], input[type="submit"], select, textarea, .btn-p, .btn
     
     <div class="hero-overlay"></div>
     <div class="hero-grid"></div>
+    <div class="hero-content" id="hero-content">
+      <div class="hero-eyebrow">
+        <span class="hero-eyebrow-dot"></span>
+        <span class="hero-eyebrow-full">Jl. Kaliurang Km 7.5, Sinduharjo, Ngaglik, Sleman, Yogyakarta</span>
+        <span class="hero-eyebrow-short">Jl. Kaliurang Km 7.5, Sleman, DIY</span>
+      </div>
+      <h1 class="hero-title">
+        <div class="hero-line-wrap"><span class="hero-line hero-line-1">PREMIUM</span></div>
+        <div class="hero-line-wrap"><span class="hero-line hero-line-2">SOCCER</span></div>
+        <div class="hero-line-wrap"><span class="hero-line hero-line-3">ARENA<span class="hero-title-accent">.</span></span></div>
+      </h1>
+      <div class="hero-underline"></div>
+    </div>
     <div class="scroll-ind center">
       <span>Scroll Down</span>
       <div class="scroll-bar"></div>
@@ -1692,7 +2045,7 @@ a, button, [role="button"], input[type="submit"], select, textarea, .btn-p, .btn
         </div>
         <div class="bst-stat-item">
           <div class="bst-stat-sub">BEBAS GENANGAN AIR</div>
-          <p class="bst-stat-desc">Sistem drainase superior menjaga lapangan tetap kering and aman setelah hujan deras.</p>
+          <p class="bst-stat-desc">Sistem drainase superior menjaga lapangan tetap kering dan aman setelah hujan deras.</p>
         </div>
         <div class="bst-stat-item">
           <div class="bst-stat-sub">PERFORMA KONSISTEN</div>
@@ -1772,23 +2125,23 @@ a, button, [role="button"], input[type="submit"], select, textarea, .btn-p, .btn
   <!-- ROW 2 — scroll kanan (reverse) -->
   <div class="fanwall-track-wrap">
     <div class="fanwall-track fanwall-track-rev">
-      <div class="fw-card sz-s"><img src="https://images.unsplash.com/photo-1517927033932-b3d18e61fb3a?w=600&q=80" alt="" loading="lazy"></div>
-      <div class="fw-card sz-p"><img src="https://images.unsplash.com/photo-1543326727-cf6c39e8f84c?w=600&q=80" alt="" loading="lazy"></div>
-      <div class="fw-card sz-m"><img src="https://images.unsplash.com/photo-1560272564-c83b66b1ad12?w=600&q=80" alt="" loading="lazy"></div>
-      <div class="fw-card sz-l"><img src="https://images.unsplash.com/photo-1526232761682-d26e03ac148e?w=600&q=80" alt="" loading="lazy"></div>
-      <div class="fw-card sz-s"><img src="https://images.unsplash.com/photo-1570498839593-e565b39455fc?w=600&q=80" alt="" loading="lazy"></div>
-      <div class="fw-card sz-m"><img src="https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?w=600&q=80" alt="" loading="lazy"></div>
-      <div class="fw-card sz-l"><img src="https://images.unsplash.com/photo-1553778263-73a83bab9b0c?w=600&q=80" alt="" loading="lazy"></div>
-      <div class="fw-card sz-p"><img src="https://images.unsplash.com/photo-1517466787929-bc90951d0974?w=600&q=80" alt="" loading="lazy"></div>
-      
-      <div class="fw-card sz-s"><img src="https://images.unsplash.com/photo-1517927033932-b3d18e61fb3a?w=600&q=80" alt="" loading="lazy"></div>
-      <div class="fw-card sz-p"><img src="https://images.unsplash.com/photo-1543326727-cf6c39e8f84c?w=600&q=80" alt="" loading="lazy"></div>
-      <div class="fw-card sz-m"><img src="https://images.unsplash.com/photo-1560272564-c83b66b1ad12?w=600&q=80" alt="" loading="lazy"></div>
-      <div class="fw-card sz-l"><img src="https://images.unsplash.com/photo-1526232761682-d26e03ac148e?w=600&q=80" alt="" loading="lazy"></div>
-      <div class="fw-card sz-s"><img src="https://images.unsplash.com/photo-1570498839593-e565b39455fc?w=600&q=80" alt="" loading="lazy"></div>
-      <div class="fw-card sz-m"><img src="https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?w=600&q=80" alt="" loading="lazy"></div>
-      <div class="fw-card sz-l"><img src="https://images.unsplash.com/photo-1553778263-73a83bab9b0c?w=600&q=80" alt="" loading="lazy"></div>
-      <div class="fw-card sz-p"><img src="https://images.unsplash.com/photo-1517466787929-bc90951d0974?w=600&q=80" alt="" loading="lazy"></div>
+      <div class="fw-card sz-s"><img src="https://i.pinimg.com/736x/4e/ef/d5/4eefd50c21b7c794e4f7f47f455c34c4.jpg" alt="" loading="lazy"></div>
+      <div class="fw-card sz-p"><img src="https://images.unsplash.com/photo-1579952363873-27f3bade9f55?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c29jY2VyfGVufDB8fDB8fHww" alt="" loading="lazy"></div>
+      <div class="fw-card sz-m"><img src="https://i.pinimg.com/736x/fe/1c/8e/fe1c8edfb341d4ad913bde066b59fcd1.jpg" alt="" loading="lazy"></div>
+      <div class="fw-card sz-l"><img src="https://images.unsplash.com/photo-1632300951015-42d7df909581?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fG1pbmklMjBzb2NjZXJ8ZW58MHx8MHx8fDA%3D" alt="" loading="lazy"></div>
+      <div class="fw-card sz-s"><img src="https://images.unsplash.com/photo-1715277331635-386d4a875b25?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mjd8fG1pbmklMjBzb2NjZXJ8ZW58MHx8MHx8fDA%3D" alt="" loading="lazy"></div>
+      <div class="fw-card sz-m"><img src="https://images.unsplash.com/photo-1486286701208-1d58e9338013?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fHNvY2NlcnxlbnwwfHwwfHx8MA%3D%3D" alt="" loading="lazy"></div>
+      <div class="fw-card sz-l"><img src="https://i.pinimg.com/1200x/6b/52/e4/6b52e43d320c6767c098f0822b3f7582.jpg" alt="" loading="lazy"></div>
+      <div class="fw-card sz-p"><img src="https://images.unsplash.com/photo-1632300873131-1dd749c83f97?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjB8fG1pbmklMjBzb2NjZXJ8ZW58MHx8MHx8fDA%3D" alt="" loading="lazy"></div>
+      <!-- duplikat untuk seamless loop -->
+      <div class="fw-card sz-s"><img src="https://i.pinimg.com/736x/4e/ef/d5/4eefd50c21b7c794e4f7f47f455c34c4.jpg" alt="" loading="lazy"></div>
+      <div class="fw-card sz-p"><img src="https://images.unsplash.com/photo-1579952363873-27f3bade9f55?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c29jY2VyfGVufDB8fDB8fHww" alt="" loading="lazy"></div>
+      <div class="fw-card sz-m"><img src="https://i.pinimg.com/736x/fe/1c/8e/fe1c8edfb341d4ad913bde066b59fcd1.jpg" alt="" loading="lazy"></div>
+      <div class="fw-card sz-l"><img src="https://images.unsplash.com/photo-1632300951015-42d7df909581?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fG1pbmklMjBzb2NjZXJ8ZW58MHx8MHx8fDA%3D" alt="" loading="lazy"></div>
+      <div class="fw-card sz-s"><img src="https://images.unsplash.com/photo-1715277331635-386d4a875b25?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mjd8fG1pbmklMjBzb2NjZXJ8ZW58MHx8MHx8fDA%3D" alt="" loading="lazy"></div>
+      <div class="fw-card sz-m"><img src="https://images.unsplash.com/photo-1486286701208-1d58e9338013?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fHNvY2NlcnxlbnwwfHwwfHx8MA%3D%3D" alt="" loading="lazy"></div>
+      <div class="fw-card sz-l"><img src="https://i.pinimg.com/1200x/6b/52/e4/6b52e43d320c6767c098f0822b3f7582.jpg" alt="" loading="lazy"></div>
+      <div class="fw-card sz-p"><img src="https://images.unsplash.com/photo-1632300873131-1dd749c83f97?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjB8fG1pbmklMjBzb2NjZXJ8ZW58MHx8MHx8fDA%3D" alt="" loading="lazy"></div>
     </div>
   </div>
 </section>
@@ -1804,16 +2157,15 @@ a, button, [role="button"], input[type="submit"], select, textarea, .btn-p, .btn
           <span class="fields-fg-text">OUTDOOR<span class="fields-green-dot"></span></span>
         </h2>
       </div>
-      <p class="sec-sub" style="max-width:360px;text-align:right;">Sistem pencahayaan LED penuh untuk bermain siang maupun malam di atas rumput sintetis berkualitas.</p>
     </div>
     <div class="fields-grid">
       <div class="f-card reveal">
         <div class="f-card-img">
-          <img src="https://images.unsplash.com/photo-1575361204480-aadea25e6e68?w=800&q=80" alt="Lapangan 1" loading="lazy">
+          <img src="https://images.unsplash.com/photo-1602432141202-e8b683524997?w=800&auto=format&fit=crop&q=80" alt="Lapangan 1" loading="lazy">
           <div class="f-card-img-overlay"></div>
           <div class="f-card-badge-wrap">
             <div class="f-badge">Rumput Sintetis Pro</div>
-            <div class="f-card-title">Lapangan 1</div>
+            <div class="f-card-title">LAPANGAN 1</div>
           </div>
         </div>
         <div class="f-card-body">
@@ -1824,17 +2176,17 @@ a, button, [role="button"], input[type="submit"], select, textarea, .btn-p, .btn
           </div>
           <div class="f-price-row">
             <div><span class="f-price-val">1.000K</span><span class="f-price-unit">/jam</span></div>
-            <a href="booking.php" class="f-book-btn">Book →</a>
+            <a href="booking.php" class="f-book-btn">Book</a>
           </div>
         </div>
       </div>
       <div class="f-card reveal">
         <div class="f-card-img">
-          <img src="https://images.unsplash.com/photo-1529900748604-07564a03e7a6?w=800&q=80" alt="Lapangan 2" loading="lazy">
+          <img src="https://images.unsplash.com/photo-1502481686408-d428268c24ff?w=800&auto=format&fit=crop&q=80" alt="Lapangan 2" loading="lazy">
           <div class="f-card-img-overlay"></div>
           <div class="f-card-badge-wrap">
             <div class="f-badge">Rumput Sintetis Premium</div>
-            <div class="f-card-title">Lapangan 2</div>
+            <div class="f-card-title">LAPANGAN 2</div>
           </div>
         </div>
         <div class="f-card-body">
@@ -1845,17 +2197,17 @@ a, button, [role="button"], input[type="submit"], select, textarea, .btn-p, .btn
           </div>
           <div class="f-price-row">
             <div><span class="f-price-val">1.200K</span><span class="f-price-unit">/jam</span></div>
-            <a href="booking.php" class="f-book-btn">Book →</a>
+            <a href="booking.php" class="f-book-btn">Book</a>
           </div>
         </div>
       </div>
       <div class="f-card reveal">
         <div class="f-card-img">
-          <img src="https://images.unsplash.com/photo-1518604666860-9ed391f76460?w=800&q=80" alt="Lapangan 3" loading="lazy">
+          <img src="https://images.unsplash.com/photo-1638868699118-73af322e79c9?w=800&auto=format&fit=crop&q=80" alt="Lapangan 3" loading="lazy">
           <div class="f-card-img-overlay"></div>
           <div class="f-card-badge-wrap">
             <div class="f-badge">Rumput Sintetis Pro</div>
-            <div class="f-card-title">Lapangan 3</div>
+            <div class="f-card-title">LAPANGAN 3</div>
           </div>
         </div>
         <div class="f-card-body">
@@ -1866,7 +2218,7 @@ a, button, [role="button"], input[type="submit"], select, textarea, .btn-p, .btn
           </div>
           <div class="f-price-row">
             <div><span class="f-price-val">1.000K</span><span class="f-price-unit">/jam</span></div>
-            <a href="booking.php" class="f-book-btn">Book →</a>
+            <a href="booking.php" class="f-book-btn">Book</a>
           </div>
         </div>
       </div>
@@ -1886,20 +2238,20 @@ a, button, [role="button"], input[type="submit"], select, textarea, .btn-p, .btn
     </div>
   </div>
   <div class="gallery-mosaic reveal">
-    <div class="g-item" data-full="https://images.unsplash.com/photo-1575361204480-aadea25e6e68?w=1400&q=90">
-      <img src="https://images.unsplash.com/photo-1575361204480-aadea25e6e68?w=900&q=80" alt="" loading="lazy">
+    <div class="g-item" data-full="https://images.unsplash.com/photo-1546717003-caee5f93a9db?w=1400&auto=format&fit=crop&q=90">
+      <img src="https://images.unsplash.com/photo-1546717003-caee5f93a9db?w=900&auto=format&fit=crop&q=80" alt="" loading="lazy">
       <div class="g-overlay"><div class="g-zoom">+</div></div>
-      <div class="g-label">Lapangan A</div>
+      <div class="g-label">Lapangan 1</div>
     </div>
-    <div class="g-item" data-full="https://images.unsplash.com/photo-1529900748604-07564a03e7a6?w=1400&q=90">
-      <img src="https://images.unsplash.com/photo-1529900748604-07564a03e7a6?w=900&q=80" alt="" loading="lazy">
+    <div class="g-item" data-full="https://images.unsplash.com/photo-1641029185333-7ed62a19d5f0?w=1400&auto=format&fit=crop&q=90">
+      <img src="https://images.unsplash.com/photo-1641029185333-7ed62a19d5f0?w=900&auto=format&fit=crop&q=80" alt="" loading="lazy">
       <div class="g-overlay"><div class="g-zoom">+</div></div>
-      <div class="g-label">Lapangan B</div>
+      <div class="g-label">Lapangan 3</div>
     </div>
-    <div class="g-item" data-full="https://images.unsplash.com/photo-1518604666860-9ed391f76460?w=1400&q=90">
-      <img src="https://images.unsplash.com/photo-1518604666860-9ed391f76460?w=900&q=80" alt="" loading="lazy">
+    <div class="g-item" data-full="assets/izuddin-helmi-adnan-K5ChxJaheKI-unsplash.jpg">
+      <img src="assets/izuddin-helmi-adnan-K5ChxJaheKI-unsplash.jpg" alt="" loading="lazy">
       <div class="g-overlay"><div class="g-zoom">+</div></div>
-      <div class="g-label">Lapangan C</div>
+      <div class="g-label">Lapangan 2</div>
     </div>
     <div class="g-item" data-full="assets/tribun.png?w=1400&q=90">
       <img src="assets/tribun.png?w=900&q=80" alt="" loading="lazy">
@@ -1932,7 +2284,7 @@ a, button, [role="button"], input[type="submit"], select, textarea, .btn-p, .btn
         </div>
         <div class="sc-card-body">
           <h3 class="sc-card-title">Large Parking Area</h3>
-          <p class="sc-card-desc">Area parkir kami mampu menampung puluhan kendaraan baik motor maupun mobil. Akses keluar masuk yang mudah dan diawasi CCTV.</p>
+          <p class="sc-card-desc">Secure and spacious parking area monitored 24/7 by CCTV.</p>
         </div>
         <div class="sc-card-glow"></div>
       </div>
@@ -1944,7 +2296,7 @@ a, button, [role="button"], input[type="submit"], select, textarea, .btn-p, .btn
         </div>
         <div class="sc-card-body">
           <h3 class="sc-card-title">Restaurant & Café</h3>
-          <p class="sc-card-desc">Haus setelah bertanding? Pesan minuman atau makanan di area restaurant kami sambil bersantai setelah pertandingan.</p>
+          <p class="sc-card-desc">Comfortable restaurant area to relax and dine after matches.</p>
         </div>
         <div class="sc-card-glow"></div>
       </div>
@@ -1956,7 +2308,7 @@ a, button, [role="button"], input[type="submit"], select, textarea, .btn-p, .btn
         </div>
         <div class="sc-card-body">
           <h3 class="sc-card-title">Changing Room</h3>
-          <p class="sc-card-desc">Fasilitas kamar mandi dan ruang ganti yang selalu dijaga kebersihannya, lengkap, dan nyaman digunakan.</p>
+          <p class="sc-card-desc">Clean changing rooms and shower facilities kept it clean .</p>
         </div>
         <div class="sc-card-glow"></div>
       </div>
@@ -1968,12 +2320,26 @@ a, button, [role="button"], input[type="submit"], select, textarea, .btn-p, .btn
         </div>
         <div class="sc-card-body">
           <h3 class="sc-card-title">Full LED Lighting</h3>
-          <p class="sc-card-desc">Bermain malam hari bukan masalah. Lapangan kami dilengkapi dengan lampu sorot LED standar internasional untuk visibilitas maksimal.</p>
+          <p class="sc-card-desc">International standard LED spotlights for optimal night play.</p>
         </div>
         <div class="sc-card-glow"></div>
       </div>
     </div>
   </div>
+</section>
+
+<!-- ── IMAGE: FULL-SCREEN HORIZONTAL IMAGE ── -->
+<section class="image-sec" id="image-banner">
+  <div class="image-sep-top"></div>
+  <img class="image-img" src="assets/image.jpeg" alt="Mini Soccer Action" loading="lazy">
+  <div class="image-overlay"></div>
+  <div class="image-content">
+    <div class="image-text-wrap">
+      <div class="image-label"><span class="ml-dot"></span>THE GAME NEVER STOPS</div>
+      <h2 class="image-title">PLAY<br><span>BEYOND</span><br>LIMITS</h2>
+    </div>
+  </div>
+  <div class="image-sep-bottom"></div>
 </section>
 
 <section class="pricing-sec" id="harga">
@@ -1983,7 +2349,7 @@ a, button, [role="button"], input[type="submit"], select, textarea, .btn-p, .btn
   </div>
   <div class="bg-pricing-grid"></div>
   <div class="container">
-    <div class="showcase-head reveal" style="margin-bottom:56px;">
+    <div class="pricing-head reveal">
       <div class="sec-label">⬡ Harga Sewa</div>
       <div class="pricing-title-wrap">
         <h2 class="pricing-fg-text">AFFORDABLE</h2>
@@ -2022,7 +2388,7 @@ a, button, [role="button"], input[type="submit"], select, textarea, .btn-p, .btn
         </div>
         <div class="p-card featured">
           <div class="p-tag">Lapangan 2</div>
-          <div class="p-name">Premium + Tribun</div>
+          <div class="p-name">Premium dan Tribun</div>
           <div class="p-price">
             <span class="p-cur">Rp</span>
             <span class="p-amount">1.200.000</span>
@@ -2070,22 +2436,22 @@ a, button, [role="button"], input[type="submit"], select, textarea, .btn-p, .btn
       <div class="val-card reveal">
         <div class="val-num">03</div>
         <div class="val-name">Customer Experience</div>
-        <div class="val-desc">Kemudahan booking, pelayanan yang responsif, and lingkungan yang nyaman menjadi bagian dari komitmen kami kepada pelanggan.</div>
+        <div class="val-desc">Kemudahan booking, pelayanan yang responsif, dan lingkungan yang nyaman menjadi bagian dari komitmen kami kepada pelanggan.</div>
       </div>
       <div class="val-card reveal">
         <div class="val-num">04</div>
         <div class="val-name">Professional Service</div>
-        <div class="val-desc">Kami mengutamakan pelayanan yang profesional, jadwal yang jelas, and pengalaman booking yang dapat diandalkan.</div>
+        <div class="val-desc">Kami mengutamakan pelayanan yang profesional, jadwal yang jelas, dan pengalaman booking yang dapat diandalkan.</div>
       </div>
       <div class="val-card reveal">
         <div class="val-num">05</div>
         <div class="val-name">Community & Sportsmanship</div>
-        <div class="val-desc">MiniFut menjadi tempat bagi para pemain untuk berkumpul, bertanding, membangun kebersamaan, and menjunjung sportivitas.</div>
+        <div class="val-desc">MiniFut menjadi tempat bagi para pemain untuk berkumpul, bertanding, membangun kebersamaan, dan menjunjung sportivitas.</div>
       </div>
       <div class="val-card reveal">
         <div class="val-num">06</div>
         <div class="val-name">Integrity & Transparency</div>
-        <div class="val-desc">Harga yang jelas, komunikasi yang terbuka, and pelayanan yang jujur adalah prinsip yang selalu kami pegang.</div>
+        <div class="val-desc">Harga yang jelas, komunikasi yang terbuka, dan pelayanan yang jujur adalah prinsip yang selalu kami pegang.</div>
       </div>
     </div>
   </div>
@@ -2133,7 +2499,7 @@ a, button, [role="button"], input[type="submit"], select, textarea, .btn-p, .btn
         Book Lapangan<br>Sekarang
       </h2>
       <p class="cta-sub">Jangan tunda lagi. Atur jadwal pertandinganmu dan nikmati pengalaman<br>mini soccer terbaik di Yogyakarta.</p>
-      <a href="booking.php" class="btn-soft" style="display:inline-block">Mulai Booking →</a>
+      <a href="booking.php" class="btn-soft" style="display:inline-block">Mulai Booking</a>
     </div>
   </div>
 </section>
@@ -2160,7 +2526,9 @@ a, button, [role="button"], input[type="submit"], select, textarea, .btn-p, .btn
           <li><strong>Buka Setiap Hari:</strong></li>
           <li>08.00 – 24.00 WIB</li>
           <li style="margin-top:8px"><strong>Lokasi:</strong></li>
-          <li>Yogyakarta, DIY</li>
+          <li>Jl. Kaliurang Km 7.5, RT 04/RW 12</li>
+          <li>Sinduharjo, Ngaglik, Sleman</li>
+          <li>D.I. Yogyakarta 55581</li>
         </ul>
       </div>
       <div>
@@ -2350,6 +2718,80 @@ ScrollTrigger.batch(".reveal", {
   start: "top 85%"
 });
 
+/* ══════════════════════════════════════════════
+   HERO CONTENT — ENTRANCE ANIMATION
+   Eyebrow fade-in → title cinematic flip-up + blur-to-focus (stagger per kata)
+   → garis aksen menyala dari tengah
+   Delay: 0.5s (memberi ruang shader & stadium 3D untuk init)
+   ══════════════════════════════════════════════ */
+(function initHeroEntrance() {
+  // Set initial transform/filter states (sebelum reveal)
+  gsap.set(".hero-line", {
+    yPercent: 110,            // Tersembunyi di bawah overflow:hidden wrapper
+    rotateX: -55,             // Tilt 3D untuk efek flip-up
+    filter: "blur(10px)",     // Blur-to-focus
+    transformOrigin: "50% 100%"
+  });
+  gsap.set(".hero-eyebrow", { y: -16 });
+  gsap.set(".hero-underline", { scaleX: 0 });
+
+  const heroEnterTl = gsap.timeline({ delay: 0.5 });
+  heroEnterTl
+    // 1. Eyebrow label: fade + turun pelan
+    .to(".hero-eyebrow", {
+      opacity: 1,
+      y: 0,
+      duration: 0.7,
+      ease: "power2.out"
+    })
+    // 2. Title lines: cinematic flip-up reveal dengan blur-to-focus, stagger per kata
+    .to(".hero-line", {
+      yPercent: 0,
+      rotateX: 0,
+      filter: "blur(0px)",
+      duration: 1.2,
+      ease: "power4.out",
+      stagger: 0.12
+    }, "-=0.35")
+    // 3. Garis aksen hijau melebar dari tengah
+    .to(".hero-underline", {
+      opacity: 1,
+      scaleX: 1,
+      duration: 0.9,
+      ease: "power3.out"
+    }, "-=0.5");
+})();
+/* ══ END HERO ENTRANCE ══ */
+
+/* ── IMAGE-SEC: Parallax image + text fade ── */
+gsap.to(".image-img", {
+  scrollTrigger: {
+    trigger: ".image-sec",
+    start: "top bottom",
+    end: "bottom top",
+    scrub: 1.2
+  },
+  y: -80,
+  ease: "none"
+});
+
+const tlImage = gsap.timeline({
+  scrollTrigger: {
+    trigger: ".image-sec",
+    start: "top 70%",
+    toggleActions: "play none none none"
+  }
+});
+tlImage.fromTo(".image-label", 
+  { x: -50, opacity: 0 }, 
+  { x: 0, opacity: 1, duration: 0.8, ease: "power2.out" }
+)
+.fromTo(".image-title", 
+  { y: 60, opacity: 0 }, 
+  { y: 0, opacity: 1, duration: 0.9, ease: "power3.out" }, 
+  "-=0.5"
+);
+
 document.querySelectorAll('.sc-card').forEach(card => {
   card.addEventListener('mousemove', e => {
     const rect = card.getBoundingClientRect();
@@ -2376,10 +2818,16 @@ document.querySelectorAll('.sc-card').forEach(card => {
 /* GALLERY LIGHTBOX LOGIC */
 const lb=document.getElementById('lb'),lbImg=document.getElementById('lb-img');
 document.querySelectorAll('.g-item').forEach(item=>{
-  item.addEventListener('click',()=>{lbImg.src=item.dataset.full;lb.classList.add('open');});
+  item.addEventListener('click',()=>{
+    lbImg.src=item.dataset.full;
+    const label=item.querySelector('.g-label');
+    lbImg.alt=label?label.textContent:'Gallery Image';
+    lb.classList.add('open');
+  });
 });
 document.getElementById('lb-close').onclick=()=>lb.classList.remove('open');
 lb.addEventListener('click',e=>{if(e.target===lb)lb.classList.remove('open');});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&lb.classList.contains('open'))lb.classList.remove('open');});
 
 const co=new IntersectionObserver(es=>es.forEach(e=>{
   if(!e.isIntersecting)return;
@@ -2397,7 +2845,7 @@ const co=new IntersectionObserver(es=>es.forEach(e=>{
     el.textContent=Math.floor(v)+suffix;
   },16);
   co.unobserve(el);
-}),{threshold:1});
+}),{threshold:0.5});
 document.querySelectorAll('.counter').forEach(el=>co.observe(el));
 
 /* PARTICLES CTA LOGIC */
@@ -2421,32 +2869,6 @@ if(typeof particlesJS !== 'undefined') {
   });
 }
 
-document.querySelectorAll('.f-card').forEach(card => {
-  const glare = document.createElement('div');
-  glare.classList.add('f-glare');
-  card.appendChild(glare);
-
-  card.addEventListener('mousemove', (e) => {
-    const rect = card.getBoundingClientRect();
-    const x = e.clientX - rect.left, y = e.clientY - rect.top;
-    const centerX = rect.width / 2, centerY = rect.height / 2;
-    const rotateX = ((y - centerY) / centerY) * -12; 
-    const rotateY = ((x - centerX) / centerX) * 12;
-    
-    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
-    card.style.transition = 'none';
-    
-    glare.style.background = `radial-gradient(circle at ${x}px ${y}px, rgba(255,255,255,0.15) 0%, transparent 70%)`;
-    glare.style.opacity = '1';
-  });
-
-  card.addEventListener('mouseleave', () => {
-    card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
-    card.style.transition = 'transform 0.4s ease, border-color 0.3s';
-    glare.style.opacity = '0';
-  });
-});
-
 document.querySelectorAll('.val-card').forEach(card => {
   card.addEventListener('mousemove', e => {
     const r = card.getBoundingClientRect();
@@ -2460,8 +2882,9 @@ document.querySelectorAll('.val-card').forEach(card => {
   const canvas = document.getElementById('shader-canvas');
   if (!canvas) return;
 
-  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  const _dpr = Math.min(window.devicePixelRatio, window.innerWidth <= 768 ? 1.0 : 1.5);
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: _dpr <= 1, powerPreference: 'high-performance' });
+  renderer.setPixelRatio(_dpr);
   renderer.setSize(window.innerWidth, window.innerHeight);
 
   const scene = new THREE.Scene();
@@ -2533,10 +2956,15 @@ document.querySelectorAll('.val-card').forEach(card => {
   }
   window.addEventListener('resize', handleResize);
 
+  let _shaderVisible = true;
+  const _shaderObs = new IntersectionObserver(([entry]) => { _shaderVisible = entry.isIntersecting; }, { threshold: 0 });
+  _shaderObs.observe(canvas);
+
   function animate() {
+    requestAnimationFrame(animate);
+    if (!_shaderVisible) return;
     uniforms.time.value += 0.01;
     renderer.render(scene, camera);
-    requestAnimationFrame(animate);
   }
   animate();
 })();
@@ -2545,8 +2973,9 @@ document.querySelectorAll('.val-card').forEach(card => {
 (function initHeroThree() {
   const canvas = document.getElementById('three-canvas');
   if (!canvas) return;
-  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  const _heroDpr = Math.min(window.devicePixelRatio, window.innerWidth <= 768 ? 1.0 : 1.5);
+  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: _heroDpr <= 1, powerPreference: 'high-performance' });
+  renderer.setPixelRatio(_heroDpr);
 
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
@@ -2647,7 +3076,13 @@ document.querySelectorAll('.val-card').forEach(card => {
   document.addEventListener('mousemove', e => { mouseX = (e.clientX / window.innerWidth - 0.5) * 2; mouseY = (e.clientY / window.innerHeight - 0.5) * 2; });
 
   let t = 0;
+  let _heroVisible = true;
+  const _heroObs = new IntersectionObserver(([entry]) => { _heroVisible = entry.isIntersecting; }, { threshold: 0 });
+  _heroObs.observe(canvas);
+
   function animate() {
+    requestAnimationFrame(animate);
+    if (!_heroVisible) return;
     t += 0.01;
 
     heroScrollProgress += (targetHeroScrollProgress - heroScrollProgress) * 0.1;
@@ -2659,7 +3094,6 @@ document.querySelectorAll('.val-card').forEach(card => {
     fieldMat.emissive = new THREE.Color(0x001a08);
     fieldMat.emissiveIntensity = 0.3 + Math.sin(t * 0.5) * 0.1;
     renderer.render(scene, camera);
-    requestAnimationFrame(animate);
   }
   animate();
 })();
@@ -2669,8 +3103,9 @@ document.querySelectorAll('.val-card').forEach(card => {
   const canvasScroll = document.getElementById('ball-scroll-canvas');
   if (!canvasScroll) return;
 
-  const rendererS = new THREE.WebGLRenderer({ canvas: canvasScroll, antialias: true, opacity: true, alpha: true });
-  rendererS.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  const _ballDpr = Math.min(window.devicePixelRatio, window.innerWidth <= 768 ? 1.0 : 1.5);
+  const rendererS = new THREE.WebGLRenderer({ canvas: canvasScroll, antialias: _ballDpr <= 1, alpha: true, powerPreference: 'high-performance' });
+  rendererS.setPixelRatio(_ballDpr);
   rendererS.toneMapping = THREE.ACESFilmicToneMapping;
   rendererS.toneMappingExposure = 1.2;
 
@@ -2686,7 +3121,8 @@ document.querySelectorAll('.val-card').forEach(card => {
   window.addEventListener('resize', resizeS);
   resizeS();
 
-  const ballSGeo = new THREE.SphereGeometry(1.6, 64, 64);
+  const _ballSegs = window.innerWidth <= 768 ? 32 : 48;
+  const ballSGeo = new THREE.SphereGeometry(1.6, _ballSegs, _ballSegs);
   const ballSMat = new THREE.ShaderMaterial({ vertexShader: ballVertS, fragmentShader: ballFragS, uniforms: { uTime: { value: 0 } } });
   const scrollBall = new THREE.Mesh(ballSGeo, ballSMat);
   
@@ -2766,41 +3202,50 @@ document.querySelectorAll('.val-card').forEach(card => {
 
   window.addEventListener('touchend', () => { isDragging = false; });
 
+  function getResponsiveParams() {
+    const w = window.innerWidth;
+    if (w <= 768) {
+      return { hero: 0.11, sec2: 0.75, sec3: 1.5, sec4: 1.5, xOffset: 0.5 };
+    } else if (w <= 1024) {
+      return { hero: 0.12, sec2: 0.80, sec3: 1.8, sec4: 1.8, xOffset: 0.8 };
+    } else if (w <= 1280) {
+      return { hero: 0.13, sec2: 0.85, sec3: 2.4, sec4: 2.4, xOffset: 1.0 };
+    } else {
+      return { hero: 0.15, sec2: 0.95, sec3: 3.2, sec4: 3.2, xOffset: 1.2 };
+    }
+  }
+
   // Status variabel pergerakan fisik bola
+  let initParams = getResponsiveParams();
   const ballState = {
     x: 0,
     y: 0.8,
-    scale: window.innerWidth <= 768 ? 0.08 : 0.15,
+    scale: initParams.hero,
     opacity: 1,
     rx: 0,
     ry: 0,
     rz: 0
   };
 
-  let isMobile = window.innerWidth <= 768;
   let responsiveScale = {
-    hero: isMobile ? 0.08 : 0.15,
-    sec2: isMobile ? 0.6 : 0.95,
-    sec3: isMobile ? 1.2 : 3.2,
-    sec4: isMobile ? 1.2 : 3.2
+    hero: initParams.hero,
+    sec2: initParams.sec2,
+    sec3: initParams.sec3,
+    sec4: initParams.sec4
   };
 
   let targetX = 3.5;
   function updateTargetX() {
-    isMobile = window.innerWidth <= 768;
-    responsiveScale.hero = isMobile ? 0.08 : 0.15;
-    responsiveScale.sec2 = isMobile ? 0.6 : 0.95;
-    responsiveScale.sec3 = isMobile ? 1.2 : 3.2;
-    responsiveScale.sec4 = isMobile ? 1.2 : 3.2;
+    let params = getResponsiveParams();
+    responsiveScale.hero = params.hero;
+    responsiveScale.sec2 = params.sec2;
+    responsiveScale.sec3 = params.sec3;
+    responsiveScale.sec4 = params.sec4;
 
     const aspect = window.innerWidth / window.innerHeight;
     const visibleWidth = 2.0 * Math.tan((50 * Math.PI) / 360) * 10 * aspect;
     
-    if (isMobile) {
-      targetX = (visibleWidth / 2) - 0.5;
-    } else {
-      targetX = (visibleWidth / 2) - 1.2;
-    }
+    targetX = (visibleWidth / 2) - params.xOffset;
   }
   
   window.addEventListener('resize', () => {
@@ -2829,12 +3274,36 @@ document.querySelectorAll('.val-card').forEach(card => {
       trigger: ".premium-showcase-container",
       start: "top top",
       end: "+=800%",
-      scrub: 3.0,
+      scrub: 1.2,
       pin: true,
       anticipatePin: 1,
       onUpdate: (self) => {
         // Hubungkan scroll progress awal (0% s/d 25%) langsung ke kemiringan / fade stadium Hero Section
         targetHeroScrollProgress = Math.min(1.0, self.progress * 4.0);
+        // Pastikan canvas terlihat saat animasi aktif
+        if (self.progress > 0 && self.progress < 1) {
+          canvasScroll.style.display = 'block';
+        }
+      },
+      onLeave: () => {
+        // Force-hide bola saat scroll melewati section (scroll ke bawah)
+        canvasScroll.style.opacity = '0';
+        ballState.opacity = 0;
+        setTimeout(() => { canvasScroll.style.display = 'none'; }, 400);
+      },
+      onLeaveBack: () => {
+        // Force-hide bola saat scroll balik ke atas melewati section
+        canvasScroll.style.opacity = '0';
+        ballState.opacity = 0;
+        setTimeout(() => { canvasScroll.style.display = 'none'; }, 400);
+      },
+      onEnter: () => {
+        canvasScroll.style.display = 'block';
+        canvasScroll.style.opacity = '1';
+        ballState.opacity = 1;
+      },
+      onEnterBack: () => {
+        canvasScroll.style.display = 'block';
       }
     }
   });
@@ -2843,12 +3312,13 @@ document.querySelectorAll('.val-card').forEach(card => {
     // ── JEDA DIAM AWAL: Hero tampil, bola diam melayang ──
     .to({}, { duration: 1.0 })
 
-    // Sembunyikan scroll indicator smooth saat mulai scroll
-    .to(".scroll-ind.center", { opacity: 0, y: 12, duration: 0.4, ease: "power2.in" }, "<0.2")
-
     // ── [1] HERO → SECTION 2 (MINI FUT) ──
+    // Sembunyikan heading (zoom-out + blur) dan scroll indicator smooth saat hero mulai transisi
+    .to("#hero-content", { opacity: 0, y: -40, scale: 0.94, filter: "blur(10px)", duration: 0.6, ease: "power2.in" })
+    .to(".scroll-ind.center", { opacity: 0, y: 12, duration: 0.4, ease: "power2.in" }, "<")
+
     // Geser seluruh tumpukan seksi ke atas secara sinkron (Reel Effect)
-    .to("#scroll-sec-hero", { yPercent: -100, duration: 2.0, ease: "power2.inOut" })
+    .to("#scroll-sec-hero", { yPercent: -100, duration: 2.0, ease: "power2.inOut" }, "<")
     .to("#scroll-sec-1", { yPercent: 0, duration: 2.0, ease: "power2.inOut" }, "<")
     .to("#scroll-sec-2", { yPercent: 100, duration: 2.0, ease: "power2.inOut" }, "<")
     .to("#scroll-sec-3", { yPercent: 200, duration: 2.0, ease: "power2.inOut" }, "<")
@@ -2926,8 +3396,8 @@ document.querySelectorAll('.val-card').forEach(card => {
     // Bola menggelinding keluar ke arah bawah panggung halaman secara perlahan
     .to(ballState, {
       opacity: 0,
-      scale: () => isMobile ? 1.8 : 2.2,
-      y: () => isMobile ? -4.5 : -5.5,
+      scale: () => window.innerWidth <= 768 ? 1.8 : 2.2,
+      y: () => window.innerWidth <= 768 ? -4.5 : -5.5,
       rx: 5.0 * Math.PI,
       rz: -1.0 * Math.PI,
       duration: 1.4,
@@ -2938,7 +3408,30 @@ document.querySelectorAll('.val-card').forEach(card => {
   let timeS = 0;
   let rotVelX = 0, rotVelY = 0, rotVelZ = 0;
 
+  let _ballVisible = true;
+  let _ballExitFrames = 0; // Counter frame ekstra agar bola selesai exit sebelum render berhenti
+  const _ballObs = new IntersectionObserver(([entry]) => {
+    if (entry.isIntersecting) {
+      _ballVisible = true;
+      _ballExitFrames = 0;
+    } else {
+      // Beri 60 frame ekstra untuk menyelesaikan animasi exit
+      _ballVisible = false;
+      _ballExitFrames = 60;
+    }
+  }, { threshold: 0 });
+  _ballObs.observe(containerShowcase);
+
   function renderScrollBall() {
+    requestAnimationFrame(renderScrollBall);
+    // Lanjutkan render jika visible ATAU masih ada frame ekstra untuk exit
+    if (!_ballVisible) {
+      if (_ballExitFrames > 0) {
+        _ballExitFrames--;
+      } else {
+        return;
+      }
+    }
     timeS += 0.01;
 
     let bounceY = 0;
@@ -2989,18 +3482,27 @@ document.querySelectorAll('.val-card').forEach(card => {
       targetRotZ = scrollBall.rotation.z;
     }
 
-    let smoothX = scrollBall.position.x + (ballState.x - scrollBall.position.x) * 0.12;
+    // Adaptive lerp: semakin jauh jarak ke target, semakin cepat konvergen
+    // Ini mencegah bola "menempel" saat scroll cepat
+    let distX = Math.abs(ballState.x - scrollBall.position.x);
+    let distY = Math.abs((ballState.y + bounceY) - scrollBall.position.y);
+    let distScale = Math.abs(ballState.scale - scrollBall.scale.x);
+    let posLerp = 0.18 + Math.min(0.72, (distX + distY) * 0.15 + distScale * 0.3);
+
+    let smoothX = scrollBall.position.x + (ballState.x - scrollBall.position.x) * posLerp;
     let targetPosY = ballState.y + bounceY;
-    let smoothY = scrollBall.position.y + (targetPosY - scrollBall.position.y) * 0.12;
+    let smoothY = scrollBall.position.y + (targetPosY - scrollBall.position.y) * posLerp;
 
     scrollBall.position.x = smoothX;
     scrollBall.position.y = smoothY;
-    scrollBall.scale.setScalar(ballState.scale);
+    // Adaptive scale lerp untuk respons cepat
+    let scaleLerp = 0.18 + Math.min(0.72, distScale * 0.5);
+    let smoothScale = scrollBall.scale.x + (ballState.scale - scrollBall.scale.x) * scaleLerp;
+    scrollBall.scale.setScalar(smoothScale);
     canvasScroll.style.opacity = ballState.opacity;
 
     ballSMat.uniforms.uTime.value = timeS;
     rendererS.render(sceneS, cameraS);
-    requestAnimationFrame(renderScrollBall);
   }
   renderScrollBall();
 })();
